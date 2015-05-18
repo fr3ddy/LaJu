@@ -6,14 +6,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.TextView;
-
-import org.apache.http.NameValuePair;
-
-import java.util.ArrayList;
-import java.util.List;
+import android.widget.ListView;
 
 /**
  * Created by Frederik on 16.05.2015.
@@ -40,6 +33,12 @@ public class InfoTabFragment extends Fragment {
         // http://laju.frederik-frey.de/lajuapp/alleNews/123456
         //Log.d("JSON","json: "+json.toString());
         return rootView;
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        Receiver receiver = new Receiver(this, (ListView)getActivity().findViewById(R.id.infoTabList));
     }
 
     @Override
