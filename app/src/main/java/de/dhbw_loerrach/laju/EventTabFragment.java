@@ -6,25 +6,17 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
 
 /**
  * Created by Frederik on 16.05.2015.
  */
 public class EventTabFragment extends Fragment {
-    /**
-     * The fragment argument representing the section number for this
-     * fragment.
-     */
     private static final String ARG_SECTION_NUMBER = "section_number";
 
-    /**
-     * Returns a new instance of this fragment for the given section
-     * number.
-     */
     public static EventTabFragment newInstance(int position) {
         EventTabFragment fragment = new EventTabFragment();
         Bundle args = new Bundle();
-        args.putInt("position", position);
         fragment.setArguments(args);
         return fragment;
     }
@@ -36,6 +28,12 @@ public class EventTabFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_eventtab, container, false);
         return rootView;
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        Receiver receiver = new Receiver(this, (ListView)getActivity().findViewById(R.id.eventTabList));
     }
 
     @Override
