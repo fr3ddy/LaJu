@@ -4,9 +4,9 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.util.Log;
-import android.util.Xml;
 import android.view.LayoutInflater;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -19,30 +19,13 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Document;
-import org.w3c.dom.NamedNodeMap;
-import org.w3c.dom.NodeList;
-import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
-import org.xmlpull.v1.XmlPullParser;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.StringReader;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
-import java.util.List;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.xpath.XPath;
-import javax.xml.xpath.XPathConstants;
-import javax.xml.xpath.XPathExpression;
-import javax.xml.xpath.XPathExpressionException;
-import javax.xml.xpath.XPathFactory;
 
 public class Receiver {
 
@@ -50,8 +33,8 @@ public class Receiver {
     EventTabFragment eventtabfrag = null;
     ListView infolv = null;
     private static LayoutInflater inflater;
-    private String infourl = "http://frey.cloud4germany.com/lajuapp/alleNews/123456";
-    private String eventurl = "http://laju-suedbaden.de/de/veranstaltungen/export.php";
+    private String infourl = "http://laju.frederik-frey.de/lajuapp/alleNews/123456";
+    private String eventurl = "http://laju.frederik-frey.de/lajuapp/gibVeranstaltungen/123456";
 
     public Receiver(InfoTabFragment inftb, ListView lv) {
         infotabfrag = inftb;
@@ -159,6 +142,8 @@ public class Receiver {
                 this.progressDialog.dismiss();
             } catch (JSONException e) {
                 Log.e("JSONException", "Error: " + e.toString());
+                this.progressDialog.dismiss();
+                Toast.makeText(infotabfrag.getActivity(),"Da hät öbbis nid klappt",Toast.LENGTH_LONG).show();
             } // catch (JSONException e)
         } // protected void onPostExecute(Void v)
     } //class MyAsyncTask extends AsyncTask<String, String, Void>
@@ -235,52 +220,32 @@ public class Receiver {
         } // protected Void doInBackground(String... params)
 
         protected void onPostExecute(Void v) {
-            //parse XML data
-
-            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-            DocumentBuilder builder = null;
+            //parse JSON data
             try {
-                builder = factory.newDocumentBuilder();
-            } catch (ParserConfigurationException e) {
-                e.printStackTrace();
-            }
-            InputSource is = new InputSource( new StringReader(result) );
-            Document doc = null;
-            try {
-                doc = builder.parse( is );
-            } catch (SAXException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+                JSONArray jArray = new JSONArray(result);
+                for (int i = 0; i < jArray.length(); i++) {
 
-            XPathFactory factory2 = XPathFactory.newInstance();
-            XPath xpath = factory2.newXPath();
-            XPathExpression expr = null;
-            try {
-                expr = xpath.compile("//src_small/text()");
-            } catch (XPathExpressionException e) {
-                e.printStackTrace();
-            }
+                    JSONObject jObject = jArray.getJSONObject(i);
 
-            Object result = null;
-            try {
-                result = expr.evaluate(doc, XPathConstants.NODESET);
-            } catch (XPathExpressionException e) {
-                e.printStackTrace();
-            }
-            NodeList nodes = (NodeList) result;
-            List<String> urls = new ArrayList<String>();
-            for (int i = 0; i < nodes.getLength(); i++) {
-                urls.add (nodes.item(i).getNodeValue());
-            }
-
-            /*EventItem eventitem = new EventItem();
-            eventlist.add(eventitem);
-            this.progressDialog.dismiss();
-            EventListAdapter cla = new EventListAdapter(eventtabfrag.getActivity(), R.layout.eventlistlayout, eventlist);
-            ListView lv = (ListView) eventtabfrag.getActivity().findViewById(R.id.eventTabList);
-            lv.setAdapter(cla); */
+                    String beschreibung = jObject.getString("beschreibung");
+                    String bild = jObject.getString("bild");
+                    String datum_bis = jObject.getString("datum_bis");
+                    String datum_von = jObject.getString("datum_von");
+                    String titel = jObject.getString("titel");
+                    String untertitel = jObject.getString("untertitel");
+                    String url = jObject.getString("url");
+                    EventItem eventitem = new EventItem(beschreibung,bild,datum_bis,datum_von,titel,untertitel,url);
+                    eventlist.add(eventitem);
+                } // End Loop
+                EventListAdapter cla = new EventListAdapter(eventtabfrag.getActivity(), R.layout.eventlistlayout, eventlist);
+                ListView lv = (ListView) eventtabfrag.getActivity().findViewById(R.id.eventTabList);
+                lv.setAdapter(cla);
+                this.progressDialog.dismiss();
+            } catch (JSONException e) {
+                Log.e("JSONException", "Error: " + e.toString());
+                this.progressDialog.dismiss();
+                Toast.makeText(eventtabfrag.getActivity(),"Da hät öbbis nid klappt",Toast.LENGTH_LONG).show();
+            } // catch (JSONException e)
         } // protected void onPostExecute(Void v)
-    } //class MyAsyncTask extends AsyncTask<String, String, Void>
-}
+    } // protected void onPostExecute(Void v)
+} //class MyAsyncTask extends AsyncTask<String, String, Void>
