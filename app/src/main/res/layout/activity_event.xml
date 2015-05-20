@@ -1,51 +1,56 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             xmlns:tools="http://schemas.android.com/tools"
-             android:id="@+id/container"
-             android:layout_width="match_parent"
-             android:layout_height="match_parent"
-             tools:context="de.dhbw_loerrach.laju.Event"
-             tools:ignore="MergeRootFrame"
-             android:orientation="vertical">
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/scrollView">
 
-    <ImageView
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:adjustViewBounds="true"
-        android:layout_marginBottom="20dip"
-        android:id="@+id/eventItemImage"/>
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                 xmlns:tools="http://schemas.android.com/tools"
+                 android:id="@+id/container"
+                 android:layout_width="match_parent"
+                 android:layout_height="match_parent"
+                 tools:context="de.dhbw_loerrach.laju.Event"
+                 tools:ignore="MergeRootFrame"
+                 android:orientation="vertical">
 
-    <!-- Datum von bis -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="15dip"
-        android:id="@+id/eventItemDatumVon"/>
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="15dip"
-        android:id="@+id/eventItemDatumBis"/>
+        <ImageView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:layout_marginBottom="20dip"
+            android:id="@+id/eventItemImage"/>
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="15dip"
-        android:id="@+id/eventItemUntertitel"
-        android:layout_marginBottom="20dip"/>
+        <!-- Datum von bis -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="15dip"
+            android:id="@+id/eventItemDatumVon"/>
 
-    <!-- Beschreibung-->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textColor="@color/bright_green"
-        android:textSize="20dip"
-        android:text="Beschreibung"/>
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/eventItemBeschreibung"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="15dip"
+            android:id="@+id/eventItemDatumBis"/>
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="15dip"
+            android:id="@+id/eventItemUntertitel"
+            android:layout_marginBottom="20dip"/>
 
+        <!-- Beschreibung-->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/bright_green"
+            android:textSize="20dip"
+            android:text="Beschreibung"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/eventItemBeschreibung"/>
 
-
-</LinearLayout>
+    </LinearLayout>
+</ScrollView>
