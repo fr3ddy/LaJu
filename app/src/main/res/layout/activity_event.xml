@@ -7,27 +7,45 @@
              tools:ignore="MergeRootFrame"
              android:orientation="vertical">
 
+    <ImageView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:adjustViewBounds="true"
+        android:layout_marginBottom="20dip"
+        android:id="@+id/eventItemImage"/>
+
+    <!-- Datum von bis -->
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/eventItemUntertitel"/>
+        android:textSize="15dip"
+        android:id="@+id/eventItemDatumVon"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="15dip"
+        android:id="@+id/eventItemDatumBis"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="15dip"
+        android:id="@+id/eventItemUntertitel"
+        android:layout_marginBottom="20dip"/>
+
+    <!-- Beschreibung-->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/bright_green"
+        android:textSize="20dip"
+        android:text="Beschreibung"/>
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/eventItemBeschreibung"/>
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/eventItemDatumVon"/>
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/eventItemDatumBis"/>
 
-    <ImageView
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/eventItemImage"/>
+
 
 </LinearLayout>
