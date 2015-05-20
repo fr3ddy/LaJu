@@ -1,15 +1,17 @@
 package de.dhbw_loerrach.laju;
 
-import android.support.v7.app.ActionBarActivity;
-import android.support.v7.app.ActionBar;
-import android.support.v4.app.Fragment;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v7.app.ActionBarActivity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.os.Build;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 
 public class Event extends ActionBarActivity {
@@ -18,11 +20,19 @@ public class Event extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event);
-        if (savedInstanceState == null) {
-            getSupportFragmentManager().beginTransaction()
-                    .add(R.id.container, new EventFragment())
-                    .commit();
-        }
+        Intent intent = getIntent();
+        EventItem e = (EventItem) intent.getSerializableExtra("event");
+        TextView eventItemUntertitel = (TextView) findViewById(R.id.eventItemUntertitel);
+        TextView eventItemBeschreibung = (TextView) findViewById(R.id.eventItemBeschreibung);
+        TextView eventItemDatumVon = (TextView) findViewById(R.id.eventItemDatumVon);
+        TextView eventItemDatumBis = (TextView) findViewById(R.id.eventItemDatumBis);
+
+        setTitle(e.getTitel());
+        eventItemUntertitel.setText(e.getUntertitel());
+        eventItemBeschreibung.setText(e.getBeschreibung());
+        eventItemDatumVon.setText(e.getDatum_von());
+        eventItemDatumBis.setText(e.getDatum_bis());
+        new DownloadImageTask((ImageView) findViewById(R.id.eventItemImage)).execute(e.getBild());
     }
 
 
@@ -33,34 +43,4 @@ public class Event extends ActionBarActivity {
         return true;
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == 1) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
-    /**
-     * A placeholder fragment containing a simple view.
-     */
-    public static class EventFragment extends Fragment {
-
-        public EventFragment() {
-        }
-
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                                 Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_event, container, false);
-            return rootView;
-        }
-    }
 }

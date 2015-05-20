@@ -1,5 +1,6 @@
 package de.dhbw_loerrach.laju;
 
+import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
@@ -10,6 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.os.Build;
+import android.widget.TextView;
 
 
 public class Info extends ActionBarActivity {
@@ -18,49 +20,18 @@ public class Info extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_info);
-        if (savedInstanceState == null) {
-            getSupportFragmentManager().beginTransaction()
-                    .add(R.id.container, new InfoFragment())
-                    .commit();
-        }
+
+        Intent intent = getIntent();
+        InfoItem i = (InfoItem) intent.getSerializableExtra("info");
+
+        TextView infoItemText = (TextView) findViewById(R.id.infoItemText);
+        TextView infoItemErstelldatum = (TextView) findViewById(R.id.infoItemErstelldatum);
+        TextView infoItemAutor = (TextView) findViewById(R.id.infoItemAutor);
+
+        infoItemAutor.setText(i.getAutor());
+        infoItemErstelldatum.setText(i.getErstelldatum());
+        infoItemText.setText(i.getText());
+        setTitle(i.getTitel());
     }
 
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_info, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == 1) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
-    /**
-     * A placeholder fragment containing a simple view.
-     */
-    public static class InfoFragment extends Fragment {
-
-        public InfoFragment() {
-        }
-
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                                 Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_info, container, false);
-            return rootView;
-        }
-    }
 }
