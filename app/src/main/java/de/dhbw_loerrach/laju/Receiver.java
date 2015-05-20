@@ -2,9 +2,14 @@ package de.dhbw_loerrach.laju;
 
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.AsyncTask;
+import android.os.Parcelable;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -24,6 +29,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 
@@ -139,6 +145,17 @@ public class Receiver {
                 InfoListAdapter cla = new InfoListAdapter(infotabfrag.getActivity(), R.layout.infolistlayout, infolist);
                 ListView lv = (ListView) infotabfrag.getActivity().findViewById(R.id.infoTabList);
                 lv.setAdapter(cla);
+                // Item Click Listener for the listview
+                OnItemClickListener eventTtemClickListener = new OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View container, int position, long id) {
+                        InfoItem i = infolist.get(position);
+                        Intent intent = new Intent(infotabfrag.getActivity(),Info.class);
+                        intent.putExtra("info", i);
+                        infotabfrag.getActivity().startActivity(intent);
+                    }
+                };
+                lv.setOnItemClickListener(eventTtemClickListener);
                 this.progressDialog.dismiss();
             } catch (JSONException e) {
                 Log.e("JSONException", "Error: " + e.toString());
@@ -240,6 +257,17 @@ public class Receiver {
                 EventListAdapter cla = new EventListAdapter(eventtabfrag.getActivity(), R.layout.eventlistlayout, eventlist);
                 ListView lv = (ListView) eventtabfrag.getActivity().findViewById(R.id.eventTabList);
                 lv.setAdapter(cla);
+                // Item Click Listener for the listview
+                OnItemClickListener eventTtemClickListener = new OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View container, int position, long id) {
+                        EventItem e = eventlist.get(position);
+                        Intent intent = new Intent(eventtabfrag.getActivity(),Event.class);
+                        intent.putExtra("event", e);
+                        eventtabfrag.getActivity().startActivity(intent);
+                    }
+                };
+                lv.setOnItemClickListener(eventTtemClickListener);
                 this.progressDialog.dismiss();
             } catch (JSONException e) {
                 Log.e("JSONException", "Error: " + e.toString());

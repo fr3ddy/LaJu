@@ -1,9 +1,11 @@
 package de.dhbw_loerrach.laju;
 
+import java.io.Serializable;
+
 /**
  * Created by Frederik on 18.05.2015.
  */
-public class EventItem {
+public class EventItem implements Serializable {
     private String datum_von,datum_bis,titel,untertitel,beschreibung,url,bild;
 
     public EventItem(String beschreibung, String bild, String datum_bis, String datum_von, String titel, String untertitel, String url) {
