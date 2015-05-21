@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -37,6 +38,7 @@ public class EventListAdapter extends ArrayAdapter<EventItem> {
             holder.eventTitel = (TextView)row.findViewById(R.id.eventTitel);
             holder.eventUntertitel = (TextView)row.findViewById(R.id.eventUntertitel);
             holder.eventStart = (TextView)row.findViewById(R.id.eventStart);
+            new DownloadImageTask((ImageView) row.findViewById(R.id.eventItemImage)).execute(data.get(position).getBild());
 
             row.setTag(holder);
         }

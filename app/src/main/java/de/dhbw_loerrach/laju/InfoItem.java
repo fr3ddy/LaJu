@@ -1,6 +1,10 @@
 package de.dhbw_loerrach.laju;
 
 import java.io.Serializable;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 /**
  * Created by Frederik on 18.05.2015.
@@ -33,7 +37,17 @@ public class InfoItem implements Serializable {
     }
 
     public String getErstelldatum() {
-        return erstelldatum;
+        String datum = "";
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.GERMANY);
+        try {
+            Date date = sdf.parse(erstelldatum);
+            sdf.applyLocalizedPattern("dd.MM.yyyy");
+            datum = sdf.format(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return datum;
     }
 
     public void setErstelldatum(String erstelldatum) {

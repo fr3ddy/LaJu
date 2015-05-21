@@ -1,22 +1,43 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             xmlns:tools="http://schemas.android.com/tools"
-             android:id="@+id/container"
-             android:layout_width="match_parent"
-             android:layout_height="match_parent"
-             tools:context="de.dhbw_loerrach.laju.Info"
-             tools:ignore="MergeRootFrame">
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/scrollView">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/infoItemAutor" />
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/infoItemErstelldatum" />
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/infoItemText"/>
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                  xmlns:tools="http://schemas.android.com/tools"
+                  android:id="@+id/container"
+                  android:layout_width="match_parent"
+                  android:layout_height="match_parent"
+                  android:orientation="vertical"
+                  android:paddingLeft="@dimen/padding_text"
+                  android:paddingRight="@dimen/padding_text"
+                  tools:context="de.dhbw_loerrach.laju.Info"
+                  tools:ignore="MergeRootFrame">
 
-</LinearLayout>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/subtitle"
+            android:textColor="@color/grey"
+            android:id="@+id/infoItemErstelldatum" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/bright_green"
+            android:textSize="@dimen/subtitle"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="15dp"
+            android:id="@+id/infoItemAutor" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/text"
+            android:textColor="@color/dark_grey"
+            android:lineSpacingExtra="@dimen/line_spacing_text"
+            android:id="@+id/infoItemText"/>
+
+    </LinearLayout>
+</ScrollView>
