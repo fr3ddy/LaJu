@@ -4,7 +4,6 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
-import android.os.Parcelable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,6 +20,7 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -29,9 +29,9 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Receiver {
 
@@ -54,6 +54,10 @@ public class Receiver {
         infolv = lv;
         AsyncEventTask eventTask = new AsyncEventTask();
         eventTask.execute();
+    }
+
+    public Receiver() {
+        postData("http://laju.frederik-frey.de/lajuapp/pruefeExistenzBenutzername");
     }
 
     class AsyncInfoTask extends AsyncTask<String, String, Void> {
@@ -150,7 +154,7 @@ public class Receiver {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View container, int position, long id) {
                         InfoItem i = infolist.get(position);
-                        Intent intent = new Intent(infotabfrag.getActivity(),Info.class);
+                        Intent intent = new Intent(infotabfrag.getActivity(), Info.class);
                         intent.putExtra("info", i);
                         infotabfrag.getActivity().startActivity(intent);
                     }
@@ -160,7 +164,7 @@ public class Receiver {
             } catch (JSONException e) {
                 Log.e("JSONException", "Error: " + e.toString());
                 this.progressDialog.dismiss();
-                Toast.makeText(infotabfrag.getActivity(),"Da hät öbbis nid klappt",Toast.LENGTH_LONG).show();
+                Toast.makeText(infotabfrag.getActivity(), "Da hät öbbis nid klappt", Toast.LENGTH_LONG).show();
             } // catch (JSONException e)
         } // protected void onPostExecute(Void v)
     } //class MyAsyncTask extends AsyncTask<String, String, Void>
@@ -251,7 +255,7 @@ public class Receiver {
                     String titel = jObject.getString("titel");
                     String untertitel = jObject.getString("untertitel");
                     String url = jObject.getString("url");
-                    EventItem eventitem = new EventItem(beschreibung,bild,datum_bis,datum_von,titel,untertitel,url);
+                    EventItem eventitem = new EventItem(beschreibung, bild, datum_bis, datum_von, titel, untertitel, url);
                     eventlist.add(eventitem);
                 } // End Loop
                 EventListAdapter cla = new EventListAdapter(eventtabfrag.getActivity(), R.layout.eventlistlayout, eventlist);
@@ -262,7 +266,7 @@ public class Receiver {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View container, int position, long id) {
                         EventItem e = eventlist.get(position);
-                        Intent intent = new Intent(eventtabfrag.getActivity(),Event.class);
+                        Intent intent = new Intent(eventtabfrag.getActivity(), Event.class);
                         intent.putExtra("event", e);
                         eventtabfrag.getActivity().startActivity(intent);
                     }
@@ -272,8 +276,31 @@ public class Receiver {
             } catch (JSONException e) {
                 Log.e("JSONException", "Error: " + e.toString());
                 this.progressDialog.dismiss();
-                Toast.makeText(eventtabfrag.getActivity(),"Da hät öbbis nid klappt",Toast.LENGTH_LONG).show();
+                Toast.makeText(eventtabfrag.getActivity(), "Da hät öbbis nid klappt", Toast.LENGTH_LONG).show();
             } // catch (JSONException e)
         } // protected void onPostExecute(Void v)
     } // protected void onPostExecute(Void v)
+
+    //POST
+    public void postData(String url) {
+        // Create a new HttpClient and Post Header
+        HttpClient httpclient = new DefaultHttpClient();
+        HttpPost httppost = new HttpPost(url);
+
+        List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
+        nameValuePairs.add(new BasicNameValuePair("appkey", "123456"));
+        nameValuePairs.add(new BasicNameValuePair("benutzername", "test"));
+        try {
+            httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+
+        // Execute HTTP Post Request
+        try {
+            HttpResponse response = httpclient.execute(httppost);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 } //class MyAsyncTask extends AsyncTask<String, String, Void>
