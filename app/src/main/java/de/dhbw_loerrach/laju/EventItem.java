@@ -1,6 +1,10 @@
 package de.dhbw_loerrach.laju;
 
 import java.io.Serializable;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 /**
  * Created by Frederik on 18.05.2015.
@@ -35,7 +39,17 @@ public class EventItem implements Serializable {
     }
 
     public String getDatum_bis() {
-        return datum_bis;
+        String datum = "";
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.GERMANY);
+        try {
+            Date date = sdf.parse(datum_bis);
+            sdf.applyLocalizedPattern("dd.MM.yyyy");
+            datum = sdf.format(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return datum;
     }
 
     public void setDatum_bis(String datum_bis) {
@@ -43,7 +57,17 @@ public class EventItem implements Serializable {
     }
 
     public String getDatum_von() {
-        return datum_von;
+        String datum = "";
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.GERMANY);
+        try {
+            Date date = sdf.parse(datum_von);
+            sdf.applyLocalizedPattern("dd.MM.yyyy");
+            datum = sdf.format(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return datum;
     }
 
     public void setDatum_von(String datum_von) {
