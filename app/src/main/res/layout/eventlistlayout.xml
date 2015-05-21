@@ -27,6 +27,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:typeface="sans"
+            android:textColor="@color/dark_grey"
             android:textSize="@dimen/list_title"
             android:textStyle="bold"/>
         <TextView
@@ -34,7 +35,7 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/eventTitel"
-            android:textColor="@color/dark_grey"
+            android:textColor="@color/grey"
             android:textSize="@dimen/list_subtitle"
             android:layout_marginTop="1dip" />
 
@@ -43,7 +44,7 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/eventStart"
-            android:textColor="@color/dark_grey"
+            android:textColor="@color/grey"
             android:textSize="@dimen/list_subtitle"
             android:layout_marginTop="1dip" />
     </LinearLayout>

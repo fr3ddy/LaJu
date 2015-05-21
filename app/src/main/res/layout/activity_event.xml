@@ -23,9 +23,10 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="20dip"
-            android:paddingLeft="5dip"
-            android:paddingRight="5dip"
+            android:textSize="@dimen/title"
+            android:textColor="@color/dark_grey"
+            android:paddingLeft="@dimen/padding_text"
+            android:paddingRight="@dimen/padding_text"
             android:id="@+id/eventItemUntertitel"/>
 
         <LinearLayout
@@ -38,24 +39,27 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/title"
-                android:paddingLeft="5dip"
-                android:paddingRight="5dip"
+                android:textColor="@color/dark_grey"
+                android:paddingLeft="@dimen/padding_text"
+                android:paddingRight="@dimen/padding_text"
                 android:id="@+id/eventItemDatumVon"/>
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/title"
-                android:paddingLeft="5dip"
-                android:paddingRight="5dip"
+                android:textColor="@color/dark_grey"
+                android:paddingLeft="@dimen/padding_text"
+                android:paddingRight="@dimen/padding_text"
                 android:text=" - "/>
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/title"
-                android:paddingLeft="5dip"
-                android:paddingRight="5dip"
+                android:textColor="@color/dark_grey"
+                android:paddingLeft="@dimen/padding_text"
+                android:paddingRight="@dimen/padding_text"
                 android:id="@+id/eventItemDatumBis"/>
         </LinearLayout>
 
@@ -65,14 +69,17 @@
             android:layout_height="wrap_content"
             android:textColor="@color/bright_green"
             android:textSize="@dimen/title"
-            android:paddingLeft="5dip"
-            android:paddingRight="5dip"
+            android:paddingLeft="@dimen/padding_text"
+            android:paddingRight="@dimen/padding_text"
             android:text="Beschreibung"/>
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingLeft="5dip"
-            android:paddingRight="5dip"
+            android:paddingLeft="@dimen/padding_text"
+            android:paddingRight="@dimen/padding_text"
+            android:textSize="@dimen/text"
+            android:textColor="@color/dark_grey"
+            android:lineSpacingExtra="@dimen/line_spacing_text"
             android:id="@+id/eventItemBeschreibung"/>
     </LinearLayout>
 </ScrollView>

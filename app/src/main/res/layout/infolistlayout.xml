@@ -10,9 +10,9 @@
         android:id="@+id/newsTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="#040404"
+        android:textColor="@color/dark_grey"
         android:typeface="sans"
-        android:textSize="15dip"
+        android:textSize="@dimen/list_title"
         android:textStyle="bold"/>
 
     <TextView
@@ -20,8 +20,8 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/newsTitle"
-        android:textColor="#000000"
-        android:textSize="10dip"
+        android:textColor="@color/bright_green"
+        android:textSize="@dimen/list_subtitle"
         android:layout_marginTop="1dip" />
 
     <!-- Text Preview -->
@@ -29,9 +29,9 @@
         android:id="@+id/textPreview"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/newsTitle"
-        android:textColor="#343434"
-        android:textSize="10dip"
+        android:layout_below="@id/autor"
+        android:textColor="@color/grey"
+        android:textSize="@dimen/list_subtitle"
         android:layout_marginTop="1dip" />
 
     <!-- Rightend Duration -->
@@ -43,15 +43,7 @@
         android:layout_alignTop="@id/newsTitle"
         android:gravity="right"
         android:layout_marginRight="5dip"
-        android:textSize="10dip"
-        android:textColor="#10bcc9"
+        android:textSize="@dimen/list_subtitle"
+        android:textColor="@color/grey"
         android:textStyle="bold"/>
-
-    <!-- Rightend Arrow -->
-    <ImageView android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/abc_ic_menu_cut_mtrl_alpha"
-        android:layout_alignParentRight="true"
-        android:layout_centerVertical="true"/>
-
 </RelativeLayout>

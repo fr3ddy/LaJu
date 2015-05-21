@@ -9,4 +9,8 @@
     <dimen name="title">20dp</dimen>
     <dimen name="list_title">15dp</dimen>
     <dimen name="list_subtitle">12dp</dimen>
+    <dimen name="subtitle">15dp</dimen>
+    <dimen name="text">15dp</dimen>
+    <dimen name="padding_text">7dp</dimen>
+    <dimen name="line_spacing_text">5dp</dimen>
 </resources>
