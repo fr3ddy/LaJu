@@ -1,85 +1,90 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:tools="http://schemas.android.com/tools"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/scrollView">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/scrollView"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                  xmlns:tools="http://schemas.android.com/tools"
-                  android:id="@+id/container"
-                  android:layout_width="match_parent"
-                  android:layout_height="match_parent"
-                  tools:context="de.dhbw_loerrach.laju.Event"
-                  tools:ignore="MergeRootFrame"
-                  android:orientation="vertical">
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context="de.dhbw_loerrach.laju.Event"
+        tools:ignore="MergeRootFrame">
+
+        <include
+            android:id="@+id/tool_bar"
+            layout="@layout/tool_bar"></include>
 
         <ImageView
+            android:id="@+id/eventItemImage"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:adjustViewBounds="true"
             android:layout_marginBottom="20dip"
-            android:id="@+id/eventItemImage"/>
+            android:adjustViewBounds="true" />
 
         <TextView
+            android:id="@+id/eventItemUntertitel"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="@dimen/title"
-            android:textColor="@color/dark_grey"
             android:paddingLeft="@dimen/padding_text"
             android:paddingRight="@dimen/padding_text"
-            android:id="@+id/eventItemUntertitel"/>
+            android:textColor="@color/dark_grey"
+            android:textSize="@dimen/title" />
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginBottom="20dip">
+            android:layout_marginBottom="20dip"
+            android:orientation="horizontal">
             <!-- Datum von bis -->
             <TextView
+                android:id="@+id/eventItemDatumVon"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="@dimen/title"
-                android:textColor="@color/dark_grey"
                 android:paddingLeft="@dimen/padding_text"
                 android:paddingRight="@dimen/padding_text"
-                android:id="@+id/eventItemDatumVon"/>
+                android:textColor="@color/dark_grey"
+                android:textSize="@dimen/title" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="@dimen/title"
-                android:textColor="@color/dark_grey"
                 android:paddingLeft="@dimen/padding_text"
                 android:paddingRight="@dimen/padding_text"
-                android:text=" - "/>
+                android:text=" - "
+                android:textColor="@color/dark_grey"
+                android:textSize="@dimen/title" />
 
             <TextView
+                android:id="@+id/eventItemDatumBis"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="@dimen/title"
-                android:textColor="@color/dark_grey"
                 android:paddingLeft="@dimen/padding_text"
                 android:paddingRight="@dimen/padding_text"
-                android:id="@+id/eventItemDatumBis"/>
+                android:textColor="@color/dark_grey"
+                android:textSize="@dimen/title" />
         </LinearLayout>
 
         <!-- Beschreibung-->
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="@color/bright_green"
-            android:textSize="@dimen/title"
             android:paddingLeft="@dimen/padding_text"
             android:paddingRight="@dimen/padding_text"
-            android:text="Beschreibung"/>
+            android:text="Beschreibung"
+            android:textColor="@color/bright_green"
+            android:textSize="@dimen/title" />
+
         <TextView
+            android:id="@+id/eventItemBeschreibung"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:lineSpacingExtra="@dimen/line_spacing_text"
             android:paddingLeft="@dimen/padding_text"
             android:paddingRight="@dimen/padding_text"
-            android:textSize="@dimen/text"
             android:textColor="@color/dark_grey"
-            android:lineSpacingExtra="@dimen/line_spacing_text"
-            android:id="@+id/eventItemBeschreibung"/>
+            android:textSize="@dimen/text" />
     </LinearLayout>
 </ScrollView>

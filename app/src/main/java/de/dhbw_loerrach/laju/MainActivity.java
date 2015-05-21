@@ -1,13 +1,10 @@
 package de.dhbw_loerrach.laju;
 
 import android.app.Activity;
-import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTabHost;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
@@ -15,12 +12,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TabHost;
 import android.widget.TextView;
 import android.widget.Toast;
 
 
-public class MainActivity extends ActionBarActivity{
+public class MainActivity extends ActionBarActivity {
 
     /**
      * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
@@ -34,7 +30,9 @@ public class MainActivity extends ActionBarActivity{
 
         toolbar = (Toolbar) findViewById(R.id.tool_bar); // Attaching the layout to the toolbar object
         setSupportActionBar(toolbar);
-    }    public boolean onCreateOptionsMenu(Menu menu) {
+    }
+
+    public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
@@ -45,11 +43,12 @@ public class MainActivity extends ActionBarActivity{
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-        Toast.makeText(this, "ID: " + id, Toast.LENGTH_LONG).show();
+        String title = item.getTitle().toString();
         //noinspection SimplifiableIfStatement
-        if (id == 0) {
-            return true;
+        if (title.equals("Neue Info")) {
+            Intent intent = new Intent(this,NewInfo.class);
+            intent.putExtra("benutzername" , "freyfr");
+            startActivity(intent);
         }
 
         return super.onOptionsItemSelected(item);
@@ -91,15 +90,14 @@ public class MainActivity extends ActionBarActivity{
 
             mTabHost.getTabWidget().setBackgroundColor(getResources().getColor(R.color.bright_green));
 
-            for(int i = 0; i < mTabHost.getTabWidget().getChildCount(); i++) {
+            for (int i = 0; i < mTabHost.getTabWidget().getChildCount(); i++) {
                 View v = mTabHost.getTabWidget().getChildAt(i);
                 v.setBackgroundResource(R.drawable.tabs);
 
-                TextView tv = (TextView)  mTabHost.getTabWidget().getChildAt(i).findViewById(android.R.id.title);
+                TextView tv = (TextView) mTabHost.getTabWidget().getChildAt(i).findViewById(android.R.id.title);
                 tv.setTextColor(getResources().getColor(R.color.grey));
             }
-            
-            //Receiver r = new Receiver();
+
             return rootView;
         }
 

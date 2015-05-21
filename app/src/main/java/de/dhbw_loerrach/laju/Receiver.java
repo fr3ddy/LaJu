@@ -12,6 +12,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -29,14 +30,17 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.StringWriter;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 public class Receiver {
 
     InfoTabFragment infotabfrag = null;
     EventTabFragment eventtabfrag = null;
+    NewInfoFragment newinfofragment = null;
     ListView infolv = null;
     private static LayoutInflater inflater;
     private String infourl = "http://laju.frederik-frey.de/lajuapp/alleNews/123456";
@@ -56,9 +60,25 @@ public class Receiver {
         eventTask.execute();
     }
 
-    public Receiver() {
-        postData("http://laju.frederik-frey.de/lajuapp/pruefeExistenzBenutzername");
+    public Receiver(NewInfoFragment newinfofragment , String url ,  List<NameValuePair> nameValuePairs) {
+        this.newinfofragment = newinfofragment;
+        AsyncPostTask postTask = new AsyncPostTask();
+        postTask.url = url;
+        postTask.nameValuePairs = nameValuePairs;
+        try {
+            Void aVoid = postTask.execute().get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
     }
+
+    //Async Response, um die Return Value zu erhalten
+    public interface AsyncResponse {
+        void processFinish(int output);
+    }
+
 
     class AsyncInfoTask extends AsyncTask<String, String, Void> {
         ArrayList<InfoItem> infolist = new ArrayList<InfoItem>();
@@ -281,26 +301,56 @@ public class Receiver {
         } // protected void onPostExecute(Void v)
     } // protected void onPostExecute(Void v)
 
-    //POST
-    public void postData(String url) {
-        // Create a new HttpClient and Post Header
-        HttpClient httpclient = new DefaultHttpClient();
-        HttpPost httppost = new HttpPost(url);
 
-        List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
-        nameValuePairs.add(new BasicNameValuePair("appkey", "123456"));
-        nameValuePairs.add(new BasicNameValuePair("benutzername", "test"));
-        try {
-            httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
+    class AsyncPostTask extends AsyncTask<String, String, Void> {
+        public AsyncResponse delegate = null;
+        private ProgressDialog progressDialog = new ProgressDialog(newinfofragment.getActivity());
+        public String url;
+        HttpResponse response = null;
+        public java.util.List<NameValuePair> nameValuePairs;
+
+        protected void onPreExecute(int resultcode) {
+            delegate.processFinish(resultcode);
+            progressDialog.setMessage("Downloading your data...");
+            progressDialog.show();
+            progressDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+                public void onCancel(DialogInterface arg0) {
+                    AsyncPostTask.this.cancel(true);
+                }
+            });
         }
 
-        // Execute HTTP Post Request
-        try {
-            HttpResponse response = httpclient.execute(httppost);
-        } catch (IOException e) {
-            e.printStackTrace();
+        @Override
+        protected Void doInBackground(String... params) {
+            // Create a new HttpClient and Post Header
+            HttpClient httpclient = new DefaultHttpClient();
+            HttpPost httppost = new HttpPost(url);
+
+            try {
+                httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
+
+            try {
+                response = httpclient.execute(httppost);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return null;
+        } // protected Void doInBackground(String... params)
+
+        protected void onPostExecute() {
+            StringWriter writer = new StringWriter();
+            try {
+                IOUtils.copy(response.getEntity().getContent(), writer, "UTF-8");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            String theString = writer.toString();
+            int result = Integer.parseInt(theString.substring(1, -1));
+            progressDialog.dismiss();
         }
     }
-} //class MyAsyncTask extends AsyncTask<String, String, Void>
+
+} //Receiver
