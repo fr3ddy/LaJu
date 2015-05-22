@@ -3,7 +3,11 @@ package de.dhbw_loerrach.laju;
 import android.app.Activity;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
@@ -40,4 +44,21 @@ public class EventTabFragment extends Fragment {
     public void onAttach(Activity activity) {
         super.onAttach(activity);
     }
+
+//    @Override
+//    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+//        showEventContextActionBar();
+//        super.onCreateOptionsMenu(menu, inflater);
+//    }
+//
+//    private void showEventContextActionBar() {
+//        ActionBar actionBar = getActionBar();
+//        actionBar.setDisplayShowTitleEnabled(true);
+//        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
+//        actionBar.setTitle("Hallo");
+//    }
+//
+//    private ActionBar getActionBar() {
+//        return ((AppCompatActivity) getActivity()).getSupportActionBar();
+//    }
 }
