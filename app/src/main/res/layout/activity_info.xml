@@ -21,6 +21,8 @@
             android:id="@+id/infoItemErstelldatum"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:paddingLeft="@dimen/padding_text"
+            android:paddingRight="@dimen/padding_text"
             android:textColor="@color/grey"
             android:textSize="@dimen/subtitle" />
 
@@ -30,6 +32,8 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="15dp"
             android:layout_marginTop="5dp"
+            android:paddingLeft="@dimen/padding_text"
+            android:paddingRight="@dimen/padding_text"
             android:textColor="@color/bright_green"
             android:textSize="@dimen/subtitle" />
 
@@ -38,6 +42,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:lineSpacingExtra="@dimen/line_spacing_text"
+            android:paddingLeft="@dimen/padding_text"
+            android:paddingRight="@dimen/padding_text"
             android:textColor="@color/dark_grey"
             android:textSize="@dimen/text" />
 

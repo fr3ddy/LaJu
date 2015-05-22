@@ -11,11 +11,20 @@
         android:theme="@style/AppTheme" >
         <activity
             android:name=".Info"
-            android:label="@string/title_activity_info" >
+            android:label="@string/title_activity_info"
+            android:parentActivityName="de.dhbw_loerrach.laju.MainActivity" >
+            <!-- The meta-data element is needed for versions lower than 4.1 -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="de.dhbw_loerrach.laju.MainActivity" />
         </activity>
         <activity
             android:name=".Event"
-            android:label="@string/title_activity_event" >
+            android:label="@string/title_activity_event" android:parentActivityName="de.dhbw_loerrach.laju.MainActivity" >
+            <!-- The meta-data element is needed for versions lower than 4.1 -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="de.dhbw_loerrach.laju.MainActivity" />
         </activity>
         <activity
             android:name=".MainActivity"

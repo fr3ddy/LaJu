@@ -1,10 +1,11 @@
 package de.dhbw_loerrach.laju;
 
 import android.content.Intent;
-import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -14,12 +15,16 @@ import android.os.Build;
 import android.widget.TextView;
 
 
-public class Info extends ActionBarActivity {
+public class Info extends AppCompatActivity {
+    private CharSequence mTitle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_info);
+
+        Toolbar mToolbar = (Toolbar) findViewById(R.id.tool_bar);
+        setSupportActionBar(mToolbar);
 
         Intent intent = getIntent();
         InfoItem i = (InfoItem) intent.getSerializableExtra("info");
@@ -28,10 +33,25 @@ public class Info extends ActionBarActivity {
         TextView infoItemErstelldatum = (TextView) findViewById(R.id.infoItemErstelldatum);
         TextView infoItemAutor = (TextView) findViewById(R.id.infoItemAutor);
 
+        mTitle = getTitle();
+
         infoItemAutor.setText(i.getAutor());
         infoItemErstelldatum.setText(i.getErstelldatum());
         infoItemText.setText(i.getText());
         setTitle(i.getTitel());
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_event, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onNavigateUp() {
+        return super.onNavigateUp();
+    }
 }

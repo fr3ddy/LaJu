@@ -45,20 +45,4 @@ public class EventTabFragment extends Fragment {
         super.onAttach(activity);
     }
 
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        showEventContextActionBar();
-        super.onCreateOptionsMenu(menu, inflater);
-    }
-
-    private void showEventContextActionBar() {
-        ActionBar actionBar = getActionBar();
-        actionBar.setDisplayShowTitleEnabled(true);
-        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
-        actionBar.setTitle("Hallo");
-    }
-
-    private ActionBar getActionBar() {
-        return ((AppCompatActivity) getActivity()).getSupportActionBar();
-    }
 }
