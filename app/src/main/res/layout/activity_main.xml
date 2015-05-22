@@ -15,12 +15,12 @@
             android:id="@+id/tool_bar"
             layout="@layout/tool_bar"></include>
 
-        <fragment
+        <!--<fragment
             android:id="@+id/mainfragment"
             android:name="de.dhbw_loerrach.laju.MainActivity$MainFragment"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/tool_bar" />
+            android:layout_below="@id/tool_bar" />-->
 
         <!-- As the main content view, the view below consumes the entire
              space available using match_parent in both dimensions. -->

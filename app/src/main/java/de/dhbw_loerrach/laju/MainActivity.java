@@ -69,7 +69,10 @@ public class MainActivity extends AppCompatActivity implements NavigationDrawerF
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        String title = item.getTitle().toString();
+        String title = "";
+        if(item.getTitle() != null){
+            title = item.getTitle().toString();
+        }
         //noinspection SimplifiableIfStatement
         if (title.equals("Neue Info")) {
             Intent intent = new Intent(this,NewInfo.class);
@@ -84,12 +87,21 @@ public class MainActivity extends AppCompatActivity implements NavigationDrawerF
     public void onNavigationDrawerItemSelected(int position) {
         // update the main content by replacing fragments
         FragmentManager fragmentManager = getSupportFragmentManager();
-//        Toast.makeText(getApplicationContext(), "Position " + position + " geklickt", Toast.LENGTH_LONG).show();
-        if (position == 0 || position == 1) {
-            fragmentManager.beginTransaction().replace(R.id.container, MainFragment.newInstance(position)).commit();
-        }
-        if (position == 2) {
-            //fragmentManager.beginTransaction().replace(R.id.container, Tauschboerse.newInstance()).commit();
+        switch (position){
+            case 0:
+                fragmentManager.beginTransaction().replace(R.id.container, MainFragment.newInstance(position)).commit();
+                setTitle(R.string.title_activity_info);
+                break;
+            case 1:
+                fragmentManager.beginTransaction().replace(R.id.container, MainFragment.newInstance(position)).commit();
+                setTitle(R.string.title_activity_event);
+                break;
+            case 2:
+                setTitle(R.string.title_activity_tauschboerse);
+                break;
+            default:
+                setTitle(R.string.app_name);
+                break;
         }
     }
 
@@ -120,12 +132,12 @@ public class MainActivity extends AppCompatActivity implements NavigationDrawerF
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_main, container, false);
-            mTabHost = (FragmentTabHost) rootView.findViewById(android.R.id.tabhost);
+            mTabHost = (FragmentTabHost) rootView.findViewById(R.id.tabhost);
             mTabHost.setup(getActivity(), getChildFragmentManager(), R.id.realtabcontent);
 
             mTabHost.addTab(mTabHost.newTabSpec("Infos").setIndicator("Infos"), InfoTabFragment.class, null);
             mTabHost.addTab(mTabHost.newTabSpec("Veranstaltungen").setIndicator("Veranstaltungen"), EventTabFragment.class, null);
-            //mTabHost.setCurrentTab(getArguments().getInt("position"));
+            mTabHost.setCurrentTab(getArguments().getInt("position"));
 
             mTabHost.getTabWidget().setBackgroundColor(getResources().getColor(R.color.bright_green));
 

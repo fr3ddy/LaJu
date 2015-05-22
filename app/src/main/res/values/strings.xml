@@ -3,10 +3,10 @@
     <string name="title_activity_info">Info</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
-    <string name="title_activity_event">Event</string>
+    <string name="title_activity_event">Veranstaltungen</string>
+    <string name="title_activity_tauschboerse">Tauschbörse</string>
     <string name="events">Veranstaltungen</string>
     <string name="infos">Infos</string>
-    <string name="title_activity_main">MainActivity</string>
 
     <string name="title_section1">Infos</string>
     <string name="title_section2">Veranstaltungen</string>
