@@ -11,11 +11,11 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-public class EventListAdapter extends ArrayAdapter<EventItem> {
+class EventListAdapter extends ArrayAdapter<EventItem> {
 
     private ArrayList<EventItem> data;
-    Context context;
-    int layoutResourceId;
+    private Context context;
+    private int layoutResourceId;
 
     public EventListAdapter(Context context, int layoutResourceId, ArrayList<EventItem> data) {
         super(context, layoutResourceId, data);

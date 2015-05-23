@@ -2,7 +2,6 @@ package de.dhbw_loerrach.laju;
 
 import android.content.Intent;
 import android.support.v7.app.ActionBar;
-import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -16,7 +15,6 @@ import android.widget.TextView;
 
 
 public class Info extends AppCompatActivity {
-    private CharSequence mTitle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,8 +31,6 @@ public class Info extends AppCompatActivity {
         TextView infoItemErstelldatum = (TextView) findViewById(R.id.infoItemErstelldatum);
         TextView infoItemAutor = (TextView) findViewById(R.id.infoItemAutor);
 
-        mTitle = getTitle();
-
         infoItemAutor.setText(i.getAutor());
         infoItemErstelldatum.setText(i.getErstelldatum());
         infoItemText.setText(i.getText());
@@ -46,7 +42,7 @@ public class Info extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_event, menu);
+        getMenuInflater().inflate(R.menu.menu_info, menu);
         return super.onCreateOptionsMenu(menu);
     }
 

@@ -36,8 +36,6 @@ public class Event extends AppCompatActivity {
         TextView eventItemDatumVon = (TextView) findViewById(R.id.eventItemDatumVon);
         TextView eventItemDatumBis = (TextView) findViewById(R.id.eventItemDatumBis);
 
-        mTitle = getTitle();
-
         setTitle(e.getTitel());
         eventItemUntertitel.setText(e.getUntertitel());
         eventItemBeschreibung.setText(e.getBeschreibung());
@@ -56,12 +54,12 @@ public class Event extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            // Respond to the action bar's Up/Home button
-            case android.R.id.home:
-                NavUtils.navigateUpFromSameTask(this);
-                return true;
-        }
+//        switch (item.getItemId()) {
+//            // Respond to the action bar's Up/Home button
+//            case android.R.id.home:
+//                NavUtils.navigateUpFromSameTask(this);
+//                return true;
+//        }
         return super.onOptionsItemSelected(item);
     }
 

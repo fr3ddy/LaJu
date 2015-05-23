@@ -74,9 +74,9 @@ public class MainActivity extends AppCompatActivity implements NavigationDrawerF
             title = item.getTitle().toString();
         }
         //noinspection SimplifiableIfStatement
-        if (title.equals("Neue Info")) {
+        if (title.equals(getString(R.string.new_info))) {
             Intent intent = new Intent(this,NewInfo.class);
-            intent.putExtra("benutzername" , "freyfr");
+            intent.putExtra(getString(R.string.username) , "freyfr");
             startActivity(intent);
         }
 

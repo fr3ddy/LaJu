@@ -20,7 +20,8 @@
         </activity>
         <activity
             android:name=".Event"
-            android:label="@string/events" android:parentActivityName="de.dhbw_loerrach.laju.MainActivity" >
+            android:label="@string/events"
+            android:parentActivityName="de.dhbw_loerrach.laju.MainActivity" >
             <!-- The meta-data element is needed for versions lower than 4.1 -->
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -37,7 +38,12 @@
         </activity>
         <activity
             android:name=".NewInfo"
-            android:label="@string/new_info" >
+            android:label="@string/new_info"
+            android:parentActivityName="de.dhbw_loerrach.laju.MainActivity" >
+            <!-- The meta-data element is needed for versions lower than 4.1 -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="de.dhbw_loerrach.laju.MainActivity" />
         </activity>
     </application>
 

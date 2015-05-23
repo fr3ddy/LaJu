@@ -45,7 +45,7 @@ public class InfoTabFragment extends Fragment {
         super.onCreateOptionsMenu(menu, inflater);
     }
 
-    public void restoreActionBar() {
+    private void restoreActionBar() {
         ActionBar actionBar = getActionBar();
 //        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
         actionBar.setDisplayShowTitleEnabled(true);
