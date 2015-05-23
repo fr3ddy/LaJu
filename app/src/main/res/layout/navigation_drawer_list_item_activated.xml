@@ -8,7 +8,6 @@
           android:textColor="@color/bright_green"
           android:gravity="center_vertical"
           android:paddingLeft="?android:attr/listPreferredItemPaddingLeft"
-          android:paddingStart="?android:attr/listPreferredItemPaddingStart"
           android:paddingEnd="?android:attr/listPreferredItemPaddingEnd"
           android:background="?android:attr/activatedBackgroundIndicator"
           android:minHeight="?android:attr/listPreferredItemHeightSmall" />

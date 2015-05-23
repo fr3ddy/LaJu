@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity implements NavigationDrawerF
 
     public void restoreActionBar() {
         ActionBar actionBar = getSupportActionBar();
-        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
+//        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
         actionBar.setDisplayShowTitleEnabled(true);
         actionBar.setTitle(mTitle);
     }
@@ -90,14 +90,14 @@ public class MainActivity extends AppCompatActivity implements NavigationDrawerF
         switch (position){
             case 0:
                 fragmentManager.beginTransaction().replace(R.id.container, MainFragment.newInstance(position)).commit();
-                setTitle(R.string.title_activity_info);
+                setTitle(R.string.infos);
                 break;
             case 1:
                 fragmentManager.beginTransaction().replace(R.id.container, MainFragment.newInstance(position)).commit();
-                setTitle(R.string.title_activity_event);
+                setTitle(R.string.events);
                 break;
             case 2:
-                setTitle(R.string.title_activity_tauschboerse);
+                setTitle(R.string.tauschboerse);
                 break;
             default:
                 setTitle(R.string.app_name);
@@ -135,8 +135,8 @@ public class MainActivity extends AppCompatActivity implements NavigationDrawerF
             mTabHost = (FragmentTabHost) rootView.findViewById(R.id.tabhost);
             mTabHost.setup(getActivity(), getChildFragmentManager(), R.id.realtabcontent);
 
-            mTabHost.addTab(mTabHost.newTabSpec("Infos").setIndicator("Infos"), InfoTabFragment.class, null);
-            mTabHost.addTab(mTabHost.newTabSpec("Veranstaltungen").setIndicator("Veranstaltungen"), EventTabFragment.class, null);
+            mTabHost.addTab(mTabHost.newTabSpec(getString(R.string.infos)).setIndicator(getString(R.string.infos)), InfoTabFragment.class, null);
+            mTabHost.addTab(mTabHost.newTabSpec(getString(R.string.events)).setIndicator(getString(R.string.events)), EventTabFragment.class, null);
             mTabHost.setCurrentTab(getArguments().getInt("position"));
 
             mTabHost.getTabWidget().setBackgroundColor(getResources().getColor(R.color.bright_green));

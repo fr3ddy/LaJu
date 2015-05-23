@@ -1,20 +1,17 @@
 <resources>
     <string name="app_name">Landjugend</string>
-    <string name="title_activity_info">Info</string>
     <string name="hello_world">Hello world!</string>
-    <string name="action_settings">Settings</string>
-    <string name="title_activity_event">Veranstaltungen</string>
-    <string name="title_activity_tauschboerse">Tauschbörse</string>
+    <string name="action_settings">Einstellungen</string>
+    <string name="tauschboerse">Tauschbörse</string>
     <string name="events">Veranstaltungen</string>
     <string name="infos">Infos</string>
-
-    <string name="title_section1">Infos</string>
-    <string name="title_section2">Veranstaltungen</string>
-    <string name="title_section3">Tauschbörse</string>
+    <string name="new_info">Neue Info</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="action_example">Example action</string>
-    <string name="title_activity_new_info">NewInfo</string>
+    <string name="send_new_info">Absenden</string>
+    <string name="new_info_hint">Hier können neue Infos eingereicht werden.</string>
+    <string name="description">Beschreibung</string>
 </resources>
