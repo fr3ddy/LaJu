@@ -6,6 +6,10 @@
     <string name="events">Veranstaltungen</string>
     <string name="infos">Infos</string>
     <string name="new_info">Neue Info</string>
+    <string name="login">Anmelden</string>
+    <string name="register">Registrieren</string>
+    <string name="offers">Angebote</string>
+    <string name="requests">Anfragen</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>

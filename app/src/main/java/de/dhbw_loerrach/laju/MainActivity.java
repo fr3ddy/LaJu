@@ -97,8 +97,13 @@ public class MainActivity extends AppCompatActivity implements NavigationDrawerF
                 setTitle(R.string.events);
                 break;
             case 2:
+                fragmentManager.beginTransaction().replace(R.id.container, TauschboerseFragment.newInstance()).commit();
                 setTitle(R.string.tauschboerse);
                 break;
+            /*case 2:
+                fragmentManager.beginTransaction().replace(R.id.container, TauschboerseFragment.newInstance()).commit();
+                setTitle(R.string.tauschboerse);
+                break;*/
             default:
                 setTitle(R.string.app_name);
                 break;
