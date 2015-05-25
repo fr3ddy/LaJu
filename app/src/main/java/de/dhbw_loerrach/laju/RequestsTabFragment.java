@@ -58,7 +58,8 @@ public class RequestsTabFragment extends Fragment {
     private void restoreActionBar() {
         ActionBar actionBar = getActionBar();
         actionBar.setDisplayShowTitleEnabled(true);
-        actionBar.setTitle(R.string.requests);
+//        actionBar.setTitle(R.string.requests);
+        actionBar.setTitle(R.string.tauschboerse);
     }
 
     private ActionBar getActionBar() {

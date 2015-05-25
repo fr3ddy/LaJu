@@ -43,6 +43,16 @@ public class TauschboerseFragment extends Fragment {
         mTabHost.addTab(mTabHost.newTabSpec(getString(R.string.offers)).setIndicator(getString(R.string.offers)), OffersTabFragment.class, null);
         mTabHost.addTab(mTabHost.newTabSpec(getString(R.string.requests)).setIndicator(getString(R.string.requests)), RequestsTabFragment.class, null);
 
+        mTabHost.getTabWidget().setBackgroundColor(getResources().getColor(R.color.bright_green));
+
+        for (int i = 0; i < mTabHost.getTabWidget().getChildCount(); i++) {
+            View v = mTabHost.getTabWidget().getChildAt(i);
+            v.setBackgroundResource(R.drawable.tabs);
+
+            TextView tv = (TextView) mTabHost.getTabWidget().getChildAt(i).findViewById(android.R.id.title);
+            tv.setTextColor(getResources().getColor(android.R.color.white));
+        }
+
         return rootView;
     }
 

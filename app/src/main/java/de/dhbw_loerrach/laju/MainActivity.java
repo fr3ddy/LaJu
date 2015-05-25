@@ -10,13 +10,13 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 
 public class MainActivity extends AppCompatActivity implements NavigationDrawerFragment.NavigationDrawerCallbacks {
@@ -88,24 +88,26 @@ public class MainActivity extends AppCompatActivity implements NavigationDrawerF
         // update the main content by replacing fragments
         FragmentManager fragmentManager = getSupportFragmentManager();
         switch (position){
-            case 0:
+            case 1:
                 fragmentManager.beginTransaction().replace(R.id.container, MainFragment.newInstance(position)).commit();
                 setTitle(R.string.infos);
                 break;
-            case 1:
+            case 2:
                 fragmentManager.beginTransaction().replace(R.id.container, MainFragment.newInstance(position)).commit();
                 setTitle(R.string.events);
                 break;
-            case 2:
+            case 3:
                 fragmentManager.beginTransaction().replace(R.id.container, TauschboerseFragment.newInstance()).commit();
                 setTitle(R.string.tauschboerse);
                 break;
-            case 3:
+            case 4:
                 fragmentManager.beginTransaction().replace(R.id.container, LoginFragment.newInstance()).commit();
                 setTitle(R.string.login);
                 break;
             default:
-                setTitle(R.string.app_name);
+                // Lade Infos per Default
+                fragmentManager.beginTransaction().replace(R.id.container, MainFragment.newInstance(position)).commit();
+                setTitle(R.string.infos);
                 break;
         }
     }
@@ -125,6 +127,7 @@ public class MainActivity extends AppCompatActivity implements NavigationDrawerF
         public static MainFragment newInstance(int position) {
             MainFragment fragment = new MainFragment();
             Bundle args = new Bundle();
+            Log.d("DEBUG1", "Position:" + position);
             args.putInt("position", position);
             fragment.setArguments(args);
             return fragment;
@@ -151,7 +154,7 @@ public class MainActivity extends AppCompatActivity implements NavigationDrawerF
                 v.setBackgroundResource(R.drawable.tabs);
 
                 TextView tv = (TextView) mTabHost.getTabWidget().getChildAt(i).findViewById(android.R.id.title);
-                tv.setTextColor(getResources().getColor(R.color.grey));
+                tv.setTextColor(getResources().getColor(android.R.color.white));
             }
 
             return rootView;

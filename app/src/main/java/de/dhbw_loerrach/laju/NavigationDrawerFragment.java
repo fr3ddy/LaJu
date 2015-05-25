@@ -87,6 +87,7 @@ public class NavigationDrawerFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState) {
+
         mDrawerListView = (ListView) inflater.inflate(R.layout.fragment_navigation_drawer, container, false);
         mDrawerListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -94,6 +95,9 @@ public class NavigationDrawerFragment extends Fragment {
                 selectItem(position);
             }
         });
+
+        View header = (View) inflater.inflate(R.layout.navigation_drawer_header, container, false);
+        mDrawerListView.addHeaderView(header);
 
         mDrawerListView.setAdapter(new ArrayAdapter<>(
                 getActivity(),
