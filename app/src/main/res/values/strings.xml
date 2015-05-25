@@ -19,4 +19,6 @@
     <string name="new_info_hint">Hier können neue Infos eingereicht werden.</string>
     <string name="description">Beschreibung</string>
     <string name="username">benutzername</string>
+    <string name="Password">Passwort</string>
+    <string name="Username">Benutzername</string>
 </resources>
