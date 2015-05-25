@@ -1,20 +1,18 @@
 package de.dhbw_loerrach.laju;
 
-import android.content.DialogInterface;
-import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
-import org.apache.http.NameValuePair;
-import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONException;
+import org.json.JSONObject;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class NewInfoFragment extends Fragment {
@@ -23,6 +21,7 @@ public class NewInfoFragment extends Fragment {
 
     public NewInfoFragment() {
     }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         infofragment = this;
@@ -36,19 +35,17 @@ public class NewInfoFragment extends Fragment {
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-
                 EditText title = (EditText) view.findViewById(R.id.newInfoTitle);
                 EditText text = (EditText) view.findViewById(R.id.newInfoText);
 
-                List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(4);
-                nameValuePairs.add(new BasicNameValuePair("appkey", "123456"));
-                nameValuePairs.add(new BasicNameValuePair("autor", ((NewInfo)getActivity()).getBenutzername()));
-                nameValuePairs.add(new BasicNameValuePair("titel", title.getText().toString()));
-                nameValuePairs.add(new BasicNameValuePair("text", text.getText().toString()));
+                HashMap<String , String> params = new HashMap<String , String>();
+                params.put("appkey", "123456");
+                params.put("autor", ((NewInfo) getActivity()).getBenutzername());
+                params.put("titel", title.getText().toString());
+                params.put("text", text.getText().toString());
 
-                Toast.makeText(getActivity(), title.getText() + "\n" + text.getText(), Toast.LENGTH_LONG).show();
-                new Receiver(infofragment, "http://laju.frederik-frey.de/lajuapp/NeuigkeitEinreichen" , nameValuePairs);
+                Receiver receiver = new Receiver(infofragment);
+                receiver.sendNewInfo("http://laju.frederik-frey.de/lajuapp/NeuigkeitEinreichen", params);
             }
         });
     }

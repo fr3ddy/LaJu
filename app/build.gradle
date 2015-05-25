@@ -24,4 +24,5 @@ dependencies {
     compile 'com.android.support:appcompat-v7:22.1.1'
     compile files('libs/ksoap2-android-assembly-2.4-jar-with-dependencies.jar')
     compile files('libs/commons-io-2.4.jar')
+    compile 'com.mcxiaoke.volley:library:1.0.16'
 }

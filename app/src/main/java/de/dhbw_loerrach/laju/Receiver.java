@@ -1,356 +1,249 @@
 package de.dhbw_loerrach.laju;
 
-import android.app.ProgressDialog;
-import android.content.DialogInterface;
+
 import android.content.Intent;
-import android.os.AsyncTask;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import org.apache.commons.io.IOUtils;
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.NameValuePair;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.message.BasicNameValuePair;
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.JsonRequest;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.StringWriter;
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.ExecutionException;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Receiver {
-
-    InfoTabFragment infotabfrag = null;
-    EventTabFragment eventtabfrag = null;
-    NewInfoFragment newinfofragment = null;
-    ListView infolv = null;
-    private static LayoutInflater inflater;
+    RequestQueue queue;
+    private InfoTabFragment infoTabFragment;
+    private EventTabFragment eventTabFragment;
+    private NewInfoFragment newInfoFragment;
     private String infourl = "http://laju.frederik-frey.de/lajuapp/alleNews/123456";
     private String eventurl = "http://laju.frederik-frey.de/lajuapp/gibVeranstaltungen/123456";
 
-    public Receiver(InfoTabFragment inftb, ListView lv) {
-        infotabfrag = inftb;
-        infolv = lv;
-        AsyncInfoTask infoTask = new AsyncInfoTask();
-        infoTask.execute();
+    public Receiver(InfoTabFragment infoTabFragment) {
+        queue = Volley.newRequestQueue(infoTabFragment.getActivity());
+        this.infoTabFragment = infoTabFragment;
     }
 
-    public Receiver(EventTabFragment evtb, ListView lv) {
-        eventtabfrag = evtb;
-        infolv = lv;
-        AsyncEventTask eventTask = new AsyncEventTask();
-        eventTask.execute();
+    public Receiver(EventTabFragment eventTabFragment) {
+        queue = Volley.newRequestQueue(eventTabFragment.getActivity());
+        this.eventTabFragment = eventTabFragment;
     }
 
-    public Receiver(NewInfoFragment newinfofragment , String url ,  List<NameValuePair> nameValuePairs) {
-        this.newinfofragment = newinfofragment;
-        AsyncPostTask postTask = new AsyncPostTask();
-        postTask.url = url;
-        postTask.nameValuePairs = nameValuePairs;
-        try {
-            Void aVoid = postTask.execute().get();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        }
+    public Receiver(NewInfoFragment newInfoFragment) {
+        queue = Volley.newRequestQueue(newInfoFragment.getActivity());
+        this.newInfoFragment = newInfoFragment;
     }
 
-    //Async Response, um die Return Value zu erhalten
-    public interface AsyncResponse {
-        void processFinish(int output);
-    }
+    public void fillInfos() {
+        final ArrayList<InfoItem> infolist = new ArrayList<InfoItem>();
+        StringRequest infoListRequest = new StringRequest(Request.Method.GET, infourl, new Response.Listener<String>() {
 
-
-    class AsyncInfoTask extends AsyncTask<String, String, Void> {
-        ArrayList<InfoItem> infolist = new ArrayList<InfoItem>();
-
-        private ProgressDialog progressDialog = new ProgressDialog(infotabfrag.getActivity());
-        InputStream inputStream = null;
-        String result = "";
-
-        protected void onPreExecute() {
-            progressDialog.setMessage("Downloading your data...");
-            progressDialog.show();
-            progressDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
-                public void onCancel(DialogInterface arg0) {
-                    AsyncInfoTask.this.cancel(true);
-                }
-            });
-        }
-
-        @Override
-        protected Void doInBackground(String... params) {
-
-            ArrayList<NameValuePair> param = new ArrayList<NameValuePair>();
-
-            try {
-                // Set up HTTP post
-
-                // HttpClient is more then less deprecated. Need to change to URLConnection
-                HttpClient httpClient = new DefaultHttpClient();
-
-                HttpPost httpPost = new HttpPost(infourl);
-                httpPost.setEntity(new UrlEncodedFormEntity(param));
-                HttpResponse httpResponse = httpClient.execute(httpPost);
-                HttpEntity httpEntity = httpResponse.getEntity();
-
-                // Read content & Log
+            @Override
+            public void onResponse(String response) {
+                JSONArray jArray = null;
                 try {
-                    inputStream = httpEntity.getContent();
-                } catch (IOException e) {
+                    jArray = new JSONArray(response);
+                } catch (JSONException e) {
                     e.printStackTrace();
                 }
-            } catch (UnsupportedEncodingException e1) {
-                Log.e("UnsupportedEncodingException", e1.toString());
-                e1.printStackTrace();
-            } catch (ClientProtocolException e2) {
-                Log.e("ClientProtocolException", e2.toString());
-                e2.printStackTrace();
-            } catch (IllegalStateException e3) {
-                Log.e("IllegalStateException", e3.toString());
-                e3.printStackTrace();
-            } catch (IOException e4) {
-                Log.e("IOException", e4.toString());
-                e4.printStackTrace();
-            }
-            // Convert response to string using String Builder
-            try {
-                BufferedReader bReader = new BufferedReader(new InputStreamReader(inputStream, "utf-8"), 8);
-                StringBuilder sBuilder = new StringBuilder();
-
-                String line = null;
-                while ((line = bReader.readLine()) != null) {
-                    sBuilder.append(line + "\n");
-                }
-
-                inputStream.close();
-                result = sBuilder.toString();
-
-            } catch (Exception e) {
-                Log.e("StringBuilding & BufferedReader", "Error converting result " + e.toString());
-            }
-            return null;
-        } // protected Void doInBackground(String... params)
-
-        protected void onPostExecute(Void v) {
-            //parse JSON data
-            try {
-                JSONArray jArray = new JSONArray(result);
                 for (int i = 0; i < jArray.length(); i++) {
 
-                    JSONObject jObject = jArray.getJSONObject(i);
+                    JSONObject jObject = null;
+                    try {
+                        jObject = jArray.getJSONObject(i);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
 
-                    String titel = jObject.getString("titel");
-                    String text = jObject.getString("text");
-                    String autor = jObject.getString("autor");
-                    String erstelldatum = jObject.getString("erdat");
+                    String titel = null;
+                    try {
+                        titel = jObject.getString("titel");
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    String text = null;
+                    try {
+                        text = jObject.getString("text");
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    String autor = null;
+                    try {
+                        autor = jObject.getString("autor");
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    String erstelldatum = null;
+                    try {
+                        erstelldatum = jObject.getString("erdat");
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                     InfoItem infitem = new InfoItem(titel, autor, erstelldatum, text);
                     infolist.add(infitem);
                 } // End Loop
-                InfoListAdapter cla = new InfoListAdapter(infotabfrag.getActivity(), R.layout.infolistlayout, infolist);
-                ListView lv = (ListView) infotabfrag.getActivity().findViewById(R.id.infoTabList);
+                InfoListAdapter cla = new InfoListAdapter(infoTabFragment.getActivity(), R.layout.infolistlayout, infolist);
+                ListView lv = (ListView) infoTabFragment.getActivity().findViewById(R.id.infoTabList);
                 lv.setAdapter(cla);
                 // Item Click Listener for the listview
-                OnItemClickListener eventTtemClickListener = new OnItemClickListener() {
+                AdapterView.OnItemClickListener eventTtemClickListener = new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View container, int position, long id) {
                         InfoItem i = infolist.get(position);
-                        Intent intent = new Intent(infotabfrag.getActivity(), Info.class);
+                        Intent intent = new Intent(infoTabFragment.getActivity(), Info.class);
                         intent.putExtra("info", i);
-                        infotabfrag.getActivity().startActivity(intent);
+                        infoTabFragment.getActivity().startActivity(intent);
                     }
                 };
                 lv.setOnItemClickListener(eventTtemClickListener);
-                this.progressDialog.dismiss();
-            } catch (JSONException e) {
-                Log.e("JSONException", "Error: " + e.toString());
-                this.progressDialog.dismiss();
-                Toast.makeText(infotabfrag.getActivity(), "Da hät öbbis nid klappt", Toast.LENGTH_LONG).show();
-            } // catch (JSONException e)
-        } // protected void onPostExecute(Void v)
-    } //class MyAsyncTask extends AsyncTask<String, String, Void>
+            }
+        }, new Response.ErrorListener() {
 
-    class AsyncEventTask extends AsyncTask<String, String, Void> {
-        ArrayList<EventItem> eventlist = new ArrayList<EventItem>();
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(infoTabFragment.getActivity(), "Error: " + error.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        });
+        queue.add(infoListRequest);
+    }
 
-        private ProgressDialog progressDialog = new ProgressDialog(eventtabfrag.getActivity());
-        InputStream inputStream = null;
-        String result = "";
+    public void fillEvents() {
+        final ArrayList<EventItem> eventlist = new ArrayList<EventItem>();
+        StringRequest eventListRequest = new StringRequest(Request.Method.GET, eventurl, new Response.Listener<String>() {
 
-        protected void onPreExecute() {
-            progressDialog.setMessage("Downloading your data...");
-            progressDialog.show();
-            progressDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
-                public void onCancel(DialogInterface arg0) {
-                    AsyncEventTask.this.cancel(true);
-                }
-            });
-        }
-
-        @Override
-        protected Void doInBackground(String... params) {
-
-            ArrayList<NameValuePair> param = new ArrayList<NameValuePair>();
-
-            try {
-                // Set up HTTP post
-
-                // HttpClient is more then less deprecated. Need to change to URLConnection
-                HttpClient httpClient = new DefaultHttpClient();
-
-                HttpPost httpPost = new HttpPost(eventurl);
-                httpPost.setEntity(new UrlEncodedFormEntity(param));
-                HttpResponse httpResponse = httpClient.execute(httpPost);
-                HttpEntity httpEntity = httpResponse.getEntity();
-
-                // Read content & Log
+            @Override
+            public void onResponse(String response) {
+                JSONArray jArray = null;
                 try {
-                    inputStream = httpEntity.getContent();
-                } catch (IOException e) {
+                    jArray = new JSONArray(response);
+                } catch (JSONException e) {
                     e.printStackTrace();
                 }
-            } catch (UnsupportedEncodingException e1) {
-                Log.e("UnsupportedEncodingException", e1.toString());
-                e1.printStackTrace();
-            } catch (ClientProtocolException e2) {
-                Log.e("ClientProtocolException", e2.toString());
-                e2.printStackTrace();
-            } catch (IllegalStateException e3) {
-                Log.e("IllegalStateException", e3.toString());
-                e3.printStackTrace();
-            } catch (IOException e4) {
-                Log.e("IOException", e4.toString());
-                e4.printStackTrace();
-            }
-            // Convert response to string using String Builder
-            try {
-                BufferedReader bReader = new BufferedReader(new InputStreamReader(inputStream, "utf-8"), 8);
-                StringBuilder sBuilder = new StringBuilder();
-
-                String line = null;
-                while ((line = bReader.readLine()) != null) {
-                    sBuilder.append(line);
-                }
-
-                inputStream.close();
-                result = sBuilder.toString();
-
-            } catch (Exception e) {
-                Log.e("StringBuilding & BufferedReader", "Error converting result " + e.toString());
-            }
-            return null;
-        } // protected Void doInBackground(String... params)
-
-        protected void onPostExecute(Void v) {
-            //parse JSON data
-            try {
-                JSONArray jArray = new JSONArray(result);
                 for (int i = 0; i < jArray.length(); i++) {
 
-                    JSONObject jObject = jArray.getJSONObject(i);
+                    JSONObject jObject = null;
+                    try {
+                        jObject = jArray.getJSONObject(i);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
 
-                    String beschreibung = jObject.getString("beschreibung");
-                    String bild = jObject.getString("bild");
-                    String datum_bis = jObject.getString("datum_bis");
-                    String datum_von = jObject.getString("datum_von");
-                    String titel = jObject.getString("titel");
-                    String untertitel = jObject.getString("untertitel");
-                    String url = jObject.getString("url");
+                    String beschreibung = null;
+                    try {
+                        beschreibung = jObject.getString("beschreibung");
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    String bild = null;
+                    try {
+                        bild = jObject.getString("bild");
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    String datum_bis = null;
+                    try {
+                        datum_bis = jObject.getString("datum_bis");
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    String datum_von = null;
+                    try {
+                        datum_von = jObject.getString("datum_von");
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    String titel = null;
+                    try {
+                        titel = jObject.getString("titel");
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    String untertitel = null;
+                    try {
+                        untertitel = jObject.getString("untertitel");
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    String url = null;
+                    try {
+                        url = jObject.getString("url");
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                     EventItem eventitem = new EventItem(beschreibung, bild, datum_bis, datum_von, titel, untertitel, url);
                     eventlist.add(eventitem);
                 } // End Loop
-                EventListAdapter cla = new EventListAdapter(eventtabfrag.getActivity(), R.layout.eventlistlayout, eventlist);
-                ListView lv = (ListView) eventtabfrag.getActivity().findViewById(R.id.eventTabList);
+                EventListAdapter cla = new EventListAdapter(eventTabFragment.getActivity(), R.layout.eventlistlayout, eventlist);
+                ListView lv = (ListView) eventTabFragment.getActivity().findViewById(R.id.eventTabList);
                 lv.setAdapter(cla);
                 // Item Click Listener for the listview
-                OnItemClickListener eventTtemClickListener = new OnItemClickListener() {
+                AdapterView.OnItemClickListener eventTtemClickListener = new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View container, int position, long id) {
                         EventItem e = eventlist.get(position);
-                        Intent intent = new Intent(eventtabfrag.getActivity(), Event.class);
+                        Intent intent = new Intent(eventTabFragment.getActivity(), Event.class);
                         intent.putExtra("event", e);
-                        eventtabfrag.getActivity().startActivity(intent);
+                        eventTabFragment.getActivity().startActivity(intent);
                     }
                 };
                 lv.setOnItemClickListener(eventTtemClickListener);
-                this.progressDialog.dismiss();
-            } catch (JSONException e) {
-                Log.e("JSONException", "Error: " + e.toString());
-                this.progressDialog.dismiss();
-                Toast.makeText(eventtabfrag.getActivity(), "Da hät öbbis nid klappt", Toast.LENGTH_LONG).show();
-            } // catch (JSONException e)
-        } // protected void onPostExecute(Void v)
-    } // protected void onPostExecute(Void v)
-
-
-    class AsyncPostTask extends AsyncTask<String, String, Void> {
-        public AsyncResponse delegate = null;
-        private ProgressDialog progressDialog = new ProgressDialog(newinfofragment.getActivity());
-        public String url;
-        HttpResponse response = null;
-        public java.util.List<NameValuePair> nameValuePairs;
-
-        protected void onPreExecute(int resultcode) {
-            delegate.processFinish(resultcode);
-            progressDialog.setMessage("Downloading your data...");
-            progressDialog.show();
-            progressDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
-                public void onCancel(DialogInterface arg0) {
-                    AsyncPostTask.this.cancel(true);
-                }
-            });
-        }
-
-        @Override
-        protected Void doInBackground(String... params) {
-            // Create a new HttpClient and Post Header
-            HttpClient httpclient = new DefaultHttpClient();
-            HttpPost httppost = new HttpPost(url);
-
-            try {
-                httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
-            } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
             }
-
-            try {
-                response = httpclient.execute(httppost);
-            } catch (IOException e) {
-                e.printStackTrace();
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(eventTabFragment.getActivity(), "Error: " + error.getMessage(), Toast.LENGTH_LONG).show();
             }
-            return null;
-        } // protected Void doInBackground(String... params)
-
-        protected void onPostExecute() {
-            StringWriter writer = new StringWriter();
-            try {
-                IOUtils.copy(response.getEntity().getContent(), writer, "UTF-8");
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            String theString = writer.toString();
-            int result = Integer.parseInt(theString.substring(1, -1));
-            progressDialog.dismiss();
-        }
+        });
+        queue.add(eventListRequest);
     }
 
-} //Receiver
+    public void sendNewInfo(String url, HashMap<String , String> params) {
+        JsonObjectRequest newInfoRequest = new JsonObjectRequest(Request.Method.POST, url, new JSONObject(params) , new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                int responsecode = 0;
+                try {
+                    responsecode = (int) response.get("code");
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                Toast.makeText(newInfoFragment.getActivity(), "Code: " + responsecode, Toast.LENGTH_LONG).show();
+                switch (responsecode) {
+                    case 0:
+                        Toast.makeText(newInfoFragment.getActivity(), "Info erfolgreich eingereicht", Toast.LENGTH_SHORT).show();
+                        newInfoFragment.getActivity().finish();
+                        break;
+                    case 1:
+                        Toast.makeText(newInfoFragment.getActivity(), "AppKey war falsch, bitte wenden Sie sich an Ihren Systemadministrator", Toast.LENGTH_LONG).show();
+                        break;
+                    case 2:
+                        Toast.makeText(newInfoFragment.getActivity(), "Dieser User ist uns nicht bekannt, bitte wenden Sie sich an Ihren Systemadminstrator", Toast.LENGTH_LONG).show();
+                        break;
+                    default:
+                        Toast.makeText(newInfoFragment.getActivity(), "Da lief was falsch!!!", Toast.LENGTH_LONG).show();
+                        break;
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(newInfoFragment.getActivity(), "Error: " + error.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        });
+        queue.add(newInfoRequest);
+    }
+}

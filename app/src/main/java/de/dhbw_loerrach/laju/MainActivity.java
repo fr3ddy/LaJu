@@ -100,10 +100,10 @@ public class MainActivity extends AppCompatActivity implements NavigationDrawerF
                 fragmentManager.beginTransaction().replace(R.id.container, TauschboerseFragment.newInstance()).commit();
                 setTitle(R.string.tauschboerse);
                 break;
-            /*case 2:
-                fragmentManager.beginTransaction().replace(R.id.container, TauschboerseFragment.newInstance()).commit();
-                setTitle(R.string.tauschboerse);
-                break;*/
+            case 3:
+                fragmentManager.beginTransaction().replace(R.id.container, LoginFragment.newInstance()).commit();
+                setTitle(R.string.login);
+                break;
             default:
                 setTitle(R.string.app_name);
                 break;
