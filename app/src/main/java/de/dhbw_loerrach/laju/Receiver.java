@@ -30,8 +30,10 @@ public class Receiver {
     private InfoTabFragment infoTabFragment;
     private EventTabFragment eventTabFragment;
     private NewInfoFragment newInfoFragment;
+    private LoginFragment loginfragment;
     private String infourl = "http://laju.frederik-frey.de/lajuapp/alleNews/123456";
     private String eventurl = "http://laju.frederik-frey.de/lajuapp/gibVeranstaltungen/123456";
+    private String loginurl = "http://laju.frederik-frey.de/lajuapp/einloggen";
 
     public Receiver(InfoTabFragment infoTabFragment) {
         queue = Volley.newRequestQueue(infoTabFragment.getActivity());
@@ -46,6 +48,11 @@ public class Receiver {
     public Receiver(NewInfoFragment newInfoFragment) {
         queue = Volley.newRequestQueue(newInfoFragment.getActivity());
         this.newInfoFragment = newInfoFragment;
+    }
+
+    public Receiver(LoginFragment loginfragment) {
+        queue = Volley.newRequestQueue(loginfragment.getActivity());
+        this.loginfragment = loginfragment;
     }
 
     public void fillInfos() {
@@ -221,7 +228,6 @@ public class Receiver {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-                Toast.makeText(newInfoFragment.getActivity(), "Code: " + responsecode, Toast.LENGTH_LONG).show();
                 switch (responsecode) {
                     case 0:
                         Toast.makeText(newInfoFragment.getActivity(), "Info erfolgreich eingereicht", Toast.LENGTH_SHORT).show();
@@ -245,5 +251,46 @@ public class Receiver {
             }
         });
         queue.add(newInfoRequest);
+    }
+
+    public void login(HashMap<String, String> params){
+        JsonObjectRequest newLoginRequest = new JsonObjectRequest(Request.Method.POST, loginurl , new JSONObject(params) , new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                int responsecode = 0;
+                try {
+                    responsecode = (int) response.get("code");
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                switch (responsecode) {
+                    case 0:
+                        //TODO: Login
+                        Toast.makeText(loginfragment.getActivity(), "Login hat geklappt", Toast.LENGTH_LONG).show();
+                        break;
+                    case 1:
+                        Toast.makeText(loginfragment.getActivity(), "AppKey war falsch, bitte wenden Sie sich an Ihren Systemadministrator", Toast.LENGTH_LONG).show();
+                        break;
+                    case 2:
+                        Toast.makeText(loginfragment.getActivity(), "Das Passwort war leider falsch!", Toast.LENGTH_LONG).show();
+                        break;
+                    case 3:
+                        Toast.makeText(loginfragment.getActivity(), "Dieser Benutzername existiert nicht", Toast.LENGTH_LONG).show();
+                        break;
+                    case 4:
+                        Toast.makeText(loginfragment.getActivity(), "Dieser Account wurde noch nicht aktiviert. Bitte überprüfe deine Emails!", Toast.LENGTH_LONG).show();
+                        break;
+                    default:
+                        Toast.makeText(loginfragment.getActivity(), "Da lief was falsch!!!", Toast.LENGTH_LONG).show();
+                        break;
+                }
+            }
+        },new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(loginfragment.getActivity(), "Error: " + error.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        });
+        queue.add(newLoginRequest);
     }
 }
