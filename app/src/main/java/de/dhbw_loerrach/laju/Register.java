@@ -19,10 +19,14 @@ import java.util.HashMap;
 
 public class Register extends AppCompatActivity {
 
+    private Register registerinstance;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
+
+        registerinstance = this;
 
         Toolbar mToolbar = (Toolbar) findViewById(R.id.tool_bar);
         setSupportActionBar(mToolbar);
@@ -96,8 +100,8 @@ public class Register extends AppCompatActivity {
                     params.put("nachname", l);
 
 
-//                    Receiver receiver = new Receiver(registerfragment);
-//                    receiver.register(params);
+                    Receiver receiver = new Receiver(registerinstance);
+                    receiver.register(params);
                 }
             }
         });

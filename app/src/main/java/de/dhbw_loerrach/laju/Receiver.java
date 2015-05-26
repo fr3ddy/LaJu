@@ -28,7 +28,7 @@ public class Receiver {
     private EventTabFragment eventTabFragment;
     private NewInfoFragment newInfoFragment;
     private Login login;
-    private Register registerfragment;
+    private Register register;
     private String infourl = "http://laju.frederik-frey.de/lajuapp/alleNews/123456";
     private String eventurl = "http://laju.frederik-frey.de/lajuapp/gibVeranstaltungen/123456";
     private String loginurl = "http://laju.frederik-frey.de/lajuapp/einloggen";
@@ -49,15 +49,15 @@ public class Receiver {
         this.newInfoFragment = newInfoFragment;
     }
 
-//    public Receiver(LoginFragment login) {
-//        queue = Volley.newRequestQueue(login);
-//        this.login = login;
-//    }
+    public Receiver(Login login) {
+        queue = Volley.newRequestQueue(login);
+        this.login = login;
+    }
 
-//    public Receiver(Register registerfragment) {
-//        queue = Volley.newRequestQueue(registerfragment.getActivity());
-//        this.registerfragment = registerfragment;
-//    }
+    public Receiver(Register register) {
+        queue = Volley.newRequestQueue(register);
+        this.register = register;
+    }
 
     public void fillInfos() {
         final ArrayList<InfoItem> infolist = new ArrayList<InfoItem>();
@@ -222,8 +222,8 @@ public class Receiver {
         queue.add(eventListRequest);
     }
 
-    public void sendNewInfo(String url, HashMap<String , String> params) {
-        JsonObjectRequest newInfoRequest = new JsonObjectRequest(Request.Method.POST, url, new JSONObject(params) , new Response.Listener<JSONObject>() {
+    public void sendNewInfo(String url, HashMap<String, String> params) {
+        JsonObjectRequest newInfoRequest = new JsonObjectRequest(Request.Method.POST, url, new JSONObject(params), new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 int responsecode = 0;
@@ -257,82 +257,82 @@ public class Receiver {
         queue.add(newInfoRequest);
     }
 
-//    public void login(HashMap<String, String> params){
-//        JsonObjectRequest newLoginRequest = new JsonObjectRequest(Request.Method.POST, loginurl , new JSONObject(params) , new Response.Listener<JSONObject>() {
-//            @Override
-//            public void onResponse(JSONObject response) {
-//                int responsecode = 0;
-//                try {
-//                    responsecode = (int) response.get("code");
-//                } catch (JSONException e) {
-//                    e.printStackTrace();
-//                }
-//                switch (responsecode) {
-//                    case 0:
-//                        //TODO: Login
-//                        Toast.makeText(login, "Login hat geklappt", Toast.LENGTH_LONG).show();
-//                        break;
-//                    case 1:
-//                        Toast.makeText(login, "AppKey war falsch, bitte wenden Sie sich an Ihren Systemadministrator", Toast.LENGTH_LONG).show();
-//                        break;
-//                    case 2:
-//                        Toast.makeText(login, "Das Passwort war leider falsch!", Toast.LENGTH_LONG).show();
-//                        break;
-//                    case 3:
-//                        Toast.makeText(login, "Dieser Benutzername existiert nicht", Toast.LENGTH_LONG).show();
-//                        break;
-//                    case 4:
-//                        Toast.makeText(login, "Dieser Account wurde noch nicht aktiviert. Bitte überprüfe deine Emails!", Toast.LENGTH_LONG).show();
-//                        break;
-//                    default:
-//                        Toast.makeText(login, "Da lief was falsch!!!", Toast.LENGTH_LONG).show();
-//                        break;
-//                }
-//            }
-//        },new Response.ErrorListener() {
-//            @Override
-//            public void onErrorResponse(VolleyError error) {
-//                Toast.makeText(login, "Error: " + error.getMessage(), Toast.LENGTH_LONG).show();
-//            }
-//        });
-//        queue.add(newLoginRequest);
-//    }
+    public void login(HashMap<String, String> params) {
+        JsonObjectRequest newLoginRequest = new JsonObjectRequest(Request.Method.POST, loginurl, new JSONObject(params), new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                int responsecode = 0;
+                try {
+                    responsecode = (int) response.get("code");
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                switch (responsecode) {
+                    case 0:
+                        //TODO: Login
+                        Toast.makeText(login, "Login hat geklappt", Toast.LENGTH_LONG).show();
+                        break;
+                    case 1:
+                        Toast.makeText(login, "AppKey war falsch, bitte wenden Sie sich an Ihren Systemadministrator", Toast.LENGTH_LONG).show();
+                        break;
+                    case 2:
+                        Toast.makeText(login, "Das Passwort war leider falsch!", Toast.LENGTH_LONG).show();
+                        break;
+                    case 3:
+                        Toast.makeText(login, "Dieser Benutzername existiert nicht", Toast.LENGTH_LONG).show();
+                        break;
+                    case 4:
+                        Toast.makeText(login, "Dieser Account wurde noch nicht aktiviert. Bitte überprüfe deine Emails!", Toast.LENGTH_LONG).show();
+                        break;
+                    default:
+                        Toast.makeText(login, "Da lief was falsch!!!", Toast.LENGTH_LONG).show();
+                        break;
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(login, "Error: " + error.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        });
+        queue.add(newLoginRequest);
+    }
 
-//    public void register(HashMap<String, String> params){
-//        JsonObjectRequest newRegisterRequest = new JsonObjectRequest(Request.Method.POST, registerurl , new JSONObject(params) , new Response.Listener<JSONObject>() {
-//            @Override
-//            public void onResponse(JSONObject response) {
-//                int responsecode = 0;
-//                try {
-//                    responsecode = (int) response.get("code");
-//                } catch (JSONException e) {
-//                    e.printStackTrace();
-//                }
-//                switch (responsecode) {
-//                    case 0:
-//                        //TODO: Registrierung
-//                        Toast.makeText(registerfragment.getActivity(), "Registrierung hat geklappt", Toast.LENGTH_LONG).show();
-//                        break;
-//                    case 1:
-//                        Toast.makeText(registerfragment.getActivity(), "AppKey war falsch, bitte wenden Sie sich an Ihren Systemadministrator", Toast.LENGTH_LONG).show();
-//                        break;
-//                    case 2:
-//                        Toast.makeText(registerfragment.getActivity(), "Diese Email wird schon verwendet, versuche es mit einer anderen!", Toast.LENGTH_LONG).show();
-//                        break;
-//                    case 3:
-//                        Toast.makeText(registerfragment.getActivity(), "Dieser Benutzername existiert bereits, versuche es mit einem anderen!", Toast.LENGTH_LONG).show();
-//                        break;
-//                    default:
-//                        Toast.makeText(registerfragment.getActivity(), "Da lief was falsch!!!", Toast.LENGTH_LONG).show();
-//                        break;
-//                }
-//            }
-//        },new Response.ErrorListener() {
-//            @Override
-//            public void onErrorResponse(VolleyError error) {
-//                Toast.makeText(registerfragment.getActivity(), "Error: " + error.getMessage(), Toast.LENGTH_LONG).show();
-//            }
-//        });
-//        queue.add(newRegisterRequest);
-//    }
+    public void register(HashMap<String, String> params) {
+        JsonObjectRequest newRegisterRequest = new JsonObjectRequest(Request.Method.POST, registerurl, new JSONObject(params), new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                int responsecode = 0;
+                try {
+                    responsecode = (int) response.get("code");
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                switch (responsecode) {
+                    case 0:
+                        //TODO: Registrierung
+                        Toast.makeText(register, "Registrierung hat geklappt", Toast.LENGTH_LONG).show();
+                        break;
+                    case 1:
+                        Toast.makeText(register, "AppKey war falsch, bitte wenden Sie sich an Ihren Systemadministrator", Toast.LENGTH_LONG).show();
+                        break;
+                    case 2:
+                        Toast.makeText(register, "Diese Email wird schon verwendet, versuche es mit einer anderen!", Toast.LENGTH_LONG).show();
+                        break;
+                    case 3:
+                        Toast.makeText(register, "Dieser Benutzername existiert bereits, versuche es mit einem anderen!", Toast.LENGTH_LONG).show();
+                        break;
+                    default:
+                        Toast.makeText(register, "Da lief was falsch!!!", Toast.LENGTH_LONG).show();
+                        break;
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(register, "Error: " + error.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        });
+        queue.add(newRegisterRequest);
+    }
 }

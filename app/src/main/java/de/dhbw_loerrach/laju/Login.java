@@ -16,10 +16,13 @@ import java.util.HashMap;
 
 public class Login extends AppCompatActivity {
 
+    private Login logininstance;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        logininstance = this;
 
         Toolbar mToolbar = (Toolbar) findViewById(R.id.tool_bar);
         setSupportActionBar(mToolbar);
@@ -45,8 +48,8 @@ public class Login extends AppCompatActivity {
                     params.put("benutzername", u);
                     params.put("passwort", p);
 
-//                    Receiver receiver = new Receiver();
-//                    receiver.login(params);
+                    Receiver receiver = new Receiver(logininstance);
+                    receiver.login(params);
                 }
             }
         });
