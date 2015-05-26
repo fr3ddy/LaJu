@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical">
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:paddingLeft="@dimen/activity_horizontal_margin"
+              android:paddingRight="@dimen/activity_horizontal_margin"
+              android:orientation="vertical">
 
     <TextView
         android:layout_width="match_parent"
@@ -19,7 +21,8 @@
     <EditText
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/registerEmail"/>
+        android:id="@+id/registerEmail"
+        android:inputType="textEmailAddress"/>
     <TextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -27,7 +30,8 @@
     <EditText
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/registerEmailConfirm"/>
+        android:id="@+id/registerEmailConfirm"
+        android:inputType="textEmailAddress"/>
     <TextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -53,7 +57,8 @@
     <EditText
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/registerFirstname"/>
+        android:id="@+id/registerFirstname"
+        android:inputType="textCapWords"/>
     <TextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -61,7 +66,8 @@
     <EditText
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/registerLastname"/>
+        android:id="@+id/registerLastname"
+        android:inputType="textCapWords" />
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
