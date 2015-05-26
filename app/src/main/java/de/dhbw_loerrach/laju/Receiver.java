@@ -270,7 +270,7 @@ public class Receiver {
                 }
                 switch (responsecode) {
                     case 0:
-                        performLogin(params.get("appkey") , params.get("benutzername"));
+                        performLogin(params.get("appkey"), params.get("benutzername"));
                         break;
                     case 1:
                         Toast.makeText(login, "AppKey war falsch, bitte wenden Sie sich an Ihren Systemadministrator", Toast.LENGTH_LONG).show();
@@ -292,8 +292,8 @@ public class Receiver {
         queue.add(newLoginRequest);
     }
 
-    private void performLogin(String appkey , String username) {
-        JsonObjectRequest getUserdataRequest = new JsonObjectRequest(Request.Method.GET, userdataurl+"/"+appkey+"/"+username, new Response.Listener<JSONObject>() {
+    private void performLogin(String appkey, String username) {
+        JsonObjectRequest getUserdataRequest = new JsonObjectRequest(Request.Method.GET, userdataurl + "/" + appkey + "/" + username, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 int responsecode = 0;
@@ -310,7 +310,7 @@ public class Receiver {
                             String firstname = (String) data.get("vorname");
                             String lastname = (String) data.get("nachname");
                             String email = (String) data.get("email");
-                            User.getInstance().login(u,firstname,lastname,email);
+                            new User(u, firstname, lastname, email);
                             login.finish();
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -350,7 +350,6 @@ public class Receiver {
                     case 0:
                         Toast.makeText(register, "Registrierung hat geklappt", Toast.LENGTH_LONG).show();
                         register.finish();
-
                         break;
                     case 1:
                         Toast.makeText(register, "AppKey war falsch, bitte wenden Sie sich an Ihren Systemadministrator", Toast.LENGTH_LONG).show();
