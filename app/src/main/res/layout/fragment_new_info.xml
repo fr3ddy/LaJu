@@ -15,8 +15,8 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
-        android:inputType="textMultiLine"
-        android:hint="@string/new_info_hint"/>
+        android:inputType="textShortMessage"
+        android:hint="@string/new_info_title"/>
 
     <EditText
         android:layout_width="wrap_content"
@@ -29,7 +29,8 @@
         android:layout_alignParentStart="true"
         android:layout_alignRight="@+id/newInfoTitle"
         android:layout_alignEnd="@+id/newInfoTitle"
-        android:layout_above="@+id/btnSendeInfo" />
+        android:layout_above="@+id/btnSendeInfo"
+        android:hint="@string/new_info_hint" />
 
     <Button
         android:layout_width="fill_parent"

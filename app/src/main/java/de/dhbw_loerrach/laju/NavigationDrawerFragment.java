@@ -5,12 +5,15 @@ import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -19,7 +22,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
+import android.widget.Toast;
 
 /**
  * Fragment used for managing interactions for and presentation of a navigation drawer.
@@ -96,7 +101,7 @@ public class NavigationDrawerFragment extends Fragment {
             }
         });
 
-        View header = (View) inflater.inflate(R.layout.navigation_drawer_header, container, false);
+        View header = (View) inflater.inflate(R.layout.navigation_drawer_header, container, true);
         mDrawerListView.addHeaderView(header);
 
         mDrawerListView.setAdapter(new ArrayAdapter<>(
@@ -109,6 +114,7 @@ public class NavigationDrawerFragment extends Fragment {
                         getString(R.string.tauschboerse)
                 }));
         mDrawerListView.setItemChecked(mCurrentSelectedPosition, true);
+
         return mDrawerListView;
     }
 
@@ -186,10 +192,22 @@ public class NavigationDrawerFragment extends Fragment {
         });
 
         mDrawerLayout.setDrawerListener(mDrawerToggle);
+
+
+        Button navloginbtn = (Button) getActivity().findViewById(R.id.navigation_login_button);
+        navloginbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                fragmentManager.beginTransaction().replace(R.id.container, LoginFragment.newInstance()).commit();
+                mDrawerLayout.closeDrawer(Gravity.LEFT);
+            }
+        });
     }
 
     private void selectItem(int position) {
         mCurrentSelectedPosition = position;
+
         if (mDrawerListView != null) {
             mDrawerListView.setItemChecked(position, true);
         }

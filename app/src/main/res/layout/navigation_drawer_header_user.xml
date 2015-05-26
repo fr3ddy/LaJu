@@ -7,10 +7,9 @@
               android:paddingTop="@dimen/activity_vertical_margin"
               android:background="@color/bright_green" >
 
-    <Button
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/login"
-        android:id="@+id/navigation_login_button"
-        android:layout_gravity="center_horizontal"/>
+        android:text="Hallo Welt" />
+
 </LinearLayout>
