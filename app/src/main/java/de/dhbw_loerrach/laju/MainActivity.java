@@ -16,6 +16,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 
@@ -43,6 +44,16 @@ public class MainActivity extends AppCompatActivity implements NavigationDrawerF
         mNavigationDrawerFragment.setUp(
                 R.id.navigation_drawer,
                 (DrawerLayout) findViewById(R.id.drawer_layout));
+
+        Button navloginbtn = (Button) findViewById(R.id.navigation_login_button);
+        navloginbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FragmentManager fragmentManager = getSupportFragmentManager();
+                fragmentManager.beginTransaction().replace(R.id.container, LoginFragment.newInstance()).commit();
+                setTitle(R.string.login);
+            }
+        });
     }
 
     public void restoreActionBar() {
@@ -89,20 +100,16 @@ public class MainActivity extends AppCompatActivity implements NavigationDrawerF
         FragmentManager fragmentManager = getSupportFragmentManager();
         switch (position){
             case 1:
-                fragmentManager.beginTransaction().replace(R.id.container, MainFragment.newInstance(position)).commit();
+                fragmentManager.beginTransaction().replace(R.id.container, MainFragment.newInstance(0)).commit();
                 setTitle(R.string.infos);
                 break;
             case 2:
-                fragmentManager.beginTransaction().replace(R.id.container, MainFragment.newInstance(position)).commit();
+                fragmentManager.beginTransaction().replace(R.id.container, MainFragment.newInstance(1)).commit();
                 setTitle(R.string.events);
                 break;
             case 3:
                 fragmentManager.beginTransaction().replace(R.id.container, TauschboerseFragment.newInstance()).commit();
                 setTitle(R.string.tauschboerse);
-                break;
-            case 4:
-                fragmentManager.beginTransaction().replace(R.id.container, LoginFragment.newInstance()).commit();
-                setTitle(R.string.login);
                 break;
             default:
                 // Lade Infos per Default
