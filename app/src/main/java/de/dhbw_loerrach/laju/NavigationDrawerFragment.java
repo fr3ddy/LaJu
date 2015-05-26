@@ -1,6 +1,7 @@
 package de.dhbw_loerrach.laju;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -198,8 +199,8 @@ public class NavigationDrawerFragment extends Fragment {
         navloginbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-                fragmentManager.beginTransaction().replace(R.id.container, LoginFragment.newInstance()).commit();
+                Intent intent = new Intent( getActivity(), Login.class);
+                getActivity().startActivity(intent);
                 mDrawerLayout.closeDrawer(Gravity.LEFT);
             }
         });
