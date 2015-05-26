@@ -31,9 +31,11 @@ public class Receiver {
     private EventTabFragment eventTabFragment;
     private NewInfoFragment newInfoFragment;
     private LoginFragment loginfragment;
+    private RegisterFragment registerfragment;
     private String infourl = "http://laju.frederik-frey.de/lajuapp/alleNews/123456";
     private String eventurl = "http://laju.frederik-frey.de/lajuapp/gibVeranstaltungen/123456";
     private String loginurl = "http://laju.frederik-frey.de/lajuapp/einloggen";
+    private String registerurl = "http://laju.frederik-frey.de/lajuapp/registriereBenutzer";
 
     public Receiver(InfoTabFragment infoTabFragment) {
         queue = Volley.newRequestQueue(infoTabFragment.getActivity());
@@ -53,6 +55,11 @@ public class Receiver {
     public Receiver(LoginFragment loginfragment) {
         queue = Volley.newRequestQueue(loginfragment.getActivity());
         this.loginfragment = loginfragment;
+    }
+
+    public Receiver(RegisterFragment registerfragment) {
+        queue = Volley.newRequestQueue(registerfragment.getActivity());
+        this.registerfragment = registerfragment;
     }
 
     public void fillInfos() {
@@ -292,5 +299,43 @@ public class Receiver {
             }
         });
         queue.add(newLoginRequest);
+    }
+
+    public void register(HashMap<String, String> params){
+        JsonObjectRequest newRegisterRequest = new JsonObjectRequest(Request.Method.POST, registerurl , new JSONObject(params) , new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                int responsecode = 0;
+                try {
+                    responsecode = (int) response.get("code");
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                switch (responsecode) {
+                    case 0:
+                        //TODO: Registrierung
+                        Toast.makeText(registerfragment.getActivity(), "Registrierung hat geklappt", Toast.LENGTH_LONG).show();
+                        break;
+                    case 1:
+                        Toast.makeText(registerfragment.getActivity(), "AppKey war falsch, bitte wenden Sie sich an Ihren Systemadministrator", Toast.LENGTH_LONG).show();
+                        break;
+                    case 2:
+                        Toast.makeText(registerfragment.getActivity(), "Diese Email wird schon verwendet, versuche es mit einer anderen!", Toast.LENGTH_LONG).show();
+                        break;
+                    case 3:
+                        Toast.makeText(registerfragment.getActivity(), "Dieser Benutzername existiert bereits, versuche es mit einem anderen!", Toast.LENGTH_LONG).show();
+                        break;
+                    default:
+                        Toast.makeText(registerfragment.getActivity(), "Da lief was falsch!!!", Toast.LENGTH_LONG).show();
+                        break;
+                }
+            }
+        },new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(registerfragment.getActivity(), "Error: " + error.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        });
+        queue.add(newRegisterRequest);
     }
 }
