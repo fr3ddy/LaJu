@@ -19,6 +19,14 @@
     <string name="new_info_hint">Hier können neue Infos eingereicht werden.</string>
     <string name="description">Beschreibung</string>
     <string name="username">benutzername</string>
-    <string name="Password">Passwort</string>
-    <string name="Username">Benutzername</string>
+    <string name="password">Passwort</string>
+    <string name="username">Benutzername</string>
+    <string name="firstname">Vorname</string>
+    <string name="lastname">Nachname</string>
+    <string name="email">E-Mail</string>
+    <string name="email_confirm">E-Mail bestätigen</string>
+    <string name="password_confirm">Passwort bestätigen</string>
+
+<!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
