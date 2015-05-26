@@ -33,6 +33,7 @@ public class Receiver {
     private String eventurl = "http://laju.frederik-frey.de/lajuapp/gibVeranstaltungen/123456";
     private String loginurl = "http://laju.frederik-frey.de/lajuapp/einloggen";
     private String registerurl = "http://laju.frederik-frey.de/lajuapp/registriereBenutzer";
+    private String userdataurl = "http://laju.frederik-frey.de/lajuapp/gibUserDaten";
 
     public Receiver(InfoTabFragment infoTabFragment) {
         queue = Volley.newRequestQueue(infoTabFragment.getActivity());
@@ -257,7 +258,7 @@ public class Receiver {
         queue.add(newInfoRequest);
     }
 
-    public void login(HashMap<String, String> params) {
+    public void login(final HashMap<String, String> params) {
         JsonObjectRequest newLoginRequest = new JsonObjectRequest(Request.Method.POST, loginurl, new JSONObject(params), new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
@@ -269,20 +270,13 @@ public class Receiver {
                 }
                 switch (responsecode) {
                     case 0:
-                        //TODO: Login
-                        Toast.makeText(login, "Login hat geklappt", Toast.LENGTH_LONG).show();
+                        performLogin(params.get("appkey") , params.get("benutzername"));
                         break;
                     case 1:
                         Toast.makeText(login, "AppKey war falsch, bitte wenden Sie sich an Ihren Systemadministrator", Toast.LENGTH_LONG).show();
                         break;
                     case 2:
                         Toast.makeText(login, "Das Passwort war leider falsch!", Toast.LENGTH_LONG).show();
-                        break;
-                    case 3:
-                        Toast.makeText(login, "Dieser Benutzername existiert nicht", Toast.LENGTH_LONG).show();
-                        break;
-                    case 4:
-                        Toast.makeText(login, "Dieser Account wurde noch nicht aktiviert. Bitte überprüfe deine Emails!", Toast.LENGTH_LONG).show();
                         break;
                     default:
                         Toast.makeText(login, "Da lief was falsch!!!", Toast.LENGTH_LONG).show();
@@ -298,6 +292,50 @@ public class Receiver {
         queue.add(newLoginRequest);
     }
 
+    private void performLogin(String appkey , String username) {
+        JsonObjectRequest getUserdataRequest = new JsonObjectRequest(Request.Method.GET, userdataurl+"/"+appkey+"/"+username, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                int responsecode = 0;
+                try {
+                    responsecode = (int) response.get("code");
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                switch (responsecode) {
+                    case 0:
+                        try {
+                            JSONObject data = (JSONObject) response.get("daten");
+                            String u = (String) data.get("benutzer");
+                            String firstname = (String) data.get("vorname");
+                            String lastname = (String) data.get("nachname");
+                            String email = (String) data.get("email");
+                            User.getInstance().login(u,firstname,lastname,email);
+                            login.finish();
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        break;
+                    case 1:
+                        Toast.makeText(login, "AppKey war falsch, bitte wenden Sie sich an Ihren Systemadministrator", Toast.LENGTH_LONG).show();
+                        break;
+                    case 2:
+                        Toast.makeText(login, "Der Benutzer ist uns nicht bekannt! Da lief wohl was schief!", Toast.LENGTH_LONG).show();
+                        break;
+                    default:
+                        Toast.makeText(login, "Da lief was falsch!!!", Toast.LENGTH_LONG).show();
+                        break;
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(login, "Error: " + error.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        });
+        queue.add(getUserdataRequest);
+    }
+
     public void register(HashMap<String, String> params) {
         JsonObjectRequest newRegisterRequest = new JsonObjectRequest(Request.Method.POST, registerurl, new JSONObject(params), new Response.Listener<JSONObject>() {
             @Override
@@ -310,8 +348,9 @@ public class Receiver {
                 }
                 switch (responsecode) {
                     case 0:
-                        //TODO: Registrierung
                         Toast.makeText(register, "Registrierung hat geklappt", Toast.LENGTH_LONG).show();
+                        register.finish();
+
                         break;
                     case 1:
                         Toast.makeText(register, "AppKey war falsch, bitte wenden Sie sich an Ihren Systemadministrator", Toast.LENGTH_LONG).show();
