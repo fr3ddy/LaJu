@@ -6,10 +6,10 @@ package de.dhbw_loerrach.laju;
 public class User {
 
     private static User userInstance = null;
-    private String username;
-    private String firstname;
-    private String lastname;
-    private String email;
+    public String username;
+    public String firstname;
+    public String lastname;
+    public String email;
 
     private User(String username , String firstname , String lastname, String email){
         this.username = username;
@@ -18,23 +18,23 @@ public class User {
         this.email = email;
     }
 
-    public void login(String username , String firstname , String lastname , String email){
+    public static void login(String username , String firstname , String lastname , String email){
         userInstance = new User(username, firstname , lastname , email);
     }
 
-    public void logout(){
+    public static void logout(){
         userInstance = null;
     }
 
-    public boolean loggedIn(){
+    public static boolean isLoggedIn(){
         if(userInstance == null){
-            return true;
-        }else{
             return false;
+        }else{
+            return true;
         }
     }
 
-    public static User getInstance(){
+    public static User getInstance() {
         return userInstance;
     }
 

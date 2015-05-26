@@ -25,6 +25,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 /**
@@ -62,6 +63,8 @@ public class NavigationDrawerFragment extends Fragment {
     private int mCurrentSelectedPosition = 0;
     private boolean mFromSavedInstanceState;
     private boolean mUserLearnedDrawer;
+    private ViewGroup mContainer;
+    private View mHeader;
 
     public NavigationDrawerFragment() {
     }
@@ -92,8 +95,35 @@ public class NavigationDrawerFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState) {
+    public void onPrepareOptionsMenu(Menu menu) {
+        LayoutInflater inflater = LayoutInflater.from(getActivity().getApplicationContext());
+        if(User.isLoggedIn()) {
+            mDrawerListView.removeHeaderView(mHeader);
+            mHeader = (View) inflater.inflate(R.layout.navigation_drawer_header_user, mContainer);
 
+            TextView tv = (TextView) mHeader.findViewById(R.id.name);
+            tv.setText("Hallo " + User.getInstance().firstname);
+
+            Button logoutBtn = (Button) mHeader.findViewById(R.id.logout_btn);
+            logoutBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(getActivity().getApplicationContext(), "Logout", Toast.LENGTH_SHORT).show();
+                    User.logout();
+//                    mDrawerLayout.closeDrawer(Gravity.LEFT);
+                }
+            });
+
+            mDrawerListView.addHeaderView(mHeader);
+
+        }
+
+        super.onPrepareOptionsMenu(menu);
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState) {
+        mContainer = container;
         mDrawerListView = (ListView) inflater.inflate(R.layout.fragment_navigation_drawer, container, false);
         mDrawerListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -102,8 +132,10 @@ public class NavigationDrawerFragment extends Fragment {
             }
         });
 
-        View header = (View) inflater.inflate(R.layout.navigation_drawer_header, container, true);
-        mDrawerListView.addHeaderView(header);
+        if(mHeader == null) {
+            mHeader = (View) inflater.inflate(R.layout.navigation_drawer_header, container, true);
+        }
+        mDrawerListView.addHeaderView(mHeader);
 
         mDrawerListView.setAdapter(new ArrayAdapter<>(
                 getActivity(),

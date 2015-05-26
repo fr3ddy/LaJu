@@ -310,7 +310,7 @@ public class Receiver {
                             String firstname = (String) data.get("vorname");
                             String lastname = (String) data.get("nachname");
                             String email = (String) data.get("email");
-                            new User(u, firstname, lastname, email);
+                            User.login(u, firstname, lastname, email);
                             login.finish();
                         } catch (JSONException e) {
                             e.printStackTrace();
