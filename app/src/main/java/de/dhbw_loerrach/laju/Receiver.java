@@ -2,6 +2,7 @@ package de.dhbw_loerrach.laju;
 
 
 import android.content.Intent;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;

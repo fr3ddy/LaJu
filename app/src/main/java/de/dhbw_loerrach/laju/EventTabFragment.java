@@ -5,22 +5,27 @@ import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
+import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.Toast;
 
 /**
  * Created by Frederik on 16.05.2015.
  */
 public class EventTabFragment extends Fragment {
     private static final String ARG_SECTION_NUMBER = "section_number";
+    private static EventTabFragment fragment = null;
 
     public static EventTabFragment newInstance(int position) {
-        EventTabFragment fragment = new EventTabFragment();
+        fragment = new EventTabFragment();
         Bundle args = new Bundle();
         fragment.setArguments(args);
         return fragment;
