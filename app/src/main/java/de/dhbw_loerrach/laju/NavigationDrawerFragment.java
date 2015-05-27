@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -12,6 +13,7 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.view.ContextMenu;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -22,6 +24,8 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -104,8 +108,29 @@ public class NavigationDrawerFragment extends Fragment {
             tv.setText("Hallo " + User.getInstance().firstname);
 
             // Prepare logout button
-            Button logoutBtn = (Button) mHeader.findViewById(R.id.logout_btn);
-            logoutBtn.setOnClickListener(getLogoutListener());
+//            Button logoutBtn = (Button) mHeader.findViewById(R.id.logout_btn);
+//            logoutBtn.setOnClickListener(getLogoutListener());
+
+            ImageButton downMenuBtn = (ImageButton) mHeader.findViewById(R.id.down_menu_btn);
+            downMenuBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Drawable d = getResources().getDrawable(android.R.drawable.arrow_up_float);
+                    
+                    ((ImageButton) mHeader.findViewById(R.id.down_menu_btn)).setImageDrawable(d);
+
+                    mDrawerListView.setAdapter(new ArrayAdapter<>(
+                            getActivity(),
+                            R.layout.navigation_drawer_list_item_activated,
+                            android.R.id.text1,
+                            new String[]{
+                                    "Konto bearbeiten",
+                                    "Abmelden"
+                            }));
+
+                    mDrawerListView.setItemChecked(mCurrentSelectedPosition, true);
+                }
+            });
 
             // set new layout
             mDrawerListView.addHeaderView(mHeader);

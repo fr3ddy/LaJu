@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
@@ -37,6 +38,19 @@ public class InfoTabFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_infotab, container, false);
         return rootView;
+    }
+
+    @Override
+    public void onPrepareOptionsMenu(Menu menu) {
+        MenuItem item = menu.findItem(R.id.action_addInfo);
+        if(item != null) {
+            if(User.getInstance() != null) {
+                item.setVisible(true);
+            } else {
+                item.setVisible(false);
+            }
+        }
+        super.onPrepareOptionsMenu(menu);
     }
 
     @Override
