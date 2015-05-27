@@ -3,6 +3,7 @@ package de.dhbw_loerrach.laju;
 import android.app.Activity;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -23,6 +24,7 @@ import android.widget.Toast;
 public class EventTabFragment extends Fragment {
     private static final String ARG_SECTION_NUMBER = "section_number";
     private static EventTabFragment fragment = null;
+    private SwipeRefreshLayout swipeRefreshLayout;
 
     public static EventTabFragment newInstance(int position) {
         fragment = new EventTabFragment();
@@ -47,6 +49,22 @@ public class EventTabFragment extends Fragment {
             item.setVisible(false);
         }
         super.onPrepareOptionsMenu(menu);
+    }
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        swipeRefreshLayout = (SwipeRefreshLayout) getActivity().findViewById(R.id.swipe_refresh_layout);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                // TODO lade Veranstaltungen neu
+                Toast.makeText(getActivity(), "Refresh", Toast.LENGTH_SHORT).show();
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        });
+        swipeRefreshLayout.setColorSchemeResources(R.color.bright_green, R.color.dark_green);
     }
 
     @Override
