@@ -278,6 +278,15 @@ public class Receiver {
                     case 2:
                         Toast.makeText(login, "Das Passwort war leider falsch!", Toast.LENGTH_LONG).show();
                         break;
+                    case 3:
+                        Toast.makeText(login, "Der Benutzername existiert nicht! Melde dich einfach kostenlos neu an!", Toast.LENGTH_LONG).show();
+                        break;
+                    case 4:
+                        Toast.makeText(login, "Dein Account ist noch nicht aktiv! Bitte überprüfe deine Emails!", Toast.LENGTH_LONG).show();
+                        break;
+                    case 5:
+                        Toast.makeText(login, "Dein Account wurde gesperrt! Wende dich an die Zentrale der Badischen Landjugend!", Toast.LENGTH_LONG).show();
+                        break;
                     default:
                         Toast.makeText(login, "Da lief was falsch!!!", Toast.LENGTH_LONG).show();
                         break;
