@@ -16,9 +16,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 
 public class MainActivity extends AppCompatActivity implements NavigationDrawerFragment.NavigationDrawerCallbacks {
@@ -86,9 +84,10 @@ public class MainActivity extends AppCompatActivity implements NavigationDrawerF
     }
 
     @Override
-    public void onNavigationDrawerItemSelected(int position) {
+    public void onNavigationDrawerMainItemSelected(int position) {
         // update the main content by replacing fragments
         FragmentManager fragmentManager = getSupportFragmentManager();
+
         switch (position){
             case 1:
                 fragmentManager.beginTransaction().replace(R.id.container, MainFragment.newInstance(0)).commit();
@@ -115,7 +114,7 @@ public class MainActivity extends AppCompatActivity implements NavigationDrawerF
         super.onActivityResult(requestCode, resultCode, data);
         switch(resultCode){
             case 1337:
-                onNavigationDrawerItemSelected(2);
+                onNavigationDrawerMainItemSelected(2);
                 break;
         }
     }

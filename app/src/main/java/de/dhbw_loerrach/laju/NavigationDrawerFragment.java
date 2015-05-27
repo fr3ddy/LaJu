@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -13,7 +12,6 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.view.ContextMenu;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -25,7 +23,6 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -99,6 +96,7 @@ public class NavigationDrawerFragment extends Fragment {
     @Override
     public void onPrepareOptionsMenu(Menu menu) {
         LayoutInflater inflater = LayoutInflater.from(getActivity().getApplicationContext());
+
         if(User.isLoggedIn()) {
             mDrawerListView.removeHeaderView(mHeader);
             mHeader = (View) inflater.inflate(R.layout.navigation_drawer_header_user, mContainer);
@@ -107,28 +105,17 @@ public class NavigationDrawerFragment extends Fragment {
             TextView tv = (TextView) mHeader.findViewById(R.id.name);
             tv.setText("Hallo " + User.getInstance().firstname);
 
-            // Prepare logout button
-//            Button logoutBtn = (Button) mHeader.findViewById(R.id.logout_btn);
-//            logoutBtn.setOnClickListener(getLogoutListener());
-
-            ImageButton downMenuBtn = (ImageButton) mHeader.findViewById(R.id.down_menu_btn);
-            downMenuBtn.setOnClickListener(new View.OnClickListener() {
+            final ImageButton menuBtn = (ImageButton) mHeader.findViewById(R.id.menu_btn);
+            menuBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Drawable d = getResources().getDrawable(android.R.drawable.arrow_up_float);
-                    
-                    ((ImageButton) mHeader.findViewById(R.id.down_menu_btn)).setImageDrawable(d);
-
-                    mDrawerListView.setAdapter(new ArrayAdapter<>(
-                            getActivity(),
-                            R.layout.navigation_drawer_list_item_activated,
-                            android.R.id.text1,
-                            new String[]{
-                                    "Konto bearbeiten",
-                                    "Abmelden"
-                            }));
-
-                    mDrawerListView.setItemChecked(mCurrentSelectedPosition, true);
+                    if(menuBtn.getDrawable().getConstantState().equals(getResources().getDrawable(android.R.drawable.arrow_down_float).getConstantState())) {
+                        menuBtn.setImageDrawable(getResources().getDrawable(android.R.drawable.arrow_up_float));
+                        mDrawerListView.setAdapter(setupAdapter(false));
+                    } else {
+                        menuBtn.setImageResource(android.R.drawable.arrow_down_float);
+                        mDrawerListView.setAdapter(setupAdapter(true));
+                    }
                 }
             });
 
@@ -187,18 +174,36 @@ public class NavigationDrawerFragment extends Fragment {
         }
         mDrawerListView.addHeaderView(mHeader);
 
-        mDrawerListView.setAdapter(new ArrayAdapter<>(
-                getActivity(),
-                R.layout.navigation_drawer_list_item_activated,
-                android.R.id.text1,
-                new String[]{
-                        getString(R.string.infos),
-                        getString(R.string.events),
-                        getString(R.string.tauschboerse)
-                }));
+        mDrawerListView.setAdapter(setupAdapter(true));
         mDrawerListView.setItemChecked(mCurrentSelectedPosition, true);
 
         return mDrawerListView;
+    }
+
+    private ArrayAdapter<String> setupAdapter(boolean isMainDrawer) {
+        ArrayAdapter aa;
+
+        if(isMainDrawer) {
+            aa = new ArrayAdapter<>(
+                    getActivity(),
+                    R.layout.navigation_drawer_list_item_activated,
+                    android.R.id.text1,
+                    new String[]{
+                            getString(R.string.infos),
+                            getString(R.string.events),
+                            getString(R.string.tauschboerse)
+                    });
+        } else {
+            aa = new ArrayAdapter<>(
+                    getActivity(),
+                    R.layout.navigation_drawer_list_item_activated,
+                    android.R.id.text1,
+                    new String[]{
+                            "Konto bearbeiten",
+                            "Abmelden"
+                    });
+        }
+        return aa;
     }
 
     public boolean isDrawerOpen() {
@@ -291,7 +296,7 @@ public class NavigationDrawerFragment extends Fragment {
             mDrawerLayout.closeDrawer(mFragmentContainerView);
         }
         if (mCallbacks != null) {
-            mCallbacks.onNavigationDrawerItemSelected(position);
+                mCallbacks.onNavigationDrawerMainItemSelected(position);
         }
     }
 
@@ -362,6 +367,6 @@ public class NavigationDrawerFragment extends Fragment {
         /**
          * Called when an item in the navigation drawer is selected.
          */
-        void onNavigationDrawerItemSelected(int position);
+        void onNavigationDrawerMainItemSelected(int position);
     }
 }
