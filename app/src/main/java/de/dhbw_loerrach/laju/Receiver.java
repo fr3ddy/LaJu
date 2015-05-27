@@ -315,11 +315,11 @@ public class Receiver {
                 switch (responsecode) {
                     case 0:
                         try {
-                            JSONObject data = (JSONObject) response.get("daten");
-                            String u = (String) data.get("benutzer");
-                            String firstname = (String) data.get("vorname");
-                            String lastname = (String) data.get("nachname");
-                            String email = (String) data.get("email");
+//                            JSONObject data = (JSONObject) response.get("daten");
+                            String u = (String) response.get("benutzer");
+                            String firstname = (String) response.get("vorname");
+                            String lastname = (String) response.get("nachname");
+                            String email = (String) response.get("email");
                             User.login(u, firstname, lastname, email);
                             login.finish();
                         } catch (JSONException e) {
