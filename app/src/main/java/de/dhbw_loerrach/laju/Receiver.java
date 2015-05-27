@@ -210,7 +210,7 @@ public class Receiver {
                         EventItem e = eventlist.get(position);
                         Intent intent = new Intent(eventTabFragment.getActivity(), Event.class);
                         intent.putExtra("event", e);
-                        eventTabFragment.getActivity().startActivity(intent);
+                        eventTabFragment.getActivity().startActivityForResult(intent , 1337);
                     }
                 };
                 lv.setOnItemClickListener(eventTtemClickListener);

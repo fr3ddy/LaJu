@@ -2,20 +2,13 @@ package de.dhbw_loerrach.laju;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.NavUtils;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.LayoutInflater;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 
 public class Event extends AppCompatActivity {
@@ -25,10 +18,10 @@ public class Event extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event);
-        
+
         Toolbar mToolbar = (Toolbar) findViewById(R.id.tool_bar);
         setSupportActionBar(mToolbar);
-        
+
         Intent intent = getIntent();
         EventItem e = (EventItem) intent.getSerializableExtra("event");
         TextView eventItemUntertitel = (TextView) findViewById(R.id.eventItemUntertitel);
@@ -54,13 +47,19 @@ public class Event extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-//        switch (item.getItemId()) {
-//            // Respond to the action bar's Up/Home button
-//            case android.R.id.home:
-//                NavUtils.navigateUpFromSameTask(this);
-//                return true;
-//        }
+        switch (item.getItemId()) {
+            // Respond to the action bar's Up/Home button
+            case android.R.id.home:
+                //NavUtils.navigateUpFromSameTask(this);
+                setResult(1337);
+                finish();
+                return true;
+        }
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public boolean onNavigateUp() {
+        return super.onNavigateUp();
+    }
 }

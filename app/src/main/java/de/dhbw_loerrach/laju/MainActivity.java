@@ -18,6 +18,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 public class MainActivity extends AppCompatActivity implements NavigationDrawerFragment.NavigationDrawerCallbacks {
@@ -77,7 +78,7 @@ public class MainActivity extends AppCompatActivity implements NavigationDrawerF
         //noinspection SimplifiableIfStatement
         if (title.equals(getString(R.string.new_info))) {
             Intent intent = new Intent(this,NewInfo.class);
-            intent.putExtra(getString(R.string.username) , "freyfr");
+            intent.putExtra(getString(R.string.username), "freyfr");
             startActivity(intent);
         }
 
@@ -105,6 +106,16 @@ public class MainActivity extends AppCompatActivity implements NavigationDrawerF
                 // Lade Infos per Default
                 fragmentManager.beginTransaction().replace(R.id.container, MainFragment.newInstance(position)).commit();
                 setTitle(R.string.infos);
+                break;
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch(resultCode){
+            case 1337:
+                onNavigationDrawerItemSelected(2);
                 break;
         }
     }
@@ -163,5 +174,4 @@ public class MainActivity extends AppCompatActivity implements NavigationDrawerF
         }
 
     }
-
 }
