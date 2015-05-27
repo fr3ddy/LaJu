@@ -6,14 +6,12 @@ import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.v4.app.FragmentManager;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -101,24 +99,51 @@ public class NavigationDrawerFragment extends Fragment {
             mDrawerListView.removeHeaderView(mHeader);
             mHeader = (View) inflater.inflate(R.layout.navigation_drawer_header_user, mContainer);
 
+            // Greet the user
             TextView tv = (TextView) mHeader.findViewById(R.id.name);
             tv.setText("Hallo " + User.getInstance().firstname);
 
+            // Prepare logout button
             Button logoutBtn = (Button) mHeader.findViewById(R.id.logout_btn);
-            logoutBtn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Toast.makeText(getActivity().getApplicationContext(), "Logout", Toast.LENGTH_SHORT).show();
-                    User.logout();
-//                    mDrawerLayout.closeDrawer(Gravity.LEFT);
-                }
-            });
+            logoutBtn.setOnClickListener(getLogoutListener());
 
+            // set new layout
             mDrawerListView.addHeaderView(mHeader);
+        } else {
+            mDrawerListView.removeHeaderView(mHeader);
+            mHeader = (View) inflater.inflate(R.layout.navigation_drawer_header, mContainer);
 
+            // Prepare logout button
+            Button login = (Button) mHeader.findViewById(R.id.navigation_login_button);
+            login.setOnClickListener(getLoginListener());
+
+            // set new layout
+            mDrawerListView.addHeaderView(mHeader);
         }
 
         super.onPrepareOptionsMenu(menu);
+    }
+
+    private View.OnClickListener getLogoutListener() {
+        return new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getActivity().getApplicationContext(), "Logout", Toast.LENGTH_SHORT).show();
+                User.logout();
+                mDrawerLayout.closeDrawer(Gravity.LEFT);
+            }
+        };
+    }
+
+    private View.OnClickListener getLoginListener() {
+        return new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent( getActivity(), Login.class);
+                getActivity().startActivity(intent);
+                mDrawerLayout.closeDrawer(Gravity.LEFT);
+            }
+        };
     }
 
     @Override
@@ -228,14 +253,7 @@ public class NavigationDrawerFragment extends Fragment {
 
 
         Button navloginbtn = (Button) getActivity().findViewById(R.id.navigation_login_button);
-        navloginbtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent( getActivity(), Login.class);
-                getActivity().startActivity(intent);
-                mDrawerLayout.closeDrawer(Gravity.LEFT);
-            }
-        });
+        navloginbtn.setOnClickListener(getLoginListener());
     }
 
     private void selectItem(int position) {
