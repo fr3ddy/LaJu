@@ -18,7 +18,7 @@ import android.widget.ListView;
  * Created by Frederik on 16.05.2015.
  */
 public class InfoTabFragment extends Fragment {
-    private CustomSwipeRefreshLayout mSwipeRefreshLayout;
+    public CustomSwipeRefreshLayout mSwipeRefreshLayout;
     private ListView mListView;
 
     public static InfoTabFragment newInstance() {

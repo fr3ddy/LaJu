@@ -19,7 +19,7 @@ import android.widget.ListView;
  */
 public class EventTabFragment extends Fragment {
     private static final String ARG_SECTION_NUMBER = "section_number";
-    private CustomSwipeRefreshLayout mSwipeRefreshLayout;
+    public CustomSwipeRefreshLayout mSwipeRefreshLayout;
     private ListView mListView;
 
     public static EventTabFragment newInstance(int position) {
@@ -61,7 +61,6 @@ public class EventTabFragment extends Fragment {
             public void onRefresh() {
                 Receiver receiver = new Receiver(tmpfrag);
                 receiver.fillEvents();
-                mSwipeRefreshLayout.setRefreshing(false);
             }
         });
 

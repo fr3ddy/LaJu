@@ -123,11 +123,13 @@ public class Receiver {
                     }
                 };
                 lv.setOnItemClickListener(eventTtemClickListener);
+                infoTabFragment.mSwipeRefreshLayout.setRefreshing(false);
             }
         }, new Response.ErrorListener() {
 
             @Override
             public void onErrorResponse(VolleyError error) {
+                infoTabFragment.mSwipeRefreshLayout.setRefreshing(false);
                 Toast.makeText(infoTabFragment.getActivity(), "Error: " + error.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
@@ -214,10 +216,12 @@ public class Receiver {
                     }
                 };
                 lv.setOnItemClickListener(eventTtemClickListener);
+                eventTabFragment.mSwipeRefreshLayout.setRefreshing(false);
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+                eventTabFragment.mSwipeRefreshLayout.setRefreshing(false);
                 Toast.makeText(eventTabFragment.getActivity(), "Error: " + error.getMessage(), Toast.LENGTH_LONG).show();
             }
         });

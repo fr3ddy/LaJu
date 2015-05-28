@@ -182,7 +182,7 @@ public class NavigationDrawerFragment extends Fragment {
 
     private ArrayAdapter<String> setupAdapter(boolean isMainDrawer) {
         ArrayAdapter aa;
-
+        //TODO: setzte menü wieder zurück auf "normales Menü" wenn Menü im "abmelden" bzw "kontobearbeiten" modus geklickt wurde
         if(isMainDrawer) {
             aa = new ArrayAdapter<>(
                     getActivity(),
@@ -194,7 +194,7 @@ public class NavigationDrawerFragment extends Fragment {
                             getString(R.string.tauschboerse)
                     });
         } else {
-            // TODO reagiere, wenn "Konto bearbeiten" oder "Abmelden" gewählt wird so.
+            // TODO: reagiere, wenn "Konto bearbeiten" oder "Abmelden" gewählt wird so.
             aa = new ArrayAdapter<>(
                     getActivity(),
                     R.layout.navigation_drawer_list_item_activated,
