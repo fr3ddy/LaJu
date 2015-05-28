@@ -98,6 +98,8 @@ public class NavigationDrawerFragment extends Fragment {
     public void onPrepareOptionsMenu(Menu menu) {
         LayoutInflater inflater = LayoutInflater.from(getActivity().getApplicationContext());
 
+        mDrawerListView.setAdapter(setupAdapter(true));
+        
         if(User.isLoggedIn()) {
             // Change header to logged in header
             mDrawerListView.removeHeaderView(mHeader);
@@ -137,17 +139,6 @@ public class NavigationDrawerFragment extends Fragment {
 
         super.onPrepareOptionsMenu(menu);
     }
-//
-//    private View.OnClickListener getLogoutListener() {
-//        return new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Toast.makeText(getActivity().getApplicationContext(), "Logout", Toast.LENGTH_SHORT).show();
-//                User.logout();
-//                mDrawerLayout.closeDrawer(Gravity.LEFT);
-//            }
-//        };
-//    }
 
     private View.OnClickListener getLoginListener() {
         return new View.OnClickListener() {
@@ -311,7 +302,7 @@ public class NavigationDrawerFragment extends Fragment {
             mDrawerLayout.closeDrawer(mFragmentContainerView);
         }
         if (mCallbacks != null) {
-                mCallbacks.onNavigationDrawerMainItemSelected(position);
+            mCallbacks.onNavigationDrawerMainItemSelected(position);
         }
     }
 
@@ -326,7 +317,7 @@ public class NavigationDrawerFragment extends Fragment {
             mDrawerLayout.closeDrawer(mFragmentContainerView);
         }
         if (mCallbacks != null) {
-                mCallbacks.onNavigationDrawerSubItemSelected(position);
+            mCallbacks.onNavigationDrawerSubItemSelected(position);
         }
     }
 
