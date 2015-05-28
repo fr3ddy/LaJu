@@ -17,6 +17,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 public class MainActivity extends AppCompatActivity implements NavigationDrawerFragment.NavigationDrawerCallbacks {
@@ -105,6 +106,24 @@ public class MainActivity extends AppCompatActivity implements NavigationDrawerF
                 // Lade Infos per Default
                 fragmentManager.beginTransaction().replace(R.id.container, MainFragment.newInstance(position)).commit();
                 setTitle(R.string.infos);
+                break;
+        }
+    }
+
+    @Override
+    public void onNavigationDrawerSubItemSelected(int position) {
+        switch (position){
+            case 1:
+                // TODO: reagiere, wenn "Konto bearbeiten" gew
+                Toast.makeText(this, "bearbeiten", Toast.LENGTH_LONG).show();
+                break;
+            case 2:
+                Toast.makeText(this, "abmelden", Toast.LENGTH_LONG).show();
+                User.logout();
+                break;
+            default:
+                // Lade Infos per Default
+                Toast.makeText(this, "Default", Toast.LENGTH_LONG).show();
                 break;
         }
     }

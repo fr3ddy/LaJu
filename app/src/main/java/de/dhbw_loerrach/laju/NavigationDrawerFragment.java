@@ -12,6 +12,7 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -98,6 +99,7 @@ public class NavigationDrawerFragment extends Fragment {
         LayoutInflater inflater = LayoutInflater.from(getActivity().getApplicationContext());
 
         if(User.isLoggedIn()) {
+            // Change header to logged in header
             mDrawerListView.removeHeaderView(mHeader);
             mHeader = (View) inflater.inflate(R.layout.navigation_drawer_header_user, mContainer);
 
@@ -125,7 +127,7 @@ public class NavigationDrawerFragment extends Fragment {
             mDrawerListView.removeHeaderView(mHeader);
             mHeader = (View) inflater.inflate(R.layout.navigation_drawer_header, mContainer);
 
-            // Prepare logout button
+            // Prepare login button
             Button login = (Button) mHeader.findViewById(R.id.navigation_login_button);
             login.setOnClickListener(getLoginListener());
 
@@ -135,17 +137,17 @@ public class NavigationDrawerFragment extends Fragment {
 
         super.onPrepareOptionsMenu(menu);
     }
-
-    private View.OnClickListener getLogoutListener() {
-        return new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(getActivity().getApplicationContext(), "Logout", Toast.LENGTH_SHORT).show();
-                User.logout();
-                mDrawerLayout.closeDrawer(Gravity.LEFT);
-            }
-        };
-    }
+//
+//    private View.OnClickListener getLogoutListener() {
+//        return new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Toast.makeText(getActivity().getApplicationContext(), "Logout", Toast.LENGTH_SHORT).show();
+//                User.logout();
+//                mDrawerLayout.closeDrawer(Gravity.LEFT);
+//            }
+//        };
+//    }
 
     private View.OnClickListener getLoginListener() {
         return new View.OnClickListener() {
@@ -182,7 +184,6 @@ public class NavigationDrawerFragment extends Fragment {
 
     private ArrayAdapter<String> setupAdapter(boolean isMainDrawer) {
         ArrayAdapter aa;
-        //TODO: setzte menü wieder zurück auf "normales Menü" wenn Menü im "abmelden" bzw "kontobearbeiten" modus geklickt wurde
         if(isMainDrawer) {
             aa = new ArrayAdapter<>(
                     getActivity(),
@@ -193,8 +194,14 @@ public class NavigationDrawerFragment extends Fragment {
                             getString(R.string.events),
                             getString(R.string.tauschboerse)
                     });
+
+            mDrawerListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    selectItem(position);
+                }
+            });
         } else {
-            // TODO: reagiere, wenn "Konto bearbeiten" oder "Abmelden" gewählt wird so.
             aa = new ArrayAdapter<>(
                     getActivity(),
                     R.layout.navigation_drawer_list_item_activated,
@@ -203,6 +210,13 @@ public class NavigationDrawerFragment extends Fragment {
                             "Konto bearbeiten",
                             "Abmelden"
                     });
+
+            mDrawerListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    selectItemSub(position);
+                }
+            });
         }
         return aa;
     }
@@ -301,6 +315,21 @@ public class NavigationDrawerFragment extends Fragment {
         }
     }
 
+    private void selectItemSub(int position) {
+        mCurrentSelectedPosition = position;
+
+        if (mDrawerListView != null) {
+            mDrawerListView.setItemChecked(position, true);
+            mDrawerListView.setAdapter(setupAdapter(true));
+        }
+        if (mDrawerLayout != null) {
+            mDrawerLayout.closeDrawer(mFragmentContainerView);
+        }
+        if (mCallbacks != null) {
+                mCallbacks.onNavigationDrawerSubItemSelected(position);
+        }
+    }
+
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
@@ -369,5 +398,6 @@ public class NavigationDrawerFragment extends Fragment {
          * Called when an item in the navigation drawer is selected.
          */
         void onNavigationDrawerMainItemSelected(int position);
+        void onNavigationDrawerSubItemSelected(int position);
     }
 }
