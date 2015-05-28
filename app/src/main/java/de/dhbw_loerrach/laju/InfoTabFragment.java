@@ -13,13 +13,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
-import android.widget.Toast;
 
 /**
  * Created by Frederik on 16.05.2015.
  */
 public class InfoTabFragment extends Fragment {
-    private SwipeRefreshLayout swipeRefreshLayout;
+    private CustomSwipeRefreshLayout mSwipeRefreshLayout;
+    private ListView mListView;
 
     public static InfoTabFragment newInstance() {
         InfoTabFragment fragment = new InfoTabFragment();
@@ -49,16 +49,28 @@ public class InfoTabFragment extends Fragment {
 
         final InfoTabFragment tmpfrag = this;
 
-        swipeRefreshLayout = (SwipeRefreshLayout) getActivity().findViewById(R.id.swipe_refresh_layout);
-        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+        mListView = (ListView) getActivity().findViewById(R.id.infoTabList);
+
+        mSwipeRefreshLayout = (CustomSwipeRefreshLayout) getActivity().findViewById(R.id.swipe_refresh_layout);
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 Receiver receiver = new Receiver(tmpfrag);
                 receiver.fillInfos();
-                swipeRefreshLayout.setRefreshing(false);
+                mSwipeRefreshLayout.setRefreshing(false);
             }
         });
-        swipeRefreshLayout.setColorSchemeResources(R.color.bright_green, R.color.dark_green);
+
+        mSwipeRefreshLayout.setColorSchemeResources(R.color.bright_green, R.color.dark_green);
+
+        mSwipeRefreshLayout.setOnChildScrollUpListener(new CustomSwipeRefreshLayout.OnChildScrollUpListener() {
+            @Override
+            public boolean canChildScrollUp() {
+                return mListView.getFirstVisiblePosition() > 0 ||
+                        mListView.getChildAt(0) == null ||
+                        mListView.getChildAt(0).getTop() < 0;
+            }
+        });;
     }
 
     @Override

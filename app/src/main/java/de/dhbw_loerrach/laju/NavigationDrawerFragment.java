@@ -194,6 +194,7 @@ public class NavigationDrawerFragment extends Fragment {
                             getString(R.string.tauschboerse)
                     });
         } else {
+            // TODO reagiere, wenn "Konto bearbeiten" oder "Abmelden" gewählt wird so.
             aa = new ArrayAdapter<>(
                     getActivity(),
                     R.layout.navigation_drawer_list_item_activated,
