@@ -23,11 +23,10 @@ import android.widget.Toast;
  */
 public class EventTabFragment extends Fragment {
     private static final String ARG_SECTION_NUMBER = "section_number";
-    private static EventTabFragment fragment = null;
     private SwipeRefreshLayout swipeRefreshLayout;
 
     public static EventTabFragment newInstance(int position) {
-        fragment = new EventTabFragment();
+        EventTabFragment fragment = new EventTabFragment();
         Bundle args = new Bundle();
         fragment.setArguments(args);
         return fragment;
@@ -55,12 +54,14 @@ public class EventTabFragment extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        final EventTabFragment tmpfrag = this;
+
         swipeRefreshLayout = (SwipeRefreshLayout) getActivity().findViewById(R.id.swipe_refresh_layout);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                // TODO lade Veranstaltungen neu
-                Toast.makeText(getActivity(), "Refresh", Toast.LENGTH_SHORT).show();
+                Receiver receiver = new Receiver(tmpfrag);
+                receiver.fillEvents();
                 swipeRefreshLayout.setRefreshing(false);
             }
         });

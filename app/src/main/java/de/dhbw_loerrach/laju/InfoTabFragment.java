@@ -47,12 +47,14 @@ public class InfoTabFragment extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        final InfoTabFragment tmpfrag = this;
+
         swipeRefreshLayout = (SwipeRefreshLayout) getActivity().findViewById(R.id.swipe_refresh_layout);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                // TODO lade Infos neu
-                Toast.makeText(getActivity(), "Refresh", Toast.LENGTH_SHORT).show();
+                Receiver receiver = new Receiver(tmpfrag);
+                receiver.fillInfos();
                 swipeRefreshLayout.setRefreshing(false);
             }
         });
