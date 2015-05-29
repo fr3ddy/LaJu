@@ -30,11 +30,13 @@ public class Receiver {
     private NewInfoFragment newInfoFragment;
     private Login login;
     private Register register;
-    private String infourl = "http://laju.frederik-frey.de/lajuapp/alleNews/123456";
+    private OffersTabFragment offersTabFragment;
+    private String infourl = "http://laju.frederik-frey.de/lajuapp/gibAlleNeuigkeiten/123456";
     private String eventurl = "http://laju.frederik-frey.de/lajuapp/gibVeranstaltungen/123456";
     private String loginurl = "http://laju.frederik-frey.de/lajuapp/einloggen";
     private String registerurl = "http://laju.frederik-frey.de/lajuapp/registriereBenutzer";
     private String userdataurl = "http://laju.frederik-frey.de/lajuapp/gibUserDaten";
+    private String offersurl = "http://laju.frederik-frey.de/lajuapp/gibAlleAngebote/123456";
 
     public Receiver(InfoTabFragment infoTabFragment) {
         queue = Volley.newRequestQueue(infoTabFragment.getActivity());
@@ -61,12 +63,18 @@ public class Receiver {
         this.register = register;
     }
 
+    public Receiver(OffersTabFragment offersTabFragment) {
+        queue = Volley.newRequestQueue(offersTabFragment.getActivity());
+        this.offersTabFragment = offersTabFragment;
+    }
+
     public void fillInfos() {
         final ArrayList<InfoItem> infolist = new ArrayList<InfoItem>();
         StringRequest infoListRequest = new StringRequest(Request.Method.GET, infourl, new Response.Listener<String>() {
 
             @Override
             public void onResponse(String response) {
+                response = response.substring(3);
                 JSONArray jArray = null;
                 try {
                     jArray = new JSONArray(response);
@@ -142,6 +150,7 @@ public class Receiver {
 
             @Override
             public void onResponse(String response) {
+                response = response.substring(3);
                 JSONArray jArray = null;
                 try {
                     jArray = new JSONArray(response);
@@ -212,7 +221,7 @@ public class Receiver {
                         EventItem e = eventlist.get(position);
                         Intent intent = new Intent(eventTabFragment.getActivity(), Event.class);
                         intent.putExtra("event", e);
-                        eventTabFragment.getActivity().startActivityForResult(intent , 1337);
+                        eventTabFragment.getActivity().startActivityForResult(intent, 1337);
                     }
                 };
                 lv.setOnItemClickListener(eventTtemClickListener);
@@ -386,5 +395,80 @@ public class Receiver {
             }
         });
         queue.add(newRegisterRequest);
+    }
+
+    public void fillOffers(){
+        final ArrayList<OfferItem> offerlist = new ArrayList<OfferItem>();
+        StringRequest infoListRequest = new StringRequest(Request.Method.GET, offersurl, new Response.Listener<String>() {
+
+            @Override
+            public void onResponse(String response) {
+                response = response.substring(3);
+                JSONArray jArray = null;
+                try {
+                    jArray = new JSONArray(response);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                for (int i = 0; i < jArray.length(); i++) {
+                    JSONObject jObject = null;
+                    try {
+                        jObject = jArray.getJSONObject(i);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    int tauschid = 0;
+                    String title = "";
+                    String text = "";
+                    String username = "";
+                    String userfirstname  = "";
+                    String userlastname = "";
+                    int userid = 0;
+                    boolean done = false;
+                    boolean open = true;
+                    String erdat = "";
+                    try {
+                        tauschid = Integer.parseInt(jObject.getString("tauschid"));
+                        title = jObject.getString("titel");
+                        text = jObject.getString("besch");
+                        username = jObject.getJSONObject("user").getString("benutzer");
+                        userfirstname = jObject.getJSONObject("user").getString("vorname");
+                        userlastname = jObject.getJSONObject("user").getString("nachname");
+                        userid = Integer.parseInt(jObject.getJSONObject("user").getString("userid"));
+                        done = jObject.getBoolean("geloest");
+                        open = jObject.getBoolean("offen");
+                        erdat = jObject.getString("erdat");
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                    OfferItem ofitem = new OfferItem(tauschid, title , text , username , userfirstname , userlastname, userid, done , open , erdat);
+                    offerlist.add(ofitem);
+                } // End Loop
+                OfferListAdapter cla = new OfferListAdapter(offersTabFragment.getActivity(), R.layout.offerlistlayout, offerlist);
+                ListView lv = (ListView) offersTabFragment.getActivity().findViewById(R.id.offersTabList);
+                lv.setAdapter(cla);
+                // Item Click Listener for the listview
+                AdapterView.OnItemClickListener eventTtemClickListener = new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View container, int position, long id) {
+                        OfferItem o = offerlist.get(position);
+                        Intent intent = new Intent(offersTabFragment.getActivity(), Offer.class);
+                        intent.putExtra("offer", o);
+                        offersTabFragment.getActivity().startActivity(intent);
+                    }
+                };
+                lv.setOnItemClickListener(eventTtemClickListener);
+                //offersTabFragment.mSwipeRefreshLayout.setRefreshing(false);
+            }
+        }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                //offersTabFragment.mSwipeRefreshLayout.setRefreshing(false);
+                Toast.makeText(offersTabFragment.getActivity(), "Error: " + error.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        });
+        queue.add(infoListRequest);
     }
 }

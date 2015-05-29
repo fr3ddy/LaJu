@@ -69,7 +69,8 @@ public class OffersTabFragment extends Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        //Receiver receiver = new Receiver(this, (ListView)getActivity().findViewById(R.id.infoTabList));
+        Receiver receiver = new Receiver(this);
+        receiver.fillOffers();
     }
 
     @Override
