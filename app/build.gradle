@@ -8,8 +8,8 @@ android {
         applicationId "de.dhbw_loerrach.laju"
         minSdkVersion 15
         targetSdkVersion 22
-        versionCode 1
-        versionName "1.0"
+        versionCode 2
+        versionName "1.0.1"
     }
     buildTypes {
         release {
