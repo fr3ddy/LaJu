@@ -135,6 +135,9 @@ public class MainActivity extends AppCompatActivity implements NavigationDrawerF
             case 1337:
                 onNavigationDrawerMainItemSelected(2);
                 break;
+            case 1338:
+                onNavigationDrawerMainItemSelected(3);
+                break;
         }
     }
 

@@ -2,10 +2,11 @@ package de.dhbw_loerrach.laju;
 
 
 import android.content.Intent;
-import android.view.MotionEvent;
+import android.text.Html;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -31,12 +32,14 @@ public class Receiver {
     private Login login;
     private Register register;
     private OffersTabFragment offersTabFragment;
+    private Offer offer;
     private String infourl = "http://laju.frederik-frey.de/lajuapp/gibAlleNeuigkeiten/123456";
     private String eventurl = "http://laju.frederik-frey.de/lajuapp/gibVeranstaltungen/123456";
     private String loginurl = "http://laju.frederik-frey.de/lajuapp/einloggen";
     private String registerurl = "http://laju.frederik-frey.de/lajuapp/registriereBenutzer";
     private String userdataurl = "http://laju.frederik-frey.de/lajuapp/gibUserDaten";
     private String offersurl = "http://laju.frederik-frey.de/lajuapp/gibAlleAngebote/123456";
+    private String commentsurl = "http://laju.frederik-frey.de/lajuapp/gibKommentare";
 
     public Receiver(InfoTabFragment infoTabFragment) {
         queue = Volley.newRequestQueue(infoTabFragment.getActivity());
@@ -66,6 +69,11 @@ public class Receiver {
     public Receiver(OffersTabFragment offersTabFragment) {
         queue = Volley.newRequestQueue(offersTabFragment.getActivity());
         this.offersTabFragment = offersTabFragment;
+    }
+
+    public Receiver(Offer offer) {
+        queue = Volley.newRequestQueue(offer);
+        this.offer = offer;
     }
 
     public void fillInfos() {
@@ -397,9 +405,9 @@ public class Receiver {
         queue.add(newRegisterRequest);
     }
 
-    public void fillOffers(){
+    public void fillOffers() {
         final ArrayList<OfferItem> offerlist = new ArrayList<OfferItem>();
-        StringRequest infoListRequest = new StringRequest(Request.Method.GET, offersurl, new Response.Listener<String>() {
+        StringRequest offerListRequest = new StringRequest(Request.Method.GET, offersurl, new Response.Listener<String>() {
 
             @Override
             public void onResponse(String response) {
@@ -421,7 +429,7 @@ public class Receiver {
                     String title = "";
                     String text = "";
                     String username = "";
-                    String userfirstname  = "";
+                    String userfirstname = "";
                     String userlastname = "";
                     int userid = 0;
                     boolean done = false;
@@ -442,7 +450,7 @@ public class Receiver {
                         e.printStackTrace();
                     }
 
-                    OfferItem ofitem = new OfferItem(tauschid, title , text , username , userfirstname , userlastname, userid, done , open , erdat);
+                    OfferItem ofitem = new OfferItem(tauschid, title, text, username, userfirstname, userlastname, userid, done, open, erdat);
                     offerlist.add(ofitem);
                 } // End Loop
                 OfferListAdapter cla = new OfferListAdapter(offersTabFragment.getActivity(), R.layout.offerlistlayout, offerlist);
@@ -455,7 +463,7 @@ public class Receiver {
                         OfferItem o = offerlist.get(position);
                         Intent intent = new Intent(offersTabFragment.getActivity(), Offer.class);
                         intent.putExtra("offer", o);
-                        offersTabFragment.getActivity().startActivity(intent);
+                        offersTabFragment.getActivity().startActivityForResult(intent, 1338);
                     }
                 };
                 lv.setOnItemClickListener(eventTtemClickListener);
@@ -469,6 +477,57 @@ public class Receiver {
                 Toast.makeText(offersTabFragment.getActivity(), "Error: " + error.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
-        queue.add(infoListRequest);
+        queue.add(offerListRequest);
+    }
+
+    public void fillComments(HashMap<String, String> params) {
+        JsonObjectRequest commentsRequest = new JsonObjectRequest(Request.Method.POST, commentsurl, new JSONObject(params), new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                String comments = "";
+                String r = null;
+                try {
+                    r = response.getJSONArray("kommentare").toString();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                JSONArray jArray = null;
+                try {
+                    jArray = new JSONArray(r);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                for (int i = 0; i < jArray.length(); i++) {
+                    JSONObject jObject = null;
+                    try {
+                        jObject = jArray.getJSONObject(i);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    String erdat = "";
+                    String text = "";
+                    String firstname = "";
+                    String lastname = "";
+                    try {
+                        erdat = jObject.get("erdat").toString();
+                        text = jObject.get("text").toString();
+                        firstname = jObject.getJSONObject("autor").get("vorname").toString();
+                        lastname = jObject.getJSONObject("autor").get("nachname").toString().substring(0,1)+".";
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    //TODO: Styling! http://commonsware.com/blog/Android/2010/05/26/html-tags-supported-by-textview.html
+                    comments += "<big>"+firstname+" "+lastname+"</big> <b>"+erdat+"</b><br/>"+text+"<br/><br/>";
+                }
+                TextView tv = (TextView) offer.findViewById(R.id.offerComments);
+                tv.setText(Html.fromHtml(comments));
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(offer, "Error: " + error.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        });
+        queue.add(commentsRequest);
     }
 }

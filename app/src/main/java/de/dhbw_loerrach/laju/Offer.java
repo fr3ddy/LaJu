@@ -5,7 +5,10 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.TextView;
+
+import java.util.HashMap;
 
 
 public class Offer extends AppCompatActivity {
@@ -41,8 +44,13 @@ public class Offer extends AppCompatActivity {
             status += " - Geschlossen";
         }
         offerStatus.setText(status);
-
         setTitle(o.getTitle());
+
+        HashMap<String , String> params = new HashMap<String , String>();
+        params.put("appkey" , "123456");
+        params.put("tauschid" , ""+o.getTauschid());
+        Receiver receiver = new Receiver(this);
+        receiver.fillComments(params);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
@@ -52,6 +60,19 @@ public class Offer extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_offer, menu);
         return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            // Respond to the action bar's Up/Home button
+            case android.R.id.home:
+                //NavUtils.navigateUpFromSameTask(this);
+                setResult(1338);
+                finish();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
