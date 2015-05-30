@@ -34,6 +34,8 @@ public class MainActivity extends AppCompatActivity implements NavigationDrawerF
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        User.relogin(MainActivity.this);
+
         toolbar = (Toolbar) findViewById(R.id.tool_bar); // Attaching the layout to the toolbar object
         setSupportActionBar(toolbar);
 
@@ -130,7 +132,7 @@ public class MainActivity extends AppCompatActivity implements NavigationDrawerF
                 Toast.makeText(this, "bearbeiten", Toast.LENGTH_LONG).show();
                 break;
             case 2:
-                Toast.makeText(this, "abmelden", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, "Erfolgreich abgemeldet", Toast.LENGTH_LONG).show();
                 User.logout();
                 break;
             default:

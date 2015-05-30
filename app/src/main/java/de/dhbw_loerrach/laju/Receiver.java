@@ -358,7 +358,7 @@ public class Receiver {
                             String firstname = (String) response.get("vorname");
                             String lastname = (String) response.get("nachname");
                             String email = (String) response.get("email");
-                            User.login(u, firstname, lastname, email);
+                            User.login(login , u, firstname, lastname, email);
                             login.finish();
                         } catch (JSONException e) {
                             e.printStackTrace();
