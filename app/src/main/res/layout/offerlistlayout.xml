@@ -20,7 +20,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/offerListTitle"
-        android:textColor="@color/bright_green"
+        android:textColor="@color/grey"
         android:textSize="@dimen/list_subtitle"
         android:layout_marginTop="1dip" />
 

@@ -99,7 +99,7 @@ public class NavigationDrawerFragment extends Fragment {
         LayoutInflater inflater = LayoutInflater.from(getActivity().getApplicationContext());
 
         mDrawerListView.setAdapter(setupAdapter(true));
-        
+
         if(User.isLoggedIn()) {
             // Change header to logged in header
             mDrawerListView.removeHeaderView(mHeader);
