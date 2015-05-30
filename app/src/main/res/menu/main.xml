@@ -9,4 +9,11 @@
         android:icon="@drawable/ic_action_new"
         app:showAsAction="ifRoom"
         />
+    <item
+        android:id="@+id/action_addExchange"
+        android:orderInCategory="100"
+        android:title="@string/new_exchange"
+        android:icon="@drawable/ic_action_new"
+        app:showAsAction="ifRoom"
+        />
 </menu>
