@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.text.Html;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -32,14 +33,18 @@ public class Receiver {
     private Login login;
     private Register register;
     private OffersTabFragment offersTabFragment;
-    private Offer offer;
+    private RequestsTabFragment requestsTabFragment;
+    private Exchange exchange;
     private String infourl = "http://laju.frederik-frey.de/lajuapp/gibAlleNeuigkeiten/123456";
     private String eventurl = "http://laju.frederik-frey.de/lajuapp/gibVeranstaltungen/123456";
+    private String newnewsurl = "http://laju.frederik-frey.de/lajuapp/NeuigkeitEinreichen";
     private String loginurl = "http://laju.frederik-frey.de/lajuapp/einloggen";
     private String registerurl = "http://laju.frederik-frey.de/lajuapp/registriereBenutzer";
     private String userdataurl = "http://laju.frederik-frey.de/lajuapp/gibUserDaten";
     private String offersurl = "http://laju.frederik-frey.de/lajuapp/gibAlleAngebote/123456";
     private String commentsurl = "http://laju.frederik-frey.de/lajuapp/gibKommentare";
+    private String newcommenturl = "http://laju.frederik-frey.de/lajuapp/eintragKommentieren";
+    private String requesturl = "http://laju.frederik-frey.de/lajuapp/gibAlleNachfragen/123456";
 
     public Receiver(InfoTabFragment infoTabFragment) {
         queue = Volley.newRequestQueue(infoTabFragment.getActivity());
@@ -71,9 +76,14 @@ public class Receiver {
         this.offersTabFragment = offersTabFragment;
     }
 
-    public Receiver(Offer offer) {
-        queue = Volley.newRequestQueue(offer);
-        this.offer = offer;
+    public Receiver(RequestsTabFragment requestsTabFragment) {
+        queue = Volley.newRequestQueue(requestsTabFragment.getActivity());
+        this.requestsTabFragment = requestsTabFragment;
+    }
+
+    public Receiver(Exchange exchange) {
+        queue = Volley.newRequestQueue(exchange);
+        this.exchange = exchange;
     }
 
     public void fillInfos() {
@@ -245,8 +255,8 @@ public class Receiver {
         queue.add(eventListRequest);
     }
 
-    public void sendNewInfo(String url, HashMap<String, String> params) {
-        JsonObjectRequest newInfoRequest = new JsonObjectRequest(Request.Method.POST, url, new JSONObject(params), new Response.Listener<JSONObject>() {
+    public void sendNewInfo(HashMap<String, String> params) {
+        JsonObjectRequest newInfoRequest = new JsonObjectRequest(Request.Method.POST, newnewsurl, new JSONObject(params), new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 int responsecode = 0;
@@ -406,7 +416,7 @@ public class Receiver {
     }
 
     public void fillOffers() {
-        final ArrayList<OfferItem> offerlist = new ArrayList<OfferItem>();
+        final ArrayList<ExchangeItem> offerlist = new ArrayList<ExchangeItem>();
         StringRequest offerListRequest = new StringRequest(Request.Method.GET, offersurl, new Response.Listener<String>() {
 
             @Override
@@ -435,6 +445,7 @@ public class Receiver {
                     boolean done = false;
                     boolean open = true;
                     String erdat = "";
+                    String type = "";
                     try {
                         tauschid = Integer.parseInt(jObject.getString("tauschid"));
                         title = jObject.getString("titel");
@@ -446,22 +457,23 @@ public class Receiver {
                         done = jObject.getBoolean("geloest");
                         open = jObject.getBoolean("offen");
                         erdat = jObject.getString("erdat");
+                        type = jObject.getString("art");
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
 
-                    OfferItem ofitem = new OfferItem(tauschid, title, text, username, userfirstname, userlastname, userid, done, open, erdat);
+                    ExchangeItem ofitem = new ExchangeItem(tauschid, title, text, username, userfirstname, userlastname, userid, done, open, erdat, type);
                     offerlist.add(ofitem);
                 } // End Loop
-                OfferListAdapter cla = new OfferListAdapter(offersTabFragment.getActivity(), R.layout.offerlistlayout, offerlist);
+                ExchangeListAdapter cla = new ExchangeListAdapter(offersTabFragment.getActivity(), R.layout.exchangelistlayout, offerlist);
                 ListView lv = (ListView) offersTabFragment.getActivity().findViewById(R.id.offersTabList);
                 lv.setAdapter(cla);
                 // Item Click Listener for the listview
                 AdapterView.OnItemClickListener eventTtemClickListener = new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View container, int position, long id) {
-                        OfferItem o = offerlist.get(position);
-                        Intent intent = new Intent(offersTabFragment.getActivity(), Offer.class);
+                        ExchangeItem o = offerlist.get(position);
+                        Intent intent = new Intent(offersTabFragment.getActivity(), Exchange.class);
                         intent.putExtra("offer", o);
                         offersTabFragment.getActivity().startActivityForResult(intent, 1338);
                     }
@@ -478,6 +490,83 @@ public class Receiver {
             }
         });
         queue.add(offerListRequest);
+    }
+
+    public void fillRequests() {
+        final ArrayList<ExchangeItem> requestlist = new ArrayList<ExchangeItem>();
+        StringRequest requestListRequest = new StringRequest(Request.Method.GET, requesturl, new Response.Listener<String>() {
+
+            @Override
+            public void onResponse(String response) {
+                response = response.substring(3);
+                JSONArray jArray = null;
+                try {
+                    jArray = new JSONArray(response);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                for (int i = 0; i < jArray.length(); i++) {
+                    JSONObject jObject = null;
+                    try {
+                        jObject = jArray.getJSONObject(i);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    int tauschid = 0;
+                    String title = "";
+                    String text = "";
+                    String username = "";
+                    String userfirstname = "";
+                    String userlastname = "";
+                    int userid = 0;
+                    boolean done = false;
+                    boolean open = true;
+                    String erdat = "";
+                    String type = "";
+                    try {
+                        tauschid = Integer.parseInt(jObject.getString("tauschid"));
+                        title = jObject.getString("titel");
+                        text = jObject.getString("besch");
+                        username = jObject.getJSONObject("user").getString("benutzer");
+                        userfirstname = jObject.getJSONObject("user").getString("vorname");
+                        userlastname = jObject.getJSONObject("user").getString("nachname");
+                        userid = Integer.parseInt(jObject.getJSONObject("user").getString("userid"));
+                        done = jObject.getBoolean("geloest");
+                        open = jObject.getBoolean("offen");
+                        erdat = jObject.getString("erdat");
+                        type = jObject.getString("art");
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                    ExchangeItem ofitem = new ExchangeItem(tauschid, title, text, username, userfirstname, userlastname, userid, done, open, erdat,type);
+                    requestlist.add(ofitem);
+                } // End Loop
+                ExchangeListAdapter cla = new ExchangeListAdapter(requestsTabFragment.getActivity(), R.layout.exchangelistlayout, requestlist);
+                ListView lv = (ListView) requestsTabFragment.getActivity().findViewById(R.id.requestTabList);
+                lv.setAdapter(cla);
+                // Item Click Listener for the listview
+                AdapterView.OnItemClickListener eventTtemClickListener = new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View container, int position, long id) {
+                        ExchangeItem o = requestlist.get(position);
+                        Intent intent = new Intent(requestsTabFragment.getActivity(), Exchange.class);
+                        intent.putExtra("offer", o);
+                        requestsTabFragment.getActivity().startActivityForResult(intent, 1339);
+                    }
+                };
+                lv.setOnItemClickListener(eventTtemClickListener);
+                //offersTabFragment.mSwipeRefreshLayout.setRefreshing(false);
+            }
+        }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                //offersTabFragment.mSwipeRefreshLayout.setRefreshing(false);
+                Toast.makeText(requestsTabFragment.getActivity(), "Error: " + error.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        });
+        queue.add(requestListRequest);
     }
 
     public void fillComments(HashMap<String, String> params) {
@@ -512,22 +601,59 @@ public class Receiver {
                         erdat = jObject.get("erdat").toString();
                         text = jObject.get("text").toString();
                         firstname = jObject.getJSONObject("autor").get("vorname").toString();
-                        lastname = jObject.getJSONObject("autor").get("nachname").toString().substring(0,1)+".";
+                        lastname = jObject.getJSONObject("autor").get("nachname").toString().substring(0, 1) + ".";
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
                     //TODO: Styling! http://commonsware.com/blog/Android/2010/05/26/html-tags-supported-by-textview.html
-                    comments += "<big>"+firstname+" "+lastname+"</big> <b>"+erdat+"</b><br/>"+text+"<br/><br/>";
+                    comments += "<big>" + firstname + " " + lastname + "</big> <b>" + erdat + "</b><br/>" + text + "<br/><br/>";
                 }
-                TextView tv = (TextView) offer.findViewById(R.id.offerComments);
+                TextView tv = (TextView) exchange.findViewById(R.id.offerComments);
                 tv.setText(Html.fromHtml(comments));
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(offer, "Error: " + error.getMessage(), Toast.LENGTH_LONG).show();
+                Toast.makeText(exchange, "Error: " + error.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
         queue.add(commentsRequest);
+    }
+
+    public void sendNewComment(HashMap<String, String> params , final HashMap<String, String> paramsC) {
+        JsonObjectRequest newInfoRequest = new JsonObjectRequest(Request.Method.POST, newcommenturl, new JSONObject(params), new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                int responsecode = 0;
+                try {
+                    responsecode = (int) response.get("code");
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                switch (responsecode) {
+                    case 0:
+                        Toast.makeText(exchange, "Erfolgreich Kommentiert", Toast.LENGTH_SHORT).show();
+                        EditText offerComment = (EditText) exchange.findViewById(R.id.offerNewComment);
+                        offerComment.setText("");
+                        fillComments(paramsC);
+                        break;
+                    case 1:
+                        Toast.makeText(exchange, "AppKey war falsch, bitte wenden Sie sich an Ihren Systemadministrator", Toast.LENGTH_LONG).show();
+                        break;
+                    case 2:
+                        Toast.makeText(exchange, "Dieser User ist uns nicht bekannt, bitte wenden Sie sich an Ihren Systemadminstrator", Toast.LENGTH_LONG).show();
+                        break;
+                    default:
+                        Toast.makeText(exchange, "Da lief was falsch!!!", Toast.LENGTH_LONG).show();
+                        break;
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(exchange, "Error: " + error.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        });
+        queue.add(newInfoRequest);
     }
 }

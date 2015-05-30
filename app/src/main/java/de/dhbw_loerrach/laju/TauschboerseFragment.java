@@ -19,7 +19,6 @@ public class TauschboerseFragment extends Fragment {
      */
     private static final String ARG_SECTION_NUMBER = "section_number";
     private FragmentTabHost mTabHost;
-
     /**
      * Returns a new instance of this fragment for the given section
      * number.
@@ -54,6 +53,10 @@ public class TauschboerseFragment extends Fragment {
         }
 
         return rootView;
+    }
+
+    public void setTab(int position){
+        mTabHost.setCurrentTab(position);
     }
 
     @Override

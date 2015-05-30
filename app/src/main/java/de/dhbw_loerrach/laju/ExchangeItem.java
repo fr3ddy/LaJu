@@ -5,7 +5,7 @@ import java.io.Serializable;
 /**
  * Created by Frederik on 29.05.2015.
  */
-public class OfferItem  implements Serializable {
+public class ExchangeItem implements Serializable {
     private final String erdat;
     private final boolean open;
     private final boolean done;
@@ -16,8 +16,9 @@ public class OfferItem  implements Serializable {
     private final String userfirstname;
     private final String userlastname;
     private final int userid;
+    private final String type;
 
-    public OfferItem(int tauschid, String title, String text, String username, String userfirstname, String userlastname, int userid, boolean done, boolean open, String erdat) {
+    public ExchangeItem(int tauschid, String title, String text, String username, String userfirstname, String userlastname, int userid, boolean done, boolean open, String erdat , String type) {
         this.tauschid = tauschid;
         this.title = title;
         this.text = text;
@@ -28,6 +29,11 @@ public class OfferItem  implements Serializable {
         this.done = done;
         this.open = open;
         this.erdat = erdat;
+        this.type = type;
+    }
+
+    public String getType() {
+        return type;
     }
 
     public boolean isDone() {

@@ -58,7 +58,6 @@ public class OffersTabFragment extends Fragment {
     private void restoreActionBar() {
         ActionBar actionBar = getActionBar();
         actionBar.setDisplayShowTitleEnabled(true);
-//        actionBar.setTitle(R.string.offers);
         actionBar.setTitle(R.string.tauschboerse);
     }
 

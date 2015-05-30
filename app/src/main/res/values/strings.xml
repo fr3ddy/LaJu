@@ -16,7 +16,7 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="action_example">Example action</string>
-    <string name="send_new_info">Absenden</string>
+    <string name="send">Absenden</string>
     <string name="new_info_hint">Hier können neue Infos eingereicht werden.</string>
     <string name="description">Beschreibung</string>
     <string name="password">Passwort</string>
