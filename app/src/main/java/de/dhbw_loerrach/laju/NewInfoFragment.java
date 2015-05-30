@@ -45,7 +45,7 @@ public class NewInfoFragment extends Fragment {
                 params.put("text", text.getText().toString());
 
                 Receiver receiver = new Receiver(infofragment);
-                receiver.sendNewInfo("http://laju.frederik-frey.de/lajuapp/NeuigkeitEinreichen", params);
+                receiver.sendNewInfo(params);
             }
         });
     }

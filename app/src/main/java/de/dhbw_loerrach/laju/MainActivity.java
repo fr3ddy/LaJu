@@ -135,6 +135,13 @@ public class MainActivity extends AppCompatActivity implements NavigationDrawerF
             case 1337:
                 onNavigationDrawerMainItemSelected(2);
                 break;
+            case 1338:
+                onNavigationDrawerMainItemSelected(3);
+                break;
+            case 1339:
+                onNavigationDrawerMainItemSelected(3);
+                ((TauschboerseFragment) getSupportFragmentManager().findFragmentById(R.id.container)).setTab(1);
+                break;
         }
     }
 

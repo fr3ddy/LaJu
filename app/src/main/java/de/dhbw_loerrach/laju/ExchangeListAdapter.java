@@ -10,13 +10,13 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-public class OfferListAdapter extends ArrayAdapter<OfferItem> {
+public class ExchangeListAdapter extends ArrayAdapter<ExchangeItem> {
 
-    private ArrayList<OfferItem> data;
+    private ArrayList<ExchangeItem> data;
     Context context;
     int layoutResourceId;
 
-    public OfferListAdapter(Context context, int layoutResourceId, ArrayList<OfferItem> data) {
+    public ExchangeListAdapter(Context context, int layoutResourceId, ArrayList<ExchangeItem> data) {
         super(context, layoutResourceId, data);
         this.layoutResourceId = layoutResourceId;
         this.context = context;
