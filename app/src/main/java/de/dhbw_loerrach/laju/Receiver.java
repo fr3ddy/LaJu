@@ -47,6 +47,7 @@ public class Receiver {
     private String newcommenturl = "http://laju.frederik-frey.de/lajuapp/eintragKommentieren";
     private String requesturl = "http://laju.frederik-frey.de/lajuapp/gibAlleNachfragen/123456";
     private String newexchangeurl = "http://laju.frederik-frey.de/lajuapp/eintragEinreichen";
+    private String closeexchangeurl = "http://laju.frederik-frey.de/lajuapp/eintragSchliessen";
 
     public Receiver(InfoTabFragment infoTabFragment) {
         queue = Volley.newRequestQueue(infoTabFragment.getActivity());
@@ -697,5 +698,40 @@ public class Receiver {
             }
         });
         queue.add(newExchangeRequest);
+    }
+
+    public void closeExchange(HashMap<String, String> params) {
+        JsonObjectRequest newCloseExchangeRequest = new JsonObjectRequest(Request.Method.POST, closeexchangeurl, new JSONObject(params), new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                int responsecode = 0;
+                try {
+                    responsecode = (int) response.get("code");
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                switch (responsecode) {
+                    case 0:
+                        Toast.makeText(exchange, "Erfolgreich abgeschlossen", Toast.LENGTH_SHORT).show();
+                        exchange.finish();
+                        break;
+                    case 1:
+                        Toast.makeText(exchange, "AppKey war falsch, bitte wenden Sie sich an Ihren Systemadministrator", Toast.LENGTH_LONG).show();
+                        break;
+                    case 2:
+                        Toast.makeText(exchange, "Dieser User ist uns nicht bekannt, bitte wenden Sie sich an Ihren Systemadminstrator", Toast.LENGTH_LONG).show();
+                        break;
+                    default:
+                        Toast.makeText(exchange, "Da lief was falsch!!!", Toast.LENGTH_LONG).show();
+                        break;
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(exchange, "Error: " + error.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        });
+        queue.add(newCloseExchangeRequest);
     }
 }

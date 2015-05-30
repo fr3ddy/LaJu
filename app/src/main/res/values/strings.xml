@@ -31,4 +31,9 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="new_info_title">Titel eintragen</string>
     <string name="new_exchange">Neuer Tauschbörseneintrag</string>
+    <string name="solved">Gelöst</string>
+    <string name="dialog_msg_solved">Wurde dein Fall gelöst?</string>
+    <string name="dialog_title_solved">Gelöst?</string>
+    <string name="yes">Ja</string>
+    <string name="no">Nein</string>
 </resources>
