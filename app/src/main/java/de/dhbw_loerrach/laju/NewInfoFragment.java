@@ -40,7 +40,7 @@ public class NewInfoFragment extends Fragment {
 
                 HashMap<String , String> params = new HashMap<String , String>();
                 params.put("appkey", "123456");
-                params.put("autor", ((NewInfo) getActivity()).getBenutzername());
+                params.put("autor", User.getInstance().username);
                 params.put("titel", title.getText().toString());
                 params.put("text", text.getText().toString());
 

@@ -18,9 +18,6 @@ public class NewInfo extends AppCompatActivity {
         Toolbar mToolbar = (Toolbar) findViewById(R.id.tool_bar);
         setSupportActionBar(mToolbar);
 
-        Intent intent = getIntent();
-        benutzername = intent.getStringExtra(getString(R.string.username));
-
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
@@ -29,7 +26,4 @@ public class NewInfo extends AppCompatActivity {
         return super.onNavigateUp();
     }
 
-    public String getBenutzername(){
-        return benutzername;
-    }
 }

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="exchange_types">
+        <item>Angebot</item>
+        <item>Nachfrage</item>
+    </string-array>
+</resources>

@@ -35,6 +35,7 @@ public class Receiver {
     private OffersTabFragment offersTabFragment;
     private RequestsTabFragment requestsTabFragment;
     private Exchange exchange;
+    private NewExchangeFragment newExchangeFragment;
     private String infourl = "http://laju.frederik-frey.de/lajuapp/gibAlleNeuigkeiten/123456";
     private String eventurl = "http://laju.frederik-frey.de/lajuapp/gibVeranstaltungen/123456";
     private String newnewsurl = "http://laju.frederik-frey.de/lajuapp/NeuigkeitEinreichen";
@@ -45,6 +46,8 @@ public class Receiver {
     private String commentsurl = "http://laju.frederik-frey.de/lajuapp/gibKommentare";
     private String newcommenturl = "http://laju.frederik-frey.de/lajuapp/eintragKommentieren";
     private String requesturl = "http://laju.frederik-frey.de/lajuapp/gibAlleNachfragen/123456";
+    private String newexchangeurl = "http://laju.frederik-frey.de/lajuapp/eintragEinreichen";
+    private String closeexchangeurl = "http://laju.frederik-frey.de/lajuapp/eintragSchliessen";
 
     public Receiver(InfoTabFragment infoTabFragment) {
         queue = Volley.newRequestQueue(infoTabFragment.getActivity());
@@ -84,6 +87,11 @@ public class Receiver {
     public Receiver(Exchange exchange) {
         queue = Volley.newRequestQueue(exchange);
         this.exchange = exchange;
+    }
+
+    public Receiver(NewExchangeFragment newExchangeFragment) {
+        queue = Volley.newRequestQueue(newExchangeFragment.getActivity());
+        this.newExchangeFragment = newExchangeFragment;
     }
 
     public void fillInfos() {
@@ -351,7 +359,7 @@ public class Receiver {
                             String firstname = (String) response.get("vorname");
                             String lastname = (String) response.get("nachname");
                             String email = (String) response.get("email");
-                            User.login(u, firstname, lastname, email);
+                            User.login(login , u, firstname, lastname, email);
                             login.finish();
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -655,5 +663,75 @@ public class Receiver {
             }
         });
         queue.add(newInfoRequest);
+    }
+
+    public void sendNewExchange(final HashMap<String, String> params) {
+        final JsonObjectRequest newExchangeRequest = new JsonObjectRequest(Request.Method.POST, newexchangeurl, new JSONObject(params), new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                int responsecode = 0;
+                try {
+                    responsecode = (int) response.get("code");
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                switch (responsecode) {
+                    case 0:
+                        Toast.makeText(newExchangeFragment.getActivity(), params.get("art") + " erfolgreich eingereicht", Toast.LENGTH_SHORT).show();
+                        newExchangeFragment.getActivity().finish();
+                        break;
+                    case 1:
+                        Toast.makeText(newExchangeFragment.getActivity(), "AppKey war falsch, bitte wenden Sie sich an Ihren Systemadministrator", Toast.LENGTH_LONG).show();
+                        break;
+                    case 2:
+                        Toast.makeText(newExchangeFragment.getActivity(), "Dieser User ist uns nicht bekannt, bitte wenden Sie sich an Ihren Systemadminstrator", Toast.LENGTH_LONG).show();
+                        break;
+                    default:
+                        Toast.makeText(newExchangeFragment.getActivity(), "Da lief was falsch!!!", Toast.LENGTH_LONG).show();
+                        break;
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(newExchangeFragment.getActivity(), "Error: " + error.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        });
+        queue.add(newExchangeRequest);
+    }
+
+    public void closeExchange(HashMap<String, String> params) {
+        JsonObjectRequest newCloseExchangeRequest = new JsonObjectRequest(Request.Method.POST, closeexchangeurl, new JSONObject(params), new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                int responsecode = 0;
+                try {
+                    responsecode = (int) response.get("code");
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                switch (responsecode) {
+                    case 0:
+                        Toast.makeText(exchange, "Erfolgreich abgeschlossen", Toast.LENGTH_SHORT).show();
+                        exchange.finish();
+                        break;
+                    case 1:
+                        Toast.makeText(exchange, "AppKey war falsch, bitte wenden Sie sich an Ihren Systemadministrator", Toast.LENGTH_LONG).show();
+                        break;
+                    case 2:
+                        Toast.makeText(exchange, "Dieser User ist uns nicht bekannt, bitte wenden Sie sich an Ihren Systemadminstrator", Toast.LENGTH_LONG).show();
+                        break;
+                    default:
+                        Toast.makeText(exchange, "Da lief was falsch!!!", Toast.LENGTH_LONG).show();
+                        break;
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(exchange, "Error: " + error.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        });
+        queue.add(newCloseExchangeRequest);
     }
 }

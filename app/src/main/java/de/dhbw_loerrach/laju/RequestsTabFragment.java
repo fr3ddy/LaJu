@@ -52,6 +52,10 @@ public class RequestsTabFragment extends Fragment {
         if(item != null) {
             item.setVisible(false);
         }
+        MenuItem item2 = menu.findItem(R.id.action_addExchange);
+        if(item2 != null && User.isLoggedIn()){
+            item2.setVisible(true);
+        }
         super.onPrepareOptionsMenu(menu);
     }
 

@@ -34,6 +34,8 @@ public class MainActivity extends AppCompatActivity implements NavigationDrawerF
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        User.relogin(MainActivity.this);
+
         toolbar = (Toolbar) findViewById(R.id.tool_bar); // Attaching the layout to the toolbar object
         setSupportActionBar(toolbar);
 
@@ -51,6 +53,16 @@ public class MainActivity extends AppCompatActivity implements NavigationDrawerF
 //        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
         actionBar.setDisplayShowTitleEnabled(true);
         actionBar.setTitle(mTitle);
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        MenuItem item = menu.findItem(R.id.action_addExchange);
+        if(item != null) {
+            item.setVisible(false);
+        }
+        super.onPrepareOptionsMenu(menu);
+        return false;
     }
 
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -77,7 +89,9 @@ public class MainActivity extends AppCompatActivity implements NavigationDrawerF
         //noinspection SimplifiableIfStatement
         if (title.equals(getString(R.string.new_info))) {
             Intent intent = new Intent(this,NewInfo.class);
-            intent.putExtra(getString(R.string.username), "freyfr");
+            startActivity(intent);
+        }else if (title.equals(getString(R.string.new_exchange))) {
+            Intent intent = new Intent(this,NewExchange.class);
             startActivity(intent);
         }
 
@@ -91,20 +105,20 @@ public class MainActivity extends AppCompatActivity implements NavigationDrawerF
 
         switch (position){
             case 1:
-                fragmentManager.beginTransaction().replace(R.id.container, MainFragment.newInstance(0)).commit();
+                fragmentManager.beginTransaction().replace(R.id.container, MainFragment.newInstance(0)).commitAllowingStateLoss();
                 setTitle(R.string.infos);
                 break;
             case 2:
-                fragmentManager.beginTransaction().replace(R.id.container, MainFragment.newInstance(1)).commit();
+                fragmentManager.beginTransaction().replace(R.id.container, MainFragment.newInstance(1)).commitAllowingStateLoss();
                 setTitle(R.string.events);
                 break;
             case 3:
-                fragmentManager.beginTransaction().replace(R.id.container, TauschboerseFragment.newInstance()).commit();
+                fragmentManager.beginTransaction().replace(R.id.container, TauschboerseFragment.newInstance()).commitAllowingStateLoss();
                 setTitle(R.string.tauschboerse);
                 break;
             default:
                 // Lade Infos per Default
-                fragmentManager.beginTransaction().replace(R.id.container, MainFragment.newInstance(position)).commit();
+                fragmentManager.beginTransaction().replace(R.id.container, MainFragment.newInstance(position)).commitAllowingStateLoss();
                 setTitle(R.string.infos);
                 break;
         }
@@ -118,7 +132,7 @@ public class MainActivity extends AppCompatActivity implements NavigationDrawerF
                 Toast.makeText(this, "bearbeiten", Toast.LENGTH_LONG).show();
                 break;
             case 2:
-                Toast.makeText(this, "abmelden", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, "Erfolgreich abgemeldet", Toast.LENGTH_LONG).show();
                 User.logout();
                 break;
             default:
@@ -130,7 +144,7 @@ public class MainActivity extends AppCompatActivity implements NavigationDrawerF
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
+        //super.onActivityResult(requestCode, resultCode, data);
         switch(resultCode){
             case 1337:
                 onNavigationDrawerMainItemSelected(2);

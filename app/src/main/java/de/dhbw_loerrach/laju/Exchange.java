@@ -1,7 +1,9 @@
 package de.dhbw_loerrach.laju;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -10,6 +12,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.HashMap;
 
@@ -69,10 +72,10 @@ public class Exchange extends AppCompatActivity {
                     paramsC.put("tauschid", "" + o.getTauschid());
                     paramsC.put("user", User.getInstance().username);
                     paramsC.put("text", offerComment.getText().toString());
-                    receiver.sendNewComment(paramsC , params);
+                    receiver.sendNewComment(paramsC, params);
                 }
             });
-        }else{
+        } else {
             offerButton.setVisibility(View.INVISIBLE);
             offerComment.setVisibility(View.INVISIBLE);
         }
@@ -82,8 +85,20 @@ public class Exchange extends AppCompatActivity {
     }
 
     @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        MenuItem item = menu.findItem(R.id.action_markAsSolved);
+        if (item != null) {
+            item.setVisible(false);
+            if (User.isLoggedIn() && o.isOpen() && o.getUsername().equals(User.getInstance().username)) {
+                item.setVisible(true);
+            }
+        }
+        return super.onPrepareOptionsMenu(menu);
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_offer, menu);
+        getMenuInflater().inflate(R.menu.menu_exchange, menu);
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -93,7 +108,7 @@ public class Exchange extends AppCompatActivity {
             // Respond to the action bar's Up/Home button
             case android.R.id.home:
                 //NavUtils.navigateUpFromSameTask(this);
-                switch (o.getType()){
+                switch (o.getType()) {
                     case "Angebot":
                         setResult(1338);
                         break;
@@ -102,6 +117,32 @@ public class Exchange extends AppCompatActivity {
                         break;
                 }
                 finish();
+                return true;
+            case R.id.action_markAsSolved:
+                final Receiver receiver = new Receiver(Exchange.this);
+                final HashMap<String , String> params = new HashMap<String,String>();
+                params.put("appkey" , "123456");
+                params.put("user" , o.getUsername());
+                params.put("tauschid" , o.getTauschid()+"");
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(Exchange.this);
+                builder.setMessage(R.string.dialog_msg_solved).setTitle(R.string.dialog_title_solved);
+                builder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // User clicked OK button
+                        params.put("geloest" , "TRUE");
+                        receiver.closeExchange(params);
+                    }
+                });
+                builder.setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // User cancelled the dialog
+                        params.put("geloest" , "FALSE");
+                        receiver.closeExchange(params);
+                    }
+                });
+                AlertDialog dialog = builder.create();
+                dialog.show();
                 return true;
         }
         return super.onOptionsItemSelected(item);
