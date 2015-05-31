@@ -31,11 +31,12 @@ public class Exchange extends AppCompatActivity {
 
         Intent intent = getIntent();
         o = (ExchangeItem) intent.getSerializableExtra("offer");
-        //TODO: DESIGN DEN SHIIIIT
+
         TextView offerErdat = (TextView) findViewById(R.id.offerErdat);
         TextView offerText = (TextView) findViewById(R.id.offerText);
         TextView offerName = (TextView) findViewById(R.id.offerName);
         TextView offerStatus = (TextView) findViewById(R.id.offerStatus);
+        View offerSeparator = (View) findViewById(R.id.separator);
         final EditText offerComment = (EditText) findViewById(R.id.offerNewComment);
         Button offerButton = (Button) findViewById(R.id.offerSubmitComment);
 
@@ -78,6 +79,7 @@ public class Exchange extends AppCompatActivity {
         } else {
             offerButton.setVisibility(View.INVISIBLE);
             offerComment.setVisibility(View.INVISIBLE);
+            offerSeparator.setVisibility(View.INVISIBLE);
         }
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);

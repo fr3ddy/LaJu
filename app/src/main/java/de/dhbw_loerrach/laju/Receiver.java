@@ -1,11 +1,15 @@
 package de.dhbw_loerrach.laju;
 
 
+import android.content.Context;
 import android.content.Intent;
 import android.text.Html;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
+import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -21,6 +25,7 @@ import com.android.volley.toolbox.Volley;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -487,13 +492,13 @@ public class Receiver {
                     }
                 };
                 lv.setOnItemClickListener(eventTtemClickListener);
-                //offersTabFragment.mSwipeRefreshLayout.setRefreshing(false);
+                offersTabFragment.mSwipeRefreshLayout.setRefreshing(false);
             }
         }, new Response.ErrorListener() {
 
             @Override
             public void onErrorResponse(VolleyError error) {
-                //offersTabFragment.mSwipeRefreshLayout.setRefreshing(false);
+                offersTabFragment.mSwipeRefreshLayout.setRefreshing(false);
                 Toast.makeText(offersTabFragment.getActivity(), "Error: " + error.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
@@ -564,13 +569,13 @@ public class Receiver {
                     }
                 };
                 lv.setOnItemClickListener(eventTtemClickListener);
-                //offersTabFragment.mSwipeRefreshLayout.setRefreshing(false);
+                requestsTabFragment.mSwipeRefreshLayout.setRefreshing(false);
             }
         }, new Response.ErrorListener() {
 
             @Override
             public void onErrorResponse(VolleyError error) {
-                //offersTabFragment.mSwipeRefreshLayout.setRefreshing(false);
+                requestsTabFragment.mSwipeRefreshLayout.setRefreshing(false);
                 Toast.makeText(requestsTabFragment.getActivity(), "Error: " + error.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
@@ -614,10 +619,25 @@ public class Receiver {
                         e.printStackTrace();
                     }
                     //TODO: Styling! http://commonsware.com/blog/Android/2010/05/26/html-tags-supported-by-textview.html
-                    comments += "<big>" + firstname + " " + lastname + "</big> <b>" + erdat + "</b><br/>" + text + "<br/><br/>";
+                    LayoutInflater inflater = (LayoutInflater) exchange.getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+//                    LinearLayout linearLayout = (LinearLayout) exchange.findViewById(R.id.offerCommentsList);
+                    View view = inflater.inflate(R.layout.comments, null);
+                    LinearLayout container = (LinearLayout) exchange.findViewById(R.id.flContainer);
+                    TextView cText = (TextView) view.findViewById(R.id.text);
+                    cText.setText(text);
+
+                    TextView date = (TextView) view.findViewById(R.id.date);
+                    date.setText(erdat);
+
+                    TextView author = (TextView) view.findViewById(R.id.author);
+                    author.setText(firstname + " " + lastname);
+
+                    container.addView(view);
+
+//                    comments += "<big>" + firstname + " " + lastname + "</big> <b>" + erdat + "</b><br/>" + text + "<br/><br/>";
                 }
-                TextView tv = (TextView) exchange.findViewById(R.id.offerComments);
-                tv.setText(Html.fromHtml(comments));
+//                TextView tv = (TextView) exchange.findViewById(R.id.offerComments);
+//                tv.setText(Html.fromHtml(comments));
             }
         }, new Response.ErrorListener() {
             @Override

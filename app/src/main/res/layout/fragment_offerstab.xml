@@ -1,12 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:orientation="vertical"
-              android:paddingTop="50dp">
+<de.dhbw_loerrach.laju.CustomSwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                                                android:id="@+id/swipe_refresh_layout"
+                                                android:layout_width="match_parent"
+                                                android:layout_height="wrap_content"
+                                                android:layout_marginTop="50dp" >
+    <LinearLayout android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:orientation="vertical" >
 
-    <ListView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/offersTabList"/>
-</LinearLayout>
+        <ListView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/offersTabList"/>
+    </LinearLayout>
+</de.dhbw_loerrach.laju.CustomSwipeRefreshLayout>

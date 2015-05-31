@@ -3,6 +3,7 @@ package de.dhbw_loerrach.laju;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
@@ -17,6 +18,8 @@ import android.widget.ListView;
  * Created by Frederik on 16.05.2015.
  */
 public class RequestsTabFragment extends Fragment {
+    public CustomSwipeRefreshLayout mSwipeRefreshLayout;
+    private ListView mListView;
 
     public static RequestsTabFragment newInstance() {
         RequestsTabFragment fragment = new RequestsTabFragment();
@@ -44,6 +47,35 @@ public class RequestsTabFragment extends Fragment {
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         restoreActionBar();
         super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        final RequestsTabFragment tmpfrag = this;
+
+        mListView = (ListView) getActivity().findViewById(R.id.requestTabList);
+
+        mSwipeRefreshLayout = (CustomSwipeRefreshLayout) getActivity().findViewById(R.id.swipe_refresh_layout);
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                Receiver receiver = new Receiver(tmpfrag);
+                receiver.fillRequests();
+            }
+        });
+
+        mSwipeRefreshLayout.setColorSchemeResources(R.color.bright_green, R.color.dark_green);
+
+        mSwipeRefreshLayout.setOnChildScrollUpListener(new CustomSwipeRefreshLayout.OnChildScrollUpListener() {
+            @Override
+            public boolean canChildScrollUp() {
+                return mListView.getFirstVisiblePosition() > 0 ||
+                        mListView.getChildAt(0) == null ||
+                        mListView.getChildAt(0).getTop() < 0;
+            }
+        });;
     }
 
     @Override

@@ -46,15 +46,21 @@ public class NewExchangeFragment extends Fragment {
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                HashMap<String , String> params = new HashMap<String , String>();
-                params.put("appkey" , "123456");
-                params.put("titel" , title.getText().toString());
-                params.put("besch" , text.getText().toString());
-                params.put("user" , User.getInstance().username);
-                params.put("art" , type.getSelectedItem().toString());
+                if(title.length() == 0) {
+                    title.setError("Bitte geben Sie einen Titel ein!");
+                } else if (text.length() == 0) {
+                    text.setError("Bitte geben Sie einen Text ein!");
+                } else{
+                    HashMap<String, String> params = new HashMap<String, String>();
+                    params.put("appkey", "123456");
+                    params.put("titel", title.getText().toString());
+                    params.put("besch", text.getText().toString());
+                    params.put("user", User.getInstance().username);
+                    params.put("art", type.getSelectedItem().toString());
 
-                Receiver receiver = new Receiver(newExchangeFragment);
-                receiver.sendNewExchange(params);
+                    Receiver receiver = new Receiver(newExchangeFragment);
+                    receiver.sendNewExchange(params);
+                }
             }
         });
     }

@@ -7,48 +7,74 @@
     <LinearLayout android:id="@+id/container"
                   android:layout_width="match_parent"
                   android:layout_height="match_parent"
-                  android:orientation="vertical" >
+                  android:orientation="vertical">
 
         <include
             android:id="@+id/tool_bar"
             layout="@layout/tool_bar"/>
 
-        <TextView
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:paddingLeft="@dimen/activity_horizontal_margin"
             android:paddingRight="@dimen/activity_horizontal_margin"
-            android:id="@+id/offerErdat"/>
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingLeft="@dimen/activity_horizontal_margin"
-            android:paddingRight="@dimen/activity_horizontal_margin"
-            android:id="@+id/offerText"/>
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingLeft="@dimen/activity_horizontal_margin"
-            android:paddingRight="@dimen/activity_horizontal_margin"
-            android:id="@+id/offerName"/>
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingLeft="@dimen/activity_horizontal_margin"
-            android:paddingRight="@dimen/activity_horizontal_margin"
-            android:id="@+id/offerStatus"/>
+            android:orientation="vertical">
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingLeft="@dimen/activity_horizontal_margin"
-            android:paddingRight="@dimen/activity_horizontal_margin"
-            android:id="@+id/offerComments"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/title"
+                android:id="@+id/offerStatus"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/text"
+                android:id="@+id/offerText"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:gravity="right"
+                android:id="@+id/offerErdat"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:gravity="right"
+                android:textColor="@color/bright_green"
+                android:id="@+id/offerName"/>
+        </LinearLayout>
+
+
+        <LinearLayout android:id="@+id/flContainer"
+                      android:paddingLeft="@dimen/activity_horizontal_margin"
+                      android:paddingRight="@dimen/activity_horizontal_margin"
+                      android:layout_width="match_parent"
+                      android:layout_height="match_parent"
+                      android:orientation="vertical">
+        </LinearLayout>
+
+        <LinearLayout android:id="@+id/offerCommentsList"
+                      android:layout_width="match_parent"
+                      android:layout_height="match_parent"
+                      android:paddingLeft="@dimen/activity_horizontal_margin"
+                      android:paddingRight="@dimen/activity_horizontal_margin"
+                      android:orientation="vertical">
+        </LinearLayout>
+
+        <View android:id="@+id/separator"
+              android:layout_width="fill_parent"
+              android:layout_height="2dp"
+              android:layout_marginTop="@dimen/line_spacing_text"
+              android:layout_marginBottom="@dimen/line_spacing_text"
+              android:background="@color/bright_green"/>
+
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingLeft="@dimen/activity_horizontal_margin"
             android:paddingRight="@dimen/activity_horizontal_margin"
+            android:hint="Kommentar"
             android:id="@+id/offerNewComment"/>
         <Button
             android:layout_width="match_parent"
