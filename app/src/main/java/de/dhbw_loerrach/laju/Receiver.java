@@ -753,4 +753,13 @@ public class Receiver {
         });
         queue.add(newCloseExchangeRequest);
     }
+
+    public void clearQueue(){
+        queue.cancelAll(new RequestQueue.RequestFilter() {
+            @Override
+            public boolean apply(Request<?> request) {
+                return true;
+            }
+        });
+    }
 }

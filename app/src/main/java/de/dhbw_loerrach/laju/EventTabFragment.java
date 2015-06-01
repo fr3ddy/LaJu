@@ -60,6 +60,7 @@ public class EventTabFragment extends Fragment {
             @Override
             public void onRefresh() {
                 Receiver receiver = new Receiver(tmpfrag);
+                receiver.clearQueue();
                 receiver.fillEvents();
             }
         });
@@ -103,6 +104,7 @@ public class EventTabFragment extends Fragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         Receiver receiver = new Receiver(this);
+        receiver.clearQueue();
         receiver.fillEvents();
     }
 

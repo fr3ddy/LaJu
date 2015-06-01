@@ -46,9 +46,9 @@ public class NewExchangeFragment extends Fragment {
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(title.length() == 0) {
+                if(title.getText().toString().length() == 0) {
                     title.setError("Bitte geben Sie einen Titel ein!");
-                } else if (text.length() == 0) {
+                } else if (text.getText().toString().length() == 0) {
                     text.setError("Bitte geben Sie einen Text ein!");
                 } else{
                     HashMap<String, String> params = new HashMap<String, String>();
