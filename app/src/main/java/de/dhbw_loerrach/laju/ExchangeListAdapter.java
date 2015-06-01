@@ -41,7 +41,13 @@ public class ExchangeListAdapter extends ArrayAdapter<ExchangeItem> {
             holder = (OfferHolder) row.getTag();
         }
 
-        holder.title.setText(data.get(position).getTitle());
+        String title;
+        if(data.get(position).isOpen()) {
+            title = data.get(position).getTitle();
+        } else {
+            title = "[Geschlossen] " + data.get(position).getTitle();
+        }
+        holder.title.setText(title);
         holder.erdat.setText(data.get(position).getErdat());
 
         return row;
