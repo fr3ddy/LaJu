@@ -1,19 +1,22 @@
 package de.dhbw_loerrach.laju;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 
 public class Event extends AppCompatActivity {
     private CharSequence mTitle;
-
+    private EventItem e;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -23,20 +26,32 @@ public class Event extends AppCompatActivity {
         setSupportActionBar(mToolbar);
 
         Intent intent = getIntent();
-        EventItem e = (EventItem) intent.getSerializableExtra("event");
+        e = (EventItem) intent.getSerializableExtra("event");
         TextView eventItemUntertitel = (TextView) findViewById(R.id.eventItemUntertitel);
         TextView eventItemBeschreibung = (TextView) findViewById(R.id.eventItemBeschreibung);
         TextView eventItemDatumVon = (TextView) findViewById(R.id.eventItemDatumVon);
         TextView eventItemDatumBis = (TextView) findViewById(R.id.eventItemDatumBis);
 
         setTitle(e.getTitel());
-        eventItemUntertitel.setText(e.getUntertitel());
+
+        if(!e.getUntertitel().equals("{}")) {
+            eventItemUntertitel.setText(e.getUntertitel());
+        }
         eventItemBeschreibung.setText(e.getBeschreibung());
         eventItemDatumVon.setText(e.getDatum_von());
         eventItemDatumBis.setText(e.getDatum_bis());
         new DownloadImageTask((ImageView) findViewById(R.id.eventItemImage)).execute(e.getBild());
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        MenuItem item = menu.findItem(R.id.urlBtn);
+        if(!e.getUrl().toString().contains("http")) {
+            item.setVisible(false);
+        }
+        return super.onPrepareOptionsMenu(menu);
     }
 
     @Override
@@ -54,6 +69,10 @@ public class Event extends AppCompatActivity {
                 setResult(1337);
                 finish();
                 return true;
+            case R.id.urlBtn:
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(e.getUrl()));
+                startActivity(browserIntent);
+                break;
         }
         return super.onOptionsItemSelected(item);
     }

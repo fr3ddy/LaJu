@@ -48,7 +48,7 @@ class EventListAdapter extends ArrayAdapter<EventItem> {
         }
 
         holder.eventTitel.setText(data.get(position).getTitel());
-        holder.eventUntertitel.setText(data.get(position).getUntertitel());
+        holder.eventUntertitel.setText(data.get(position).getUntertitel().equals("{}") ? "" : data.get(position).getUntertitel());
         holder.eventStart.setText(data.get(position).getDatum_von());
 
         return row;
