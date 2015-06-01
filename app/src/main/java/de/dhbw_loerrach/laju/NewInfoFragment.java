@@ -38,14 +38,20 @@ public class NewInfoFragment extends Fragment {
                 EditText title = (EditText) view.findViewById(R.id.newInfoTitle);
                 EditText text = (EditText) view.findViewById(R.id.newInfoText);
 
-                HashMap<String , String> params = new HashMap<String , String>();
-                params.put("appkey", "123456");
-                params.put("autor", User.getInstance().username);
-                params.put("titel", title.getText().toString());
-                params.put("text", text.getText().toString());
+                if(title.getText().toString().length() == 0){
+                    title.setError("Bitte geben Sie einen Titel ein!");
+                }else if(text.getText().toString().length() == 0){
+                    text.setError("Bitte geben Sie einen Text ein!");
+                }else{
+                    HashMap<String , String> params = new HashMap<String , String>();
+                    params.put("appkey", "123456");
+                    params.put("autor", User.getInstance().username);
+                    params.put("titel", title.getText().toString());
+                    params.put("text", text.getText().toString());
 
-                Receiver receiver = new Receiver(infofragment);
-                receiver.sendNewInfo(params);
+                    Receiver receiver = new Receiver(infofragment);
+                    receiver.sendNewInfo(params);
+                }
             }
         });
     }
