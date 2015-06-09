@@ -37,4 +37,7 @@
     <string name="yes">Ja</string>
     <string name="no">Nein</string>
     <string name="eventWebsite">Webseite</string>
+    <string name="edit">Ändern</string>
+    <string name="oldPassword">Aktuelles Passwort</string>
+    <string name="editUser">Profil bearbeiten</string>
 </resources>

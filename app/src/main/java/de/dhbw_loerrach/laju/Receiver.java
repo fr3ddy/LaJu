@@ -41,6 +41,7 @@ public class Receiver {
     private RequestsTabFragment requestsTabFragment;
     private Exchange exchange;
     private NewExchangeFragment newExchangeFragment;
+    private EditUser editUser;
     private String infourl = "http://laju.frederik-frey.de/lajuapp/gibAlleNeuigkeiten/123456";
     private String eventurl = "http://laju.frederik-frey.de/lajuapp/gibVeranstaltungen/123456";
     private String newnewsurl = "http://laju.frederik-frey.de/lajuapp/NeuigkeitEinreichen";
@@ -97,6 +98,11 @@ public class Receiver {
     public Receiver(NewExchangeFragment newExchangeFragment) {
         queue = Volley.newRequestQueue(newExchangeFragment.getActivity());
         this.newExchangeFragment = newExchangeFragment;
+    }
+
+    public Receiver(EditUser editUserinstance) {
+        queue = Volley.newRequestQueue(editUserinstance);
+        this.editUser = editUserinstance;
     }
 
     public void fillInfos() {
@@ -753,6 +759,40 @@ public class Receiver {
         queue.add(newCloseExchangeRequest);
     }
 
+    public void editUser(final HashMap<String, String> params) {
+        final JsonObjectRequest newEditUserRequest = new JsonObjectRequest(Request.Method.POST, newexchangeurl, new JSONObject(params), new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                int responsecode = 0;
+                try {
+                    responsecode = (int) response.get("code");
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                switch (responsecode) {
+                    case 0:
+                        Toast.makeText(editUser, params.get("art") + " erfolgreich eingereicht", Toast.LENGTH_SHORT).show();
+                        editUser.finish();
+                        break;
+                    case 1:
+                        Toast.makeText(editUser, "AppKey war falsch, bitte wenden Sie sich an Ihren Systemadministrator", Toast.LENGTH_LONG).show();
+                        break;
+                    case 2:
+                        Toast.makeText(editUser, "Diese Email Adresse gibt es schon, versuche bitte eine andere!", Toast.LENGTH_LONG).show();
+                        break;
+                    default:
+                        Toast.makeText(editUser, "Da lief was falsch!!!", Toast.LENGTH_LONG).show();
+                        break;
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(editUser, "Error: " + error.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        });
+        queue.add(newEditUserRequest);
+    }
     public void clearQueue(){
         queue.cancelAll(new RequestQueue.RequestFilter() {
             @Override
