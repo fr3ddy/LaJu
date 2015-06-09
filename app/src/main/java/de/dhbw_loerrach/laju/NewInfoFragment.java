@@ -44,7 +44,7 @@ public class NewInfoFragment extends Fragment {
                     text.setError("Bitte geben Sie einen Text ein!");
                 }else{
                     HashMap<String , String> params = new HashMap<String , String>();
-                    params.put("appkey", String.valueOf(R.string.appkey));
+                    params.put("appkey", getString(R.string.appkeyweb));
                     params.put("autor", User.getInstance().username);
                     params.put("titel", title.getText().toString());
                     params.put("text", text.getText().toString());

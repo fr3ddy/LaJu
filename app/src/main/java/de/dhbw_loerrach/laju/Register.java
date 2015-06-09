@@ -86,7 +86,7 @@ public class Register extends AppCompatActivity {
                     password_c.setError("Ihre Passwörter stimmen nicht überein!");
                 } else {
                     HashMap<String, String> params = new HashMap<String, String>();
-                    params.put("appkey", String.valueOf(R.string.appkey));
+                    params.put("appkey", getString(R.string.appkeyweb));
                     params.put("benutzername", u);
                     params.put("passwort", p);
                     params.put("email", e);

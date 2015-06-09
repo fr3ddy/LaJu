@@ -43,16 +43,16 @@ public class Receiver {
     private NewExchangeFragment newExchangeFragment;
     private EditUser editUser;
     private String basic = "http://laju.frederik-frey.de/lajuapp/";
-    private String infourl = basic +"gibAlleNeuigkeiten/"+R.string.appkey;
-    private String eventurl = basic +"gibVeranstaltungen/"+R.string.appkey;
+    private String infourl = basic +"gibAlleNeuigkeiten/";
+    private String eventurl = basic +"gibVeranstaltungen/";
     private String newnewsurl = basic +"NeuigkeitEinreichen";
     private String loginurl = basic +"einloggen";
     private String registerurl = basic +"registriereBenutzer";
     private String userdataurl = basic +"gibUserDaten";
-    private String offersurl = basic +"gibAlleAngebote/"+R.string.appkey;
+    private String offersurl = basic +"gibAlleAngebote/";
     private String commentsurl = basic +"gibKommentare";
     private String newcommenturl = basic +"eintragKommentieren";
-    private String requesturl = basic +"gibAlleNachfragen/"+R.string.appkey;
+    private String requesturl = basic +"gibAlleNachfragen/";
     private String newexchangeurl = basic +"eintragEinreichen";
     private String closeexchangeurl = basic +"eintragSchliessen";
     private String edituserurl = basic +"aendereUserdaten";
@@ -60,56 +60,66 @@ public class Receiver {
     public Receiver(InfoTabFragment infoTabFragment) {
         queue = Volley.newRequestQueue(infoTabFragment.getActivity());
         this.infoTabFragment = infoTabFragment;
+        clearQueue();
     }
 
     public Receiver(EventTabFragment eventTabFragment) {
         queue = Volley.newRequestQueue(eventTabFragment.getActivity());
         this.eventTabFragment = eventTabFragment;
+        clearQueue();
     }
 
     public Receiver(NewInfoFragment newInfoFragment) {
         queue = Volley.newRequestQueue(newInfoFragment.getActivity());
         this.newInfoFragment = newInfoFragment;
+        clearQueue();
     }
 
     public Receiver(Login login) {
         queue = Volley.newRequestQueue(login);
         this.login = login;
+        clearQueue();
     }
 
     public Receiver(Register register) {
         queue = Volley.newRequestQueue(register);
         this.register = register;
+        clearQueue();
     }
 
     public Receiver(OffersTabFragment offersTabFragment) {
         queue = Volley.newRequestQueue(offersTabFragment.getActivity());
         this.offersTabFragment = offersTabFragment;
+        clearQueue();
     }
 
     public Receiver(RequestsTabFragment requestsTabFragment) {
         queue = Volley.newRequestQueue(requestsTabFragment.getActivity());
         this.requestsTabFragment = requestsTabFragment;
+        clearQueue();
     }
 
     public Receiver(Exchange exchange) {
         queue = Volley.newRequestQueue(exchange);
         this.exchange = exchange;
+        clearQueue();
     }
 
     public Receiver(NewExchangeFragment newExchangeFragment) {
         queue = Volley.newRequestQueue(newExchangeFragment.getActivity());
         this.newExchangeFragment = newExchangeFragment;
+        clearQueue();
     }
 
     public Receiver(EditUser editUserinstance) {
         queue = Volley.newRequestQueue(editUserinstance);
         this.editUser = editUserinstance;
+        clearQueue();
     }
 
     public void fillInfos() {
         final ArrayList<InfoItem> infolist = new ArrayList<InfoItem>();
-        StringRequest infoListRequest = new StringRequest(Request.Method.GET, infourl, new Response.Listener<String>() {
+        StringRequest infoListRequest = new StringRequest(Request.Method.GET, infourl+infoTabFragment.getString(R.string.appkeyweb), new Response.Listener<String>() {
 
             @Override
             public void onResponse(String response) {
@@ -185,7 +195,7 @@ public class Receiver {
 
     public void fillEvents() {
         final ArrayList<EventItem> eventlist = new ArrayList<EventItem>();
-        StringRequest eventListRequest = new StringRequest(Request.Method.GET, eventurl, new Response.Listener<String>() {
+        StringRequest eventListRequest = new StringRequest(Request.Method.GET, eventurl+eventTabFragment.getString(R.string.appkeyweb), new Response.Listener<String>() {
 
             @Override
             public void onResponse(String response) {
@@ -438,7 +448,7 @@ public class Receiver {
 
     public void fillOffers() {
         final ArrayList<ExchangeItem> offerlist = new ArrayList<ExchangeItem>();
-        StringRequest offerListRequest = new StringRequest(Request.Method.GET, offersurl, new Response.Listener<String>() {
+        StringRequest offerListRequest = new StringRequest(Request.Method.GET, offersurl+offersTabFragment.getString(R.string.appkeyweb), new Response.Listener<String>() {
 
             @Override
             public void onResponse(String response) {
@@ -515,7 +525,7 @@ public class Receiver {
 
     public void fillRequests() {
         final ArrayList<ExchangeItem> requestlist = new ArrayList<ExchangeItem>();
-        StringRequest requestListRequest = new StringRequest(Request.Method.GET, requesturl, new Response.Listener<String>() {
+        StringRequest requestListRequest = new StringRequest(Request.Method.GET, requesturl+requestsTabFragment.getString(R.string.appkeyweb), new Response.Listener<String>() {
 
             @Override
             public void onResponse(String response) {
@@ -773,7 +783,7 @@ public class Receiver {
                 }
                 switch (responsecode) {
                     case 0:
-                        Toast.makeText(editUser, params.get("art") + " erfolgreich eingereicht", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(editUser, "Profil erfolgreich geändert.", Toast.LENGTH_SHORT).show();
                         editUser.finish();
                         break;
                     case 1:

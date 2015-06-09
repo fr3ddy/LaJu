@@ -41,5 +41,5 @@
     <string name="oldPassword">Aktuelles Passwort</string>
     <string name="editUser">Profil bearbeiten</string>
 
-    <string name="appkey">asdf</string>
+    <string name="appkeyweb">123456</string>
 </resources>

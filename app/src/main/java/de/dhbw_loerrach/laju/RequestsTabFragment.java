@@ -107,7 +107,6 @@ public class RequestsTabFragment extends Fragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         Receiver receiver = new Receiver(this);
-        receiver.clearQueue();
         receiver.fillRequests();
     }
 
