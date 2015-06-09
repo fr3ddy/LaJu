@@ -62,7 +62,6 @@ public class RequestsTabFragment extends Fragment {
             @Override
             public void onRefresh() {
                 Receiver receiver = new Receiver(tmpfrag);
-                receiver.clearQueue();
                 receiver.fillRequests();
             }
         });
