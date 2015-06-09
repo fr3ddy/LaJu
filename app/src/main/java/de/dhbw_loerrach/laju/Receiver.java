@@ -599,6 +599,8 @@ public class Receiver {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+                LinearLayout container = (LinearLayout) exchange.findViewById(R.id.offerCommentsList);
+                container.removeAllViews();
                 for (int i = 0; i < jArray.length(); i++) {
                     JSONObject jObject = null;
                     try {
@@ -617,9 +619,9 @@ public class Receiver {
                         lastname = jObject.getJSONObject("autor").get("nachname").toString().substring(0, 1) + ".";
 
                         //TODO: Styling! http://commonsware.com/blog/Android/2010/05/26/html-tags-supported-by-textview.html
+
                         LayoutInflater inflater = (LayoutInflater) exchange.getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                         View view = inflater.inflate(R.layout.comments, null);
-                        LinearLayout container = (LinearLayout) exchange.findViewById(R.id.offerCommentsList);
                         TextView cText = (TextView) view.findViewById(R.id.text);
                         cText.setText(text);
 
