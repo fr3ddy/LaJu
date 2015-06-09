@@ -90,7 +90,7 @@ public class EditUser extends AppCompatActivity {
                 } else {
                     String pw = "";
                     HashMap<String, String> params = new HashMap<String, String>();
-                    params.put("appkey", "123456");
+                    params.put("appkey", String.valueOf(R.string.appkey));
                     params.put("benutzernameAlt", User.username);
                     params.put("benutzernameNeu", u);
                     if(pn.length() > 0){

@@ -42,18 +42,20 @@ public class Receiver {
     private Exchange exchange;
     private NewExchangeFragment newExchangeFragment;
     private EditUser editUser;
-    private String infourl = "http://laju.frederik-frey.de/lajuapp/gibAlleNeuigkeiten/123456";
-    private String eventurl = "http://laju.frederik-frey.de/lajuapp/gibVeranstaltungen/123456";
-    private String newnewsurl = "http://laju.frederik-frey.de/lajuapp/NeuigkeitEinreichen";
-    private String loginurl = "http://laju.frederik-frey.de/lajuapp/einloggen";
-    private String registerurl = "http://laju.frederik-frey.de/lajuapp/registriereBenutzer";
-    private String userdataurl = "http://laju.frederik-frey.de/lajuapp/gibUserDaten";
-    private String offersurl = "http://laju.frederik-frey.de/lajuapp/gibAlleAngebote/123456";
-    private String commentsurl = "http://laju.frederik-frey.de/lajuapp/gibKommentare";
-    private String newcommenturl = "http://laju.frederik-frey.de/lajuapp/eintragKommentieren";
-    private String requesturl = "http://laju.frederik-frey.de/lajuapp/gibAlleNachfragen/123456";
-    private String newexchangeurl = "http://laju.frederik-frey.de/lajuapp/eintragEinreichen";
-    private String closeexchangeurl = "http://laju.frederik-frey.de/lajuapp/eintragSchliessen";
+    private String basic = "http://laju.frederik-frey.de/lajuapp/";
+    private String infourl = basic +"gibAlleNeuigkeiten/"+R.string.appkey;
+    private String eventurl = basic +"gibVeranstaltungen/"+R.string.appkey;
+    private String newnewsurl = basic +"NeuigkeitEinreichen";
+    private String loginurl = basic +"einloggen";
+    private String registerurl = basic +"registriereBenutzer";
+    private String userdataurl = basic +"gibUserDaten";
+    private String offersurl = basic +"gibAlleAngebote/"+R.string.appkey;
+    private String commentsurl = basic +"gibKommentare";
+    private String newcommenturl = basic +"eintragKommentieren";
+    private String requesturl = basic +"gibAlleNachfragen/"+R.string.appkey;
+    private String newexchangeurl = basic +"eintragEinreichen";
+    private String closeexchangeurl = basic +"eintragSchliessen";
+    private String edituserurl = basic +"aendereUserdaten";
 
     public Receiver(InfoTabFragment infoTabFragment) {
         queue = Volley.newRequestQueue(infoTabFragment.getActivity());
@@ -760,7 +762,7 @@ public class Receiver {
     }
 
     public void editUser(final HashMap<String, String> params) {
-        final JsonObjectRequest newEditUserRequest = new JsonObjectRequest(Request.Method.POST, newexchangeurl, new JSONObject(params), new Response.Listener<JSONObject>() {
+        final JsonObjectRequest newEditUserRequest = new JsonObjectRequest(Request.Method.POST, edituserurl, new JSONObject(params), new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 int responsecode = 0;

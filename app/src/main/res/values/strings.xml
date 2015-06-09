@@ -40,4 +40,6 @@
     <string name="edit">Ändern</string>
     <string name="oldPassword">Aktuelles Passwort</string>
     <string name="editUser">Profil bearbeiten</string>
+
+    <string name="appkey">asdf</string>
 </resources>
