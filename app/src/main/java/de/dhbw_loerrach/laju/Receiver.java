@@ -615,28 +615,25 @@ public class Receiver {
                         text = jObject.get("text").toString();
                         firstname = jObject.getJSONObject("autor").get("vorname").toString();
                         lastname = jObject.getJSONObject("autor").get("nachname").toString().substring(0, 1) + ".";
+
+                        //TODO: Styling! http://commonsware.com/blog/Android/2010/05/26/html-tags-supported-by-textview.html
+                        LayoutInflater inflater = (LayoutInflater) exchange.getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                        View view = inflater.inflate(R.layout.comments, null);
+                        LinearLayout container = (LinearLayout) exchange.findViewById(R.id.offerCommentsList);
+                        TextView cText = (TextView) view.findViewById(R.id.text);
+                        cText.setText(text);
+
+                        TextView date = (TextView) view.findViewById(R.id.date);
+                        date.setText(erdat);
+
+                        TextView author = (TextView) view.findViewById(R.id.author);
+                        author.setText(firstname + " " + lastname);
+
+                        container.addView(view);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-                    //TODO: Styling! http://commonsware.com/blog/Android/2010/05/26/html-tags-supported-by-textview.html
-                    LayoutInflater inflater = (LayoutInflater) exchange.getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                    View view = inflater.inflate(R.layout.comments, null);
-                    LinearLayout container = (LinearLayout) exchange.findViewById(R.id.offerCommentsList);
-                    TextView cText = (TextView) view.findViewById(R.id.text);
-                    cText.setText(text);
-
-                    TextView date = (TextView) view.findViewById(R.id.date);
-                    date.setText(erdat);
-
-                    TextView author = (TextView) view.findViewById(R.id.author);
-                    author.setText(firstname + " " + lastname);
-
-                    container.addView(view);
-
-//                    comments += "<big>" + firstname + " " + lastname + "</big> <b>" + erdat + "</b><br/>" + text + "<br/><br/>";
                 }
-//                TextView tv = (TextView) exchange.findViewById(R.id.offerComments);
-//                tv.setText(Html.fromHtml(comments));
             }
         }, new Response.ErrorListener() {
             @Override

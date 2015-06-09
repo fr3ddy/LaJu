@@ -25,7 +25,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textEmailAddress"
-            android:text="freyfr"
             android:id="@+id/usernameLogin"/>
 
         <TextView
@@ -38,7 +37,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textPassword"
-            android:text="unsicher"
             android:ems="10"
             android:id="@+id/passwordLogin"/>
 

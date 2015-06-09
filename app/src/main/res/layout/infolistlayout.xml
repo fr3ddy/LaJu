@@ -10,7 +10,7 @@
         android:id="@+id/newsTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@color/dark_grey"
+        android:textColor="@color/anthrazit"
         android:typeface="sans"
         android:textSize="@dimen/list_title"
         android:textStyle="bold"/>
@@ -30,7 +30,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/autor"
-        android:textColor="@color/grey"
+        android:textColor="@color/anthrazit"
         android:textSize="@dimen/list_subtitle"
         android:layout_marginTop="1dip" />
 
@@ -44,6 +44,6 @@
         android:gravity="right"
         android:layout_marginRight="5dip"
         android:textSize="@dimen/list_subtitle"
-        android:textColor="@color/grey"
+        android:textColor="@color/anthrazit"
         android:textStyle="bold"/>
 </RelativeLayout>

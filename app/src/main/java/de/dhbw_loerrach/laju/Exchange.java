@@ -35,7 +35,6 @@ public class Exchange extends AppCompatActivity {
         TextView offerErdat = (TextView) findViewById(R.id.offerErdat);
         TextView offerText = (TextView) findViewById(R.id.offerText);
         TextView offerName = (TextView) findViewById(R.id.offerName);
-//        TextView offerStatus = (TextView) findViewById(R.id.offerStatus);
         View offerSeparator = (View) findViewById(R.id.separator);
         final EditText offerComment = (EditText) findViewById(R.id.offerNewComment);
         Button offerButton = (Button) findViewById(R.id.offerSubmitComment);
@@ -43,23 +42,15 @@ public class Exchange extends AppCompatActivity {
         offerErdat.setText(o.getErdat());
         offerText.setText(o.getText());
         offerName.setText(o.getUserfirstname() + " " + o.getUserlastname().substring(0, 1) + ".");
-//        String status;
-//        if (o.isDone() == true) {
-//            status = "Erledigt";
-//        } else {
-//            status = "Zu haben";
-//        }
-//        if (o.isOpen() == true) {
-//            status += " - Offen";
-//        } else {
-//            status += " - Geschlossen";
-//        }
-//        offerStatus.setText(status);
+
         String title;
         if(o.isOpen()) {
             title = o.getTitle();
         } else {
             title = "[Geschlossen] " + o.getTitle();
+            offerSeparator.setVisibility(View.INVISIBLE);
+            offerComment.setVisibility(View.INVISIBLE);
+            offerButton.setVisibility(View.INVISIBLE);
         }
         setTitle(title);
 
@@ -73,13 +64,17 @@ public class Exchange extends AppCompatActivity {
             offerButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-
-                    HashMap<String, String> paramsC = new HashMap<String, String>();
-                    paramsC.put("appkey", "123456");
-                    paramsC.put("tauschid", "" + o.getTauschid());
-                    paramsC.put("user", User.getInstance().username);
-                    paramsC.put("text", offerComment.getText().toString());
-                    receiver.sendNewComment(paramsC, params);
+                    // Kommentar nur absenden, wenn auch Text eingegeben wurde
+                    if(offerComment.getText().toString().length() == 0) {
+                        offerComment.setError("Bitte geben Sie einen Kommentar ein!");
+                    } else {
+                        HashMap<String, String> paramsC = new HashMap<String, String>();
+                        paramsC.put("appkey", "123456");
+                        paramsC.put("tauschid", "" + o.getTauschid());
+                        paramsC.put("user", User.getInstance().username);
+                        paramsC.put("text", offerComment.getText().toString());
+                        receiver.sendNewComment(paramsC, params);
+                    }
                 }
             });
         } else {
