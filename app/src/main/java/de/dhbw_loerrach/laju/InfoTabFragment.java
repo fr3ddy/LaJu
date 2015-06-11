@@ -56,7 +56,6 @@ public class InfoTabFragment extends Fragment {
             @Override
             public void onRefresh() {
                 Receiver receiver = new Receiver(tmpfrag);
-                receiver.clearQueue();
                 receiver.fillInfos();
                 mSwipeRefreshLayout.setRefreshing(false);
             }
@@ -108,7 +107,6 @@ public class InfoTabFragment extends Fragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         Receiver receiver = new Receiver(this);
-        receiver.clearQueue();
         receiver.fillInfos();
     }
 

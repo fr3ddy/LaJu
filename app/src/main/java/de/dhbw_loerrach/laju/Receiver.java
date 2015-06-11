@@ -1,6 +1,7 @@
 package de.dhbw_loerrach.laju;
 
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.text.Html;
@@ -41,18 +42,22 @@ public class Receiver {
     private RequestsTabFragment requestsTabFragment;
     private Exchange exchange;
     private NewExchangeFragment newExchangeFragment;
-    private String infourl = "http://laju.frederik-frey.de/lajuapp/gibAlleNeuigkeiten/123456";
-    private String eventurl = "http://laju.frederik-frey.de/lajuapp/gibVeranstaltungen/123456";
-    private String newnewsurl = "http://laju.frederik-frey.de/lajuapp/NeuigkeitEinreichen";
-    private String loginurl = "http://laju.frederik-frey.de/lajuapp/einloggen";
-    private String registerurl = "http://laju.frederik-frey.de/lajuapp/registriereBenutzer";
-    private String userdataurl = "http://laju.frederik-frey.de/lajuapp/gibUserDaten";
-    private String offersurl = "http://laju.frederik-frey.de/lajuapp/gibAlleAngebote/123456";
-    private String commentsurl = "http://laju.frederik-frey.de/lajuapp/gibKommentare";
-    private String newcommenturl = "http://laju.frederik-frey.de/lajuapp/eintragKommentieren";
-    private String requesturl = "http://laju.frederik-frey.de/lajuapp/gibAlleNachfragen/123456";
-    private String newexchangeurl = "http://laju.frederik-frey.de/lajuapp/eintragEinreichen";
-    private String closeexchangeurl = "http://laju.frederik-frey.de/lajuapp/eintragSchliessen";
+    private EditUser editUser;
+    private String basic = "http://laju.frederik-frey.de/lajuapp/";
+    private String infourl = basic +"gibAlleNeuigkeiten/";
+    private String eventurl = basic +"gibVeranstaltungen/";
+    private String newnewsurl = basic +"NeuigkeitEinreichen";
+    private String loginurl = basic +"einloggen";
+    private String registerurl = basic +"registriereBenutzer";
+    private String userdataurl = basic +"gibUserDaten";
+    private String offersurl = basic +"gibAlleAngebote/";
+    private String commentsurl = basic +"gibKommentare";
+    private String newcommenturl = basic +"eintragKommentieren";
+    private String requesturl = basic +"gibAlleNachfragen/";
+    private String newexchangeurl = basic +"eintragEinreichen";
+    private String closeexchangeurl = basic +"eintragSchliessen";
+    private String edituserurl = basic +"aendereUserdaten";
+    private ProgressDialog progress = null;
 
     public Receiver(InfoTabFragment infoTabFragment) {
         queue = Volley.newRequestQueue(infoTabFragment.getActivity());
@@ -99,9 +104,18 @@ public class Receiver {
         this.newExchangeFragment = newExchangeFragment;
     }
 
+    public Receiver(EditUser editUserinstance) {
+        queue = Volley.newRequestQueue(editUserinstance);
+        this.editUser = editUserinstance;
+    }
+
     public void fillInfos() {
+        progress = new ProgressDialog(infoTabFragment.getActivity());
+        progress.setTitle("Aktuallisieren");
+        progress.setMessage("Bitte warten...");
+        progress.show();
         final ArrayList<InfoItem> infolist = new ArrayList<InfoItem>();
-        StringRequest infoListRequest = new StringRequest(Request.Method.GET, infourl, new Response.Listener<String>() {
+        StringRequest infoListRequest = new StringRequest(Request.Method.GET, infourl+infoTabFragment.getString(R.string.appkeyweb), new Response.Listener<String>() {
 
             @Override
             public void onResponse(String response) {
@@ -163,12 +177,14 @@ public class Receiver {
                 };
                 lv.setOnItemClickListener(eventTtemClickListener);
                 infoTabFragment.mSwipeRefreshLayout.setRefreshing(false);
+                progress.dismiss();
             }
         }, new Response.ErrorListener() {
 
             @Override
             public void onErrorResponse(VolleyError error) {
                 infoTabFragment.mSwipeRefreshLayout.setRefreshing(false);
+                progress.dismiss();
                 Toast.makeText(infoTabFragment.getActivity(), "Error: " + error.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
@@ -176,8 +192,12 @@ public class Receiver {
     }
 
     public void fillEvents() {
+        progress = new ProgressDialog(eventTabFragment.getActivity());
+        progress.setTitle("Aktuallisieren");
+        progress.setMessage("Bitte warten...");
+        progress.show();
         final ArrayList<EventItem> eventlist = new ArrayList<EventItem>();
-        StringRequest eventListRequest = new StringRequest(Request.Method.GET, eventurl, new Response.Listener<String>() {
+        StringRequest eventListRequest = new StringRequest(Request.Method.GET, eventurl+eventTabFragment.getString(R.string.appkeyweb), new Response.Listener<String>() {
 
             @Override
             public void onResponse(String response) {
@@ -257,11 +277,13 @@ public class Receiver {
                 };
                 lv.setOnItemClickListener(eventTtemClickListener);
                 eventTabFragment.mSwipeRefreshLayout.setRefreshing(false);
+                progress.dismiss();
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 eventTabFragment.mSwipeRefreshLayout.setRefreshing(false);
+                progress.dismiss();
                 Toast.makeText(eventTabFragment.getActivity(), "Error: " + error.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
@@ -269,6 +291,10 @@ public class Receiver {
     }
 
     public void sendNewInfo(HashMap<String, String> params) {
+        progress = new ProgressDialog(newInfoFragment.getActivity());
+        progress.setTitle("Senden");
+        progress.setMessage("Bitte warten...");
+        progress.show();
         JsonObjectRequest newInfoRequest = new JsonObjectRequest(Request.Method.POST, newnewsurl, new JSONObject(params), new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
@@ -278,6 +304,7 @@ public class Receiver {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+                progress.dismiss();
                 switch (responsecode) {
                     case 0:
                         Toast.makeText(newInfoFragment.getActivity(), "Info erfolgreich eingereicht", Toast.LENGTH_SHORT).show();
@@ -297,6 +324,7 @@ public class Receiver {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+                progress.dismiss();
                 Toast.makeText(newInfoFragment.getActivity(), "Error: " + error.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
@@ -304,6 +332,10 @@ public class Receiver {
     }
 
     public void login(final HashMap<String, String> params) {
+        progress = new ProgressDialog(login);
+        progress.setTitle("Anmelden");
+        progress.setMessage("Bitte warten...");
+        progress.show();
         JsonObjectRequest newLoginRequest = new JsonObjectRequest(Request.Method.POST, loginurl, new JSONObject(params), new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
@@ -313,6 +345,7 @@ public class Receiver {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+                progress.dismiss();
                 switch (responsecode) {
                     case 0:
                         performLogin(params.get("appkey"), params.get("benutzername"));
@@ -340,6 +373,7 @@ public class Receiver {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+                progress.dismiss();
                 Toast.makeText(login, "Error: " + error.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
@@ -347,6 +381,10 @@ public class Receiver {
     }
 
     private void performLogin(String appkey, String username) {
+        progress = new ProgressDialog(login);
+        progress.setTitle("Anmelden");
+        progress.setMessage("Bitte warten...");
+        progress.show();
         JsonObjectRequest getUserdataRequest = new JsonObjectRequest(Request.Method.GET, userdataurl + "/" + appkey + "/" + username, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
@@ -356,6 +394,7 @@ public class Receiver {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+                progress.dismiss();
                 switch (responsecode) {
                     case 0:
                         try {
@@ -384,6 +423,7 @@ public class Receiver {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+                progress.dismiss();
                 Toast.makeText(login, "Error: " + error.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
@@ -391,6 +431,10 @@ public class Receiver {
     }
 
     public void register(HashMap<String, String> params) {
+        progress = new ProgressDialog(register);
+        progress.setTitle("Abmelden");
+        progress.setMessage("Bitte warten...");
+        progress.show();
         JsonObjectRequest newRegisterRequest = new JsonObjectRequest(Request.Method.POST, registerurl, new JSONObject(params), new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
@@ -400,6 +444,7 @@ public class Receiver {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+                progress.dismiss();
                 switch (responsecode) {
                     case 0:
                         Toast.makeText(register, "Registrierung hat geklappt", Toast.LENGTH_LONG).show();
@@ -422,6 +467,7 @@ public class Receiver {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+                progress.dismiss();
                 Toast.makeText(register, "Error: " + error.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
@@ -429,8 +475,12 @@ public class Receiver {
     }
 
     public void fillOffers() {
+        progress = new ProgressDialog(offersTabFragment.getActivity());
+        progress.setTitle("Aktuallisieren");
+        progress.setMessage("Bitte warten...");
+        progress.show();
         final ArrayList<ExchangeItem> offerlist = new ArrayList<ExchangeItem>();
-        StringRequest offerListRequest = new StringRequest(Request.Method.GET, offersurl, new Response.Listener<String>() {
+        StringRequest offerListRequest = new StringRequest(Request.Method.GET, offersurl+offersTabFragment.getString(R.string.appkeyweb), new Response.Listener<String>() {
 
             @Override
             public void onResponse(String response) {
@@ -493,11 +543,13 @@ public class Receiver {
                 };
                 lv.setOnItemClickListener(eventTtemClickListener);
                 offersTabFragment.mSwipeRefreshLayout.setRefreshing(false);
+                progress.dismiss();
             }
         }, new Response.ErrorListener() {
 
             @Override
             public void onErrorResponse(VolleyError error) {
+                progress.dismiss();
                 offersTabFragment.mSwipeRefreshLayout.setRefreshing(false);
                 Toast.makeText(offersTabFragment.getActivity(), "Error: " + error.getMessage(), Toast.LENGTH_LONG).show();
             }
@@ -506,8 +558,12 @@ public class Receiver {
     }
 
     public void fillRequests() {
+        progress = new ProgressDialog(requestsTabFragment.getActivity());
+        progress.setTitle("Aktuallisieren");
+        progress.setMessage("Bitte warten...");
+        progress.show();
         final ArrayList<ExchangeItem> requestlist = new ArrayList<ExchangeItem>();
-        StringRequest requestListRequest = new StringRequest(Request.Method.GET, requesturl, new Response.Listener<String>() {
+        StringRequest requestListRequest = new StringRequest(Request.Method.GET, requesturl+requestsTabFragment.getString(R.string.appkeyweb), new Response.Listener<String>() {
 
             @Override
             public void onResponse(String response) {
@@ -570,11 +626,13 @@ public class Receiver {
                 };
                 lv.setOnItemClickListener(eventTtemClickListener);
                 requestsTabFragment.mSwipeRefreshLayout.setRefreshing(false);
+                progress.dismiss();
             }
         }, new Response.ErrorListener() {
 
             @Override
             public void onErrorResponse(VolleyError error) {
+                progress.dismiss();
                 requestsTabFragment.mSwipeRefreshLayout.setRefreshing(false);
                 Toast.makeText(requestsTabFragment.getActivity(), "Error: " + error.getMessage(), Toast.LENGTH_LONG).show();
             }
@@ -583,10 +641,13 @@ public class Receiver {
     }
 
     public void fillComments(HashMap<String, String> params) {
+        progress = new ProgressDialog(exchange);
+        progress.setTitle("Aktuallisiere Kommentare");
+        progress.setMessage("Bitte warten...");
+        progress.show();
         JsonObjectRequest commentsRequest = new JsonObjectRequest(Request.Method.POST, commentsurl, new JSONObject(params), new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
-                String comments = "";
                 String r = null;
                 try {
                     r = response.getJSONArray("kommentare").toString();
@@ -636,10 +697,12 @@ public class Receiver {
                         e.printStackTrace();
                     }
                 }
+                progress.dismiss();
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+                progress.dismiss();
                 Toast.makeText(exchange, "Error: " + error.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
@@ -647,6 +710,10 @@ public class Receiver {
     }
 
     public void sendNewComment(HashMap<String, String> params , final HashMap<String, String> paramsC) {
+        progress = new ProgressDialog(exchange);
+        progress.setTitle("Sende neuen Kommentar");
+        progress.setMessage("Bitte warten...");
+        progress.show();
         JsonObjectRequest newInfoRequest = new JsonObjectRequest(Request.Method.POST, newcommenturl, new JSONObject(params), new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
@@ -656,6 +723,7 @@ public class Receiver {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+                progress.dismiss();
                 switch (responsecode) {
                     case 0:
                         Toast.makeText(exchange, "Erfolgreich Kommentiert", Toast.LENGTH_SHORT).show();
@@ -677,6 +745,7 @@ public class Receiver {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+                progress.dismiss();
                 Toast.makeText(exchange, "Error: " + error.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
@@ -684,6 +753,10 @@ public class Receiver {
     }
 
     public void sendNewExchange(final HashMap<String, String> params) {
+        progress = new ProgressDialog(newExchangeFragment.getActivity());
+        progress.setTitle("Neuen Antrag anlegen");
+        progress.setMessage("Bitte warten...");
+        progress.show();
         final JsonObjectRequest newExchangeRequest = new JsonObjectRequest(Request.Method.POST, newexchangeurl, new JSONObject(params), new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
@@ -693,6 +766,7 @@ public class Receiver {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+                progress.dismiss();
                 switch (responsecode) {
                     case 0:
                         Toast.makeText(newExchangeFragment.getActivity(), params.get("art") + " erfolgreich eingereicht", Toast.LENGTH_SHORT).show();
@@ -712,6 +786,7 @@ public class Receiver {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+                progress.dismiss();
                 Toast.makeText(newExchangeFragment.getActivity(), "Error: " + error.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
@@ -719,6 +794,10 @@ public class Receiver {
     }
 
     public void closeExchange(HashMap<String, String> params) {
+        progress = new ProgressDialog(exchange);
+        progress.setTitle("Eintrag schließen");
+        progress.setMessage("Bitte warten...");
+        progress.show();
         JsonObjectRequest newCloseExchangeRequest = new JsonObjectRequest(Request.Method.POST, closeexchangeurl, new JSONObject(params), new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
@@ -728,6 +807,7 @@ public class Receiver {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+                progress.dismiss();
                 switch (responsecode) {
                     case 0:
                         Toast.makeText(exchange, "Erfolgreich abgeschlossen", Toast.LENGTH_SHORT).show();
@@ -747,18 +827,52 @@ public class Receiver {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+                progress.dismiss();
                 Toast.makeText(exchange, "Error: " + error.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
         queue.add(newCloseExchangeRequest);
     }
 
-    public void clearQueue(){
-        queue.cancelAll(new RequestQueue.RequestFilter() {
+    public void editUser(final HashMap<String, String> params) {
+        progress = new ProgressDialog(editUser);
+        progress.setTitle("Speichere Benutzerdaten");
+        progress.setMessage("Bitte warten...");
+        progress.show();
+        final JsonObjectRequest newEditUserRequest = new JsonObjectRequest(Request.Method.POST, edituserurl, new JSONObject(params), new Response.Listener<JSONObject>() {
             @Override
-            public boolean apply(Request<?> request) {
-                return true;
+            public void onResponse(JSONObject response) {
+                int responsecode = 0;
+                try {
+                    responsecode = (int) response.get("code");
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                progress.dismiss();
+                switch (responsecode) {
+                    case 0:
+                        Toast.makeText(editUser, "Profil erfolgreich geändert.", Toast.LENGTH_SHORT).show();
+                        editUser.finish();
+                        break;
+                    case 1:
+                        Toast.makeText(editUser, "AppKey war falsch, bitte wenden Sie sich an Ihren Systemadministrator", Toast.LENGTH_LONG).show();
+                        break;
+                    case 2:
+                        Toast.makeText(editUser, "Diese Email Adresse gibt es schon, versuche bitte eine andere!", Toast.LENGTH_LONG).show();
+                        break;
+                    default:
+                        Toast.makeText(editUser, "Da lief was falsch!!!", Toast.LENGTH_LONG).show();
+                        break;
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                progress.dismiss();
+                Toast.makeText(editUser, "Error: " + error.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
+        queue.add(newEditUserRequest);
     }
+
 }

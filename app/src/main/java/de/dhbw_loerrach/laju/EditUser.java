@@ -11,16 +11,16 @@ import android.widget.EditText;
 
 import java.util.HashMap;
 
-public class Register extends AppCompatActivity {
+public class EditUser extends AppCompatActivity {
 
-    private Register registerinstance;
+    private EditUser editUserinstance;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_register);
+        setContentView(R.layout.activity_edituser);
 
-        registerinstance = this;
+        editUserinstance = this;
 
         Toolbar mToolbar = (Toolbar) findViewById(R.id.tool_bar);
         setSupportActionBar(mToolbar);
@@ -46,22 +46,27 @@ public class Register extends AppCompatActivity {
     }
 
     private void setUpFields() {
-        final EditText username = (EditText) findViewById(R.id.registerUsername);
-        final EditText email = (EditText) findViewById(R.id.registerEmail);
-        final EditText email_c = (EditText) findViewById(R.id.registerEmailConfirm);
-        final EditText password = (EditText) findViewById(R.id.registerPassword);
-        final EditText password_c = (EditText) findViewById(R.id.registerPasswordConfirm);
-        final EditText firstname = (EditText) findViewById(R.id.registerFirstname);
-        final EditText lastname = (EditText) findViewById(R.id.registerLastname);
-        Button registerbtn = (Button) findViewById(R.id.registerFragmentButton);
+        final EditText username = (EditText) findViewById(R.id.editUserUsername);
+        final EditText email = (EditText) findViewById(R.id.editUserEmail);
+        final EditText password = (EditText) findViewById(R.id.editUserOldPassword);
+        final EditText password_n = (EditText) findViewById(R.id.editUserPassword);
+        final EditText password_c = (EditText) findViewById(R.id.editUserPasswordConfirm);
+        final EditText firstname = (EditText) findViewById(R.id.editUserFirstname);
+        final EditText lastname = (EditText) findViewById(R.id.editUserLastname);
+        Button editUserbtn = (Button) findViewById(R.id.editUserFragmentButton);
 
-        registerbtn.setOnClickListener(new View.OnClickListener() {
+        username.setText(User.username);
+        email.setText(User.email);
+        firstname.setText(User.firstname);
+        lastname.setText(User.lastname);
+
+        editUserbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 String u = username.getText().toString();
                 String e = email.getText().toString();
-                String ec = email_c.getText().toString();
                 String p = password.getText().toString();
+                String pn = password_n.getText().toString();
                 String pc = password_c.getText().toString();
                 String f = firstname.getText().toString();
                 String l = lastname.getText().toString();
@@ -70,32 +75,41 @@ public class Register extends AppCompatActivity {
                     username.setError("Bitte geben Sie einen Benutzernamen ein!");
                 } else if (e.length() == 0) {
                     email.setError("Bitte geben Sie eine E-Mail Adresse ein!");
-                } else if (ec.length() == 0) {
-                    email_c.setError("Bitte bestätigen Sie Ihre E-Mail Adresse!");
                 } else if (p.length() == 0) {
                     password.setError("Bitte geben Sie ein Passwort ein!");
-                } else if (pc.length() == 0) {
-                    password_c.setError("Bitte bestätigen Sie Ihre Passwort!");
+                } else if (pc.length() > 0 && pn.length() == 0) {
+                    password_c.setError("Bitte geben Sie ihr Passwort zweimal ein!!");
+                } else if (pn.length() > 0 && pc.length() == 0) {
+                    password_n.setError("Bitte geben Sie ihr Passwort zweimal ein!!");
+                } else if (!pn.equals(pc)) {
+                    password_c.setError("Ihre neuen Passwörter stimmen nicht überein!!");
                 } else if (f.length() == 0) {
                     firstname.setError("Bitte geben Sie einen Vornamen ein!");
                 } else if (l.length() == 0) {
                     lastname.setError("Bitte geben Sie einen Nachnamen ein!");
-                } else if (!e.equals(ec)) {
-                    email_c.setError("Ihre E-Mail Adressen stimmen nicht überein!");
-                } else if (!p.equals(pc)) {
-                    password_c.setError("Ihre Passwörter stimmen nicht überein!");
                 } else {
+                    String pw = "";
                     HashMap<String, String> params = new HashMap<String, String>();
                     params.put("appkey", getString(R.string.appkeyweb));
-                    params.put("benutzername", u);
-                    params.put("passwort", p);
+                    params.put("benutzernameAlt", User.username);
+                    params.put("benutzernameNeu", u);
+                    if(pn.length() > 0){
+                        pw = pn;
+                    }else{
+                        pw = p;
+                    }
+                    params.put("passwort", pw);
                     params.put("email", e);
                     params.put("vorname", f);
                     params.put("nachname", l);
 
+                    User.username = u;
+                    User.email = e;
+                    User.firstname = f;
+                    User.lastname = l;
 
-                    Receiver receiver = new Receiver(registerinstance);
-                    receiver.register(params);
+                    Receiver receiver = new Receiver(editUserinstance);
+                    receiver.editUser(params);
                 }
             }
         });

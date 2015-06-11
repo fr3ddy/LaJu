@@ -128,15 +128,14 @@ public class MainActivity extends AppCompatActivity implements NavigationDrawerF
     public void onNavigationDrawerSubItemSelected(int position) {
         switch (position){
             case 1:
-                // TODO: reagiere, wenn "Konto bearbeiten" gew
-                Toast.makeText(this, "bearbeiten", Toast.LENGTH_LONG).show();
+                Intent intent = new Intent(this,EditUser.class);
+                startActivity(intent);
                 break;
             case 2:
                 Toast.makeText(this, "Erfolgreich abgemeldet", Toast.LENGTH_LONG).show();
                 User.logout();
                 break;
             default:
-                // Lade Infos per Default
                 Toast.makeText(this, "Default", Toast.LENGTH_LONG).show();
                 break;
         }

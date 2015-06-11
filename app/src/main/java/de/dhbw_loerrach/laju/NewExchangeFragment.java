@@ -52,7 +52,7 @@ public class NewExchangeFragment extends Fragment {
                     text.setError("Bitte geben Sie einen Text ein!");
                 } else{
                     HashMap<String, String> params = new HashMap<String, String>();
-                    params.put("appkey", "123456");
+                    params.put("appkey", getString(R.string.appkeyweb));
                     params.put("titel", title.getText().toString());
                     params.put("besch", text.getText().toString());
                     params.put("user", User.getInstance().username);

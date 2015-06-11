@@ -88,6 +88,15 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="de.dhbw_loerrach.laju.MainActivity" />
         </activity>
+        <activity
+            android:name=".EditUser"
+            android:label="@string/editUser" >
+
+            <!-- The meta-data element is needed for versions lower than 4.1 -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="de.dhbw_loerrach.laju.MainActivity" />
+        </activity>
     </application>
 
 </manifest>
