@@ -24,7 +24,7 @@
     <ImageButton
         android:id="@+id/menu_btn"
         android:layout_width="50dp"
-        android:background="@android:color/transparent"
+        android:background="@color/anthrazit"
         android:layout_height="50dp"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"

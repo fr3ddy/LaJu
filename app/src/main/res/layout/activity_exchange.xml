@@ -47,6 +47,19 @@
                 android:id="@+id/offerName"/>
         </LinearLayout>
 
+        <View android:id="@+id/separatorMain"
+              android:layout_width="fill_parent"
+              android:layout_height="2dp"
+              android:layout_marginTop="@dimen/line_spacing_text"
+              android:layout_marginBottom="2dp"
+              android:background="@color/bright_green"/>
+
+        <View android:id="@+id/separatorMain1"
+              android:layout_width="fill_parent"
+              android:layout_height="2dp"
+              android:layout_marginBottom="@dimen/line_spacing_text"
+              android:background="@color/bright_green"/>
+
         <LinearLayout android:id="@+id/offerCommentsList"
                       android:layout_width="match_parent"
                       android:layout_height="match_parent"
