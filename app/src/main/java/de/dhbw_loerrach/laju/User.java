@@ -15,6 +15,7 @@ public class User {
     public static String lastname;
     public static String email;
     private static Context context;
+    private boolean isMainNavDrawer = true;
 
     private User(Context context, String username, String firstname, String lastname, String email) {
         User.username = username;
@@ -71,6 +72,14 @@ public class User {
             //e.printStackTrace();
             return defaultValue;
         }
+    }
+
+    public boolean getIsMainNavDrawer() {
+      return isMainNavDrawer;
+    }
+
+    public void setIsMainNavDrawer(boolean value) {
+        isMainNavDrawer = value;
     }
 
 }

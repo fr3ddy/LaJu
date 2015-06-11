@@ -117,10 +117,12 @@ public class NavigationDrawerFragment extends Fragment {
                 @TargetApi(Build.VERSION_CODES.LOLLIPOP)
                 @Override
                 public void onClick(View v) {
-                    if(menuBtn.getDrawable().getConstantState().equals(getResources().getDrawable(android.R.drawable.arrow_down_float, null).getConstantState())) {
+                    if(User.getInstance().getIsMainNavDrawer()) {
+                        User.getInstance().setIsMainNavDrawer(false);
                         menuBtn.setImageDrawable(getResources().getDrawable(android.R.drawable.arrow_up_float));
                         mDrawerListView.setAdapter(setupAdapter(false));
                     } else {
+                        User.getInstance().setIsMainNavDrawer(true);
                         menuBtn.setImageResource(android.R.drawable.arrow_down_float);
                         mDrawerListView.setAdapter(setupAdapter(true));
                     }
