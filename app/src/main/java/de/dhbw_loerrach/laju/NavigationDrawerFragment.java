@@ -1,9 +1,12 @@
 package de.dhbw_loerrach.laju;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.content.res.Resources;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -111,9 +114,10 @@ public class NavigationDrawerFragment extends Fragment {
 
             final ImageButton menuBtn = (ImageButton) mHeader.findViewById(R.id.menu_btn);
             menuBtn.setOnClickListener(new View.OnClickListener() {
+                @TargetApi(Build.VERSION_CODES.LOLLIPOP)
                 @Override
                 public void onClick(View v) {
-                    if(menuBtn.getDrawable().getConstantState().equals(getResources().getDrawable(android.R.drawable.arrow_down_float).getConstantState())) {
+                    if(menuBtn.getDrawable().getConstantState().equals(getResources().getDrawable(android.R.drawable.arrow_down_float, null).getConstantState())) {
                         menuBtn.setImageDrawable(getResources().getDrawable(android.R.drawable.arrow_up_float));
                         mDrawerListView.setAdapter(setupAdapter(false));
                     } else {
