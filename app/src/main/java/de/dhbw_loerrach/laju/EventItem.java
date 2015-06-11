@@ -41,14 +41,18 @@ public class EventItem implements Serializable {
     public String getDatum_bis() {
         String datum = "";
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.GERMANY);
-        try {
-            Date date = sdf.parse(datum_bis);
-            sdf.applyLocalizedPattern("dd.MM.yyyy");
-            datum = sdf.format(date);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
 
+        if(!datum_bis.equals("0000-00-00")) {
+            try {
+                Date date = sdf.parse(datum_bis);
+                sdf.applyLocalizedPattern("dd.MM.yyyy");
+                datum = sdf.format(date);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        } else {
+            datum = "";
+        }
         return datum;
     }
 

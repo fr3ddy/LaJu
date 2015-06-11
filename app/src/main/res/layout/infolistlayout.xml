@@ -12,6 +12,7 @@
         android:layout_height="wrap_content"
         android:textColor="@color/anthrazit"
         android:typeface="sans"
+        android:paddingRight="50dp"
         android:textSize="@dimen/list_title"
         android:textStyle="bold"/>
 

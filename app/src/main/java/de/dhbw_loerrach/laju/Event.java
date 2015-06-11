@@ -31,15 +31,18 @@ public class Event extends AppCompatActivity {
         TextView eventItemBeschreibung = (TextView) findViewById(R.id.eventItemBeschreibung);
         TextView eventItemDatumVon = (TextView) findViewById(R.id.eventItemDatumVon);
         TextView eventItemDatumBis = (TextView) findViewById(R.id.eventItemDatumBis);
+        TextView line = (TextView) findViewById(R.id.line);
 
         setTitle(e.getTitel());
 
-        if(!e.getUntertitel().equals("{}")) {
-            eventItemUntertitel.setText(e.getUntertitel());
-        }
         eventItemBeschreibung.setText(e.getBeschreibung());
         eventItemDatumVon.setText(e.getDatum_von());
         eventItemDatumBis.setText(e.getDatum_bis());
+
+        if(e.getDatum_bis().equals("")) {
+            line.setVisibility(View.INVISIBLE);
+        }
+
         new DownloadImageTask((ImageView) findViewById(R.id.eventItemImage)).execute(e.getBild());
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);

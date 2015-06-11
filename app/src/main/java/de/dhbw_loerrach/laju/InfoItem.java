@@ -21,11 +21,11 @@ public class InfoItem implements Serializable {
     }
 
     private String getTextPreview(String text) {
-        int end = 20;
+        int end = 60;
         if(end > text.length()){
             end = text.length();
         }
-        return text.substring(0, end);
+        return text.substring(0, end).replace("\n", " ");
     }
 
     public String getAutor() {
