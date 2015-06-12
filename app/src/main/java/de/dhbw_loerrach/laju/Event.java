@@ -35,6 +35,7 @@ public class Event extends AppCompatActivity {
 
         setTitle(e.getTitel());
 
+        eventItemUntertitel.setText(e.getUntertitel().equals("{}") ? "" : e.getUntertitel());
         eventItemBeschreibung.setText(e.getBeschreibung());
         eventItemDatumVon.setText(e.getDatum_von());
         eventItemDatumBis.setText(e.getDatum_bis());
